@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {STERICYCLEACCOUNTS} from "../../hardCodeData/hardCodeData";
 
 @Component({
   selector: 'app-account-info',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountInfoComponent implements OnInit {
 
-  constructor() { }
+  ssAccounts = STERICYCLEACCOUNTS[0];
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
