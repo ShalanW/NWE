@@ -4,6 +4,7 @@ import {Container} from "./container";
 export interface MedicalRecord {
 
   id: number;
+
   mwAddress: ServiceAddress;
   mwUmbrellaAccountNumber: string;
 
