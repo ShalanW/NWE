@@ -1,4 +1,3 @@
-import {ServiceAddress} from "../general/service-address";
 import {MedicalRecord} from "./medical-record";
 import {ShredRecord} from "./shred-record";
 

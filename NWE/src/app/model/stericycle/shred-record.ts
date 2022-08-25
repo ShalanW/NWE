@@ -4,6 +4,7 @@ import {Container} from "./container";
 export interface ShredRecord {
 
   id: number;
+
   shAddress: ServiceAddress;
   shUmbrellaAccountNumber: string;
 
