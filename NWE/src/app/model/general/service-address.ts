@@ -5,5 +5,4 @@ export interface ServiceAddress {
   state: string;
   zip: string;
 
-
 }
