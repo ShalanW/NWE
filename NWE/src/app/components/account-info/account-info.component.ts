@@ -17,3 +17,5 @@ export class AccountInfoComponent implements OnInit {
   }
 
 }
+// Angular ngIf Directive and the Elvis Operator (Angular University)
+
