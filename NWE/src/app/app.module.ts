@@ -1,33 +1,63 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { AccountInfoComponent } from './components/account-info/account-info.component';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {AccountInfoComponent} from './components/account-info/account-info.component';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {environment} from '../environments/environment';
+import {provideFirestore, getFirestore} from '@angular/fire/firestore';
 import {FIREBASE_OPTIONS} from "@angular/fire/compat";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatSelectModule} from "@angular/material/select";
+import {HomePageComponent} from './components/home-page/home-page.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
+import {MatMenuModule} from "@angular/material/menu";
+import {FlexModule} from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
     AppComponent,
-    AccountInfoComponent
+    AccountInfoComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatCardModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatMenuModule,
+    FlexModule
+
+
   ],
   providers: [
-    { provide: FIREBASE_OPTIONS, useValue: environment.firebase }
+    {provide: FIREBASE_OPTIONS, useValue: environment.firebase}
 
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

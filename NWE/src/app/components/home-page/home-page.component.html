@@ -1,0 +1,40 @@
+<div class="home-container" fxLayout="column" fxLayoutAlign="space-around center">
+  <mat-card>
+
+
+    <div fxLayout="row">
+      <div fxLayout="row">
+
+        <form [formGroup]="baseAmountsForm">
+
+          <mat-form-field><input (keydown)="calculateForm()" formControlName="amount" matInput placeholder="Amount"
+                                 type="number"></mat-form-field>
+          <mat-form-field>
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let type of amountTypes" [value]="type.value">
+                {{type.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field><input (keydown)="calculateForm()" formControlName="frequency" matInput
+                                 placeholder="Frequency"
+                                 type="number">
+          </mat-form-field>
+          <mat-form-field><input
+            formControlName="subtotal" matInput placeholder="subtotal"
+            type="number"
+          >
+          </mat-form-field>
+
+        </form>
+      </div>
+      <div>
+      </div>
+    </div>
+
+    <p>{{baseAmountsForm.value | json}}</p>
+
+  </mat-card>
+</div>
+

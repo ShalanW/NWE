@@ -1,5 +1,58 @@
-<router-outlet>
-  
-  <app-account-info></app-account-info>
+<mat-sidenav-container fullscreen>
 
-</router-outlet>
+  <mat-sidenav #sidenav>
+
+    <mat-nav-list (click)="sidenav.close()">
+
+      <a mat-list-item routerLink="home">
+        <mat-icon>library_books</mat-icon>
+        <span>Home</span> </a>
+
+      <a mat-list-item routerLink="medicalInfo">
+        <mat-icon>question_answer</mat-icon>
+        <span>Medical</span>
+      </a>
+
+
+    </mat-nav-list>
+
+
+  </mat-sidenav>
+
+  <mat-toolbar color="primary">
+
+    <button (click)="sidenav.open()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1>NWE</h1>
+
+
+    <!--    <a [matMenuTriggerFor]="dropdown" mat-button>-->
+    <!--      Placeholder-->
+    <!--    </a>-->
+
+    <!--    <mat-menu #dropdown>-->
+
+    <!--      <button mat-menu-item routerLink="/">Placeholder</button>-->
+
+    <!--      <button mat-menu-item routerLink="/about">Placeholder</button>-->
+
+    <!--    </mat-menu>-->
+
+    <!--    <a mat-button>-->
+    <!--      <mat-icon>person_add</mat-icon>-->
+    <!--      Register-->
+    <!--    </a>-->
+
+    <!--    <a mat-button>-->
+    <!--      <mat-icon>account_circle</mat-icon>-->
+    <!--      Login-->
+    <!--    </a>-->
+
+  </mat-toolbar>
+
+
+  <router-outlet></router-outlet>
+
+
+</mat-sidenav-container>
