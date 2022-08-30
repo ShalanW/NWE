@@ -23,13 +23,16 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
 import {FlexModule} from "@angular/flex-layout";
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     AccountInfoComponent,
-    HomePageComponent
+    HomePageComponent,
+    AutofocusDirective,
   ],
+  
   imports: [
     BrowserModule,
     AppRoutingModule,
