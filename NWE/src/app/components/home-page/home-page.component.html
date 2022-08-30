@@ -1,13 +1,11 @@
-<div class="home-container" fxLayout="column" fxLayoutAlign="space-around center">
-  <mat-card>
+<div [formGroup]="billFixerForm" class="home-container" fxLayout="column" fxLayoutAlign="space-around center">
 
 
+  <div fxLayout="row">
     <div fxLayout="row">
-      <div fxLayout="row">
-
-        <form [formGroup]="baseAmountsForm">
-
-          <mat-form-field><input (keydown)="calculateForm()" formControlName="amount" matInput placeholder="Amount"
+      <ng-container formArrayName="baseAmounts">
+        <ng-container *ngFor="let baseAmtForm of baseAmounts.controls; let index = index">
+          <mat-form-field><input (input)="calcSubtotal()" formControlName="amount" matInput placeholder="Amount"
                                  type="number"></mat-form-field>
           <mat-form-field>
             <mat-label>Type</mat-label>
@@ -17,24 +15,26 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field><input (keydown)="calculateForm()" formControlName="frequency" matInput
+          <mat-form-field><input (input)="calcSubtotal()" formControlName="frequency" matInput
                                  placeholder="Frequency"
                                  type="number">
           </mat-form-field>
           <mat-form-field><input
-            formControlName="subtotal" matInput placeholder="subtotal"
-            type="number"
+            formControlName="subtotal"
+            matInput placeholder="subtotal"
+
           >
           </mat-form-field>
 
-        </form>
-      </div>
-      <div>
-      </div>
+          <button (click)="addNewBaseAmount()" mat-raised-button>Update</button>
+        </ng-container>
+      </ng-container>
     </div>
+    <div>
+    </div>
+  </div>
 
-    <p>{{baseAmountsForm.value | json}}</p>
+  <p>{{baseAmountsForm.value | json}}</p>
 
-  </mat-card>
 </div>
 

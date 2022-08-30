@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, NonNullableFormBuilder, Validators} from "@angular/forms";
+import {FormArray, FormBuilder} from "@angular/forms";
 
 interface AmountTypes {
   value: string;
@@ -13,11 +13,15 @@ interface AmountTypes {
 })
 export class HomePageComponent implements OnInit {
 
+  billFixerForm = this.fb.group({
+    baseAmounts: this.fb.array([])
+  })
+
   baseAmountsForm = this.fb.group({
-    amount: [''],
+    amount: [null],
     type: [''],
-    frequency: [''],
-    subtotal: ['']
+    frequency: [1],
+    subtotal: [0],
   })
 
   amountTypes: AmountTypes[] = [
@@ -25,30 +29,34 @@ export class HomePageComponent implements OnInit {
     {value: 'overage', viewValue: 'Overage'}
   ];
 
-
-  mainForm = this.fb.group({
-    baseAmounts: [[], {validators: [Validators.required]}]
-  })
-
-
-  constructor(private fb: NonNullableFormBuilder) {
+  constructor(private fb: FormBuilder) {
   }
 
+  get baseAmounts() {
+    return this.billFixerForm.controls["baseAmounts"] as FormArray;
+  }
 
   ngOnInit(): void {
+  }
+
+  calcSubtotal() {
+    if (this.baseAmountsForm.value.amount && this.baseAmountsForm.value.frequency) {
+
+      this.baseAmountsForm.patchValue({
+        subtotal: this.baseAmountsForm.value.amount * this.baseAmountsForm.value.frequency
+      })
+    }
+
+    if (!this.baseAmountsForm.value.amount || !this.baseAmountsForm.value.frequency) {
+      this.baseAmountsForm.patchValue({
+        subtotal: 0
+      })
+    }
 
   }
 
-
-  calculateForm() {
-    console.log(this.getAmount())
-  }
-
-  getAmount() {
-    return this.baseAmountsForm.get('amount').value
-  }
-
-  getFrequency() {
+  addNewBaseAmount() {
+    this.baseAmounts.push(this.baseAmountsForm)
 
   }
 }
