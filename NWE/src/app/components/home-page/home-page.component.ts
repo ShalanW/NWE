@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 
 interface AmountTypes {
   value: string;
@@ -13,16 +13,17 @@ interface AmountTypes {
 })
 export class HomePageComponent implements OnInit {
 
-  billFixerForm = this.fb.group({
-    baseAmounts: this.fb.array([])
-  })
 
-  baseAmountsForm = this.fb.group({
-    amount: [null],
-    type: [''],
-    frequency: [1],
-    subtotal: [0],
-  })
+  // billFixerForm = this.fb.group({
+  //   baseAmounts: this.fb.array([])
+  // })
+  //
+  // baseAmountsForm = this.fb.group({
+  //   amount: [null],
+  //   type: [''],
+  //   frequency: [1],
+  //   subtotal: [0],
+  // })
 
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
@@ -32,31 +33,32 @@ export class HomePageComponent implements OnInit {
   constructor(private fb: FormBuilder) {
   }
 
-  get baseAmounts() {
-    return this.billFixerForm.controls["baseAmounts"] as FormArray;
-  }
+  // get baseAmounts() {
+  //   return this.billFixerForm.controls["baseAmounts"] as FormArray;
+  // }
+
 
   ngOnInit(): void {
   }
 
-  calcSubtotal() {
-    if (this.baseAmountsForm.value.amount && this.baseAmountsForm.value.frequency) {
 
-      this.baseAmountsForm.patchValue({
-        subtotal: this.baseAmountsForm.value.amount * this.baseAmountsForm.value.frequency
-      })
-    }
-
-    if (!this.baseAmountsForm.value.amount || !this.baseAmountsForm.value.frequency) {
-      this.baseAmountsForm.patchValue({
-        subtotal: 0
-      })
-    }
-
-  }
-
-  addNewBaseAmount() {
-    this.baseAmounts.push(this.baseAmountsForm)
-
-  }
+  // calcSubtotal() {
+  //   if (this.baseAmountsForm.value.amount && this.baseAmountsForm.value.frequency) {
+  //
+  //     this.baseAmountsForm.patchValue({
+  //       subtotal: this.baseAmountsForm.value.amount * this.baseAmountsForm.value.frequency
+  //     })
+  //   }
+  //
+  //   if (!this.baseAmountsForm.value.amount || !this.baseAmountsForm.value.frequency) {
+  //     this.baseAmountsForm.patchValue({
+  //       subtotal: 0
+  //     })
+  //   }
+  //
+  // }
+  //
+  // addNewBaseAmount() {
+  //   this.baseAmounts.push(this.baseAmountsForm)
+  // }
 }

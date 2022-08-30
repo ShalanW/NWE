@@ -1,40 +1,38 @@
-<div [formGroup]="billFixerForm" class="home-container" fxLayout="column" fxLayoutAlign="space-around center">
+<!--<div [formGroup]="billFixerForm" class="home-container" fxLayout="column" fxLayoutAlign="space-around center">-->
+<!--  -->
+<!--  <ng-container formArrayName="baseAmounts">-->
+<!--    <ng-container *ngFor="let baseAmtForm of baseAmounts.controls; let index = index">-->
+<!--      <form>-->
+<!--        <mat-form-field><input (input)="calcSubtotal()" formControlName="amount" matInput placeholder="Amount"-->
+<!--                               type="number"></mat-form-field>-->
+<!--        <mat-form-field>-->
+<!--          <mat-label>Type</mat-label>-->
+<!--          <mat-select formControlName="type">-->
+<!--            <mat-option *ngFor="let type of amountTypes" [value]="type.value">-->
+<!--              {{type.viewValue}}-->
+<!--            </mat-option>-->
+<!--          </mat-select>-->
+<!--        </mat-form-field>-->
+<!--        <mat-form-field><input (input)="calcSubtotal()" formControlName="frequency" matInput-->
+<!--                               placeholder="Frequency"-->
+<!--                               type="number">-->
+<!--        </mat-form-field>-->
+<!--        <mat-form-field><input-->
+<!--          formControlName="subtotal"-->
+<!--          matInput placeholder="subtotal"-->
+
+<!--        >-->
+<!--        </mat-form-field>-->
+
+<!--        <button (click)="addNewBaseAmount()" mat-raised-button>Update</button>-->
+<!--      </form>-->
+<!--    </ng-container>-->
+<!--  </ng-container>-->
+<!--</div>-->
+<!--<div>-->
 
 
-  <div fxLayout="row">
-    <div fxLayout="row">
-      <ng-container formArrayName="baseAmounts">
-        <ng-container *ngFor="let baseAmtForm of baseAmounts.controls; let index = index">
-          <mat-form-field><input (input)="calcSubtotal()" formControlName="amount" matInput placeholder="Amount"
-                                 type="number"></mat-form-field>
-          <mat-form-field>
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="type">
-              <mat-option *ngFor="let type of amountTypes" [value]="type.value">
-                {{type.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field><input (input)="calcSubtotal()" formControlName="frequency" matInput
-                                 placeholder="Frequency"
-                                 type="number">
-          </mat-form-field>
-          <mat-form-field><input
-            formControlName="subtotal"
-            matInput placeholder="subtotal"
+<!--  <p>{{baseAmountsForm.value | json}}</p>-->
 
-          >
-          </mat-form-field>
-
-          <button (click)="addNewBaseAmount()" mat-raised-button>Update</button>
-        </ng-container>
-      </ng-container>
-    </div>
-    <div>
-    </div>
-  </div>
-
-  <p>{{baseAmountsForm.value | json}}</p>
-
-</div>
+<!--</div>-->
 

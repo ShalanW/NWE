@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {AccountInfoComponent} from './components/account-info/account-info.component';
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {environment} from '../environments/environment';
-import {provideFirestore, getFirestore} from '@angular/fire/firestore';
+import {getFirestore, provideFirestore} from '@angular/fire/firestore';
 import {FIREBASE_OPTIONS} from "@angular/fire/compat";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
@@ -49,7 +49,7 @@ import {FlexModule} from "@angular/flex-layout";
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
-    FlexModule
+    FlexModule,
 
 
   ],
