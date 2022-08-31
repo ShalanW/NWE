@@ -55,6 +55,16 @@ export class HomePageComponent implements OnInit {
   constructor(private fb: FormBuilder) {
   }
 
+  //------------ GETTERS---------------//
+
+  get fuelAmountValue() {
+    return this.fuelAmount
+  }
+
+  get fuelPercentageValue() {
+    return this.fuelPercentage
+  }
+
   ngOnInit(): void {
   }
 
@@ -82,6 +92,7 @@ export class HomePageComponent implements OnInit {
     }
 
     this.clearBaseForm()
+
   }
 
   clearBaseForm() {
@@ -95,9 +106,11 @@ export class HomePageComponent implements OnInit {
     return this.baseAmounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
-  calcOverageAmounts() {
+  calcOverageAmounts = () => {
     return this.overageAmounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
+
+  //FUEL ----------------------------------
 
   deleteLine(i: number, type: string) {
     if (type === 'base') {
@@ -109,18 +122,31 @@ export class HomePageComponent implements OnInit {
 
   }
 
-  calcFeeBaseTotal() {
+  calcFeeBaseTotal = () => {
     return this.calcOverageAmounts() + this.calcBaseAmounts()
   }
 
-  calcFuelAmount() {
+  calcFuelPercentage = () => {
+    return (this.fuelAmountValue / this.calcFeeBaseTotal()) * 100
+  }
 
-    return (this.fuelAmount / this.calcFeeBaseTotal()) * 100;
+  calcFuelAmount = () => {
+    if (this.fuelPercentageValue) {
+      return (this.calcFeeBaseTotal() * this.fuelPercentageValue) / 100
+    } else {
+      return this.calcFeeBaseTotal() * this.calcFuelPercentage() / 100
+    }
+  };
+
+  //ENV----------------------
+
+  get envAmountValue() {
+    return this.envAmount;
   }
 
   calcEnvAmount() {
 
-    return (this.envAmount / this.calcFeeBaseTotal()) * 100;
+    return (this.envAmountValue / this.calcFeeBaseTotal()) * 100;
   }
 
   calcRcrAmount() {
@@ -131,5 +157,9 @@ export class HomePageComponent implements OnInit {
   calcFranchiseAmount() {
 
     return (this.franchiseAmount / this.calcFeeBaseTotal()) * 100;
+  }
+
+  calcTotalBill() {
+    return this.calcFeeBaseTotal() + this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount()
   }
 }
