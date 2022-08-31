@@ -23,7 +23,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
 import {FlexModule} from "@angular/flex-layout";
-import { AutofocusDirective } from './directives/autofocus.directive';
+import {AutofocusDirective} from './directives/autofocus.directive';
+import {NgxMaskModule} from "ngx-mask";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     HomePageComponent,
     AutofocusDirective,
   ],
-  
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -53,6 +54,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     MatListModule,
     MatMenuModule,
     FlexModule,
+    NgxMaskModule.forRoot(),
 
 
   ],

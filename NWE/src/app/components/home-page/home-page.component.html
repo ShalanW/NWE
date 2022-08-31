@@ -1,53 +1,103 @@
-<mat-card class="home-container" fxlaout="column">
+<div class="home-container" fxLayout="row">
 
-  <div fxLayout fxLayoutAlign="start center">
+  <mat-card fxFlex="64.5%" fxLayout="column">
 
-    <mat-form-field fxFlex="10%"><input #amtInput (focus)="amtInput.select()" (input)="calcSubtotal()"
-                                        (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
-                                        [(ngModel)]="amount"
-                                        autofocus
-                                        matInput
-                                        placeholder="Amount"
-                                        type="number">
-    </mat-form-field>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="20%">
+        <mat-label>Type</mat-label>
+        <mat-select #selectOption (focus)="selectOption.open()" [(ngModel)]="amtType"
+                    autofocus>
+          <mat-option (click)="selectOption.close()" *ngFor="let type of amountTypes" [value]="type.value">
+            {{type.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="20%">
+        <mat-label>Amount</mat-label>
+        <input #amtInput
+               (focus)="amtInput.select()"
+               (input)="calcSubtotal()"
+               (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
+               [(ngModel)]="amount"
+               mask="separator.2"
+               matInput
+               placeholder="0"
+               thousandSeparator=","
 
-    <mat-form-field fxFlex="10%">
-      <mat-label>Type</mat-label>
-      <mat-select [(ngModel)]="amtType">
-        <mat-option *ngFor="let type of amountTypes" [value]="type.value">
-          {{type.viewValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+               type="text">
+        <span matPrefix>$&nbsp;</span>
 
-    <mat-form-field fxFlex="10%"><input (input)="calcSubtotal()"
-                                        (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
-                                        [(ngModel)]="frequency" matInput
-                                        placeholder="Frequency"
-                                        type="number">
+      </mat-form-field>
+      <mat-form-field
+        fxFlex="20%">
+        <input #frequencyInput
+               (focus)="frequencyInput.select()"
+               (input)="calcSubtotal()"
+               (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
+               [(ngModel)]="frequency"
+               matInput
+               placeholder="Frequency"
+               type="number">
+      </mat-form-field>
+      <mat-form-field fxFlex="20%">
+        <mat-label>Subtotal</mat-label>
+        <input #subTotalAmt
+               [(ngModel)]="subtotal"
+               [disabled]="true"
+               mask="separator.2"
+               matInput
+               placeholder="0"
+               thousandSeparator=",">
+        <span matPrefix>$&nbsp;</span>
 
-    </mat-form-field>
+      </mat-form-field>
 
-    <mat-form-field fxFlex="10%"><input #subTotalAmt [(ngModel)]="subtotal" matInput placeholder="subtotal">
-    </mat-form-field>
+      <mat-icon #addNewButton
+                (click)="addNewAmount(); selectOption.focus();">
+        add
+      </mat-icon>
 
-    <button #addNewButton
-            (click)="addNewBaseAmount(); subTotalAmt.focus(); clearBaseForm(); amtInput.focus()"
-            mat-raised-button>Add New
-      Base Amount
-    </button>
-
-
-  </div>
-
-
-  <div *ngFor="let baseAmount of baseAmounts" fxlayout="row">
-
-    <div fxFlex="10%">{{baseAmount.amount}}</div>
-    <div fxFlex="10%">{{baseAmount.type | titlecase}}</div>
-    <div fxFlex="10%">{{baseAmount.frequency}}</div>
-    <div fxFlex="10%">{{baseAmount.subtotal}}</div>
-  </div>
+    </div>
 
 
-</mat-card>
+    <div *ngFor="let baseAmount of baseAmounts; index as i" fxLayout="row">
+
+      <div fxFlex="10%">{{baseAmount.amount | currency}}</div>
+      <div fxFlex="10%">{{baseAmount.type | titlecase}}</div>
+      <div fxFlex="10%">{{baseAmount.frequency}}</div>
+      <div fxFlex="10%">{{baseAmount.subtotal | currency}}</div>
+      <mat-icon #deleteLineButton (click)="deleteLine(i, baseAmount.type)">delete</mat-icon>
+    </div>
+    <div *ngFor="let overageAmount of overageAmounts; index as i" fxLayout="row">
+
+      <div fxFlex="10%">{{overageAmount.amount | currency}}</div>
+      <div fxFlex="10%">{{overageAmount.type | titlecase}}</div>
+      <div fxFlex="10%">{{overageAmount.frequency}}</div>
+      <div fxFlex="10%">{{overageAmount.subtotal | currency}}</div>
+      <mat-icon (click)="deleteLine(i, overageAmount.type)">delete</mat-icon>
+    </div>
+
+  </mat-card>
+
+  <div fxFlex="1%"></div>
+  <mat-card fxFlex="34.5%" fxLayout="column" fxLayoutAlign="start">
+
+    <div fxLayout="row">
+      <div fxFlex="60%">{{'Base Amounts Total: '}}</div>
+      <div>{{calcBaseAmountsTotal() | currency}}</div>
+    </div>
+    <div fxLayout="row">
+      <div fxFlex="60%">{{'Overage Amounts Total: '}}</div>
+      <div>{{calcOverageAmountsTotal() | currency}}</div>
+    </div>
+
+    <div class="total-row" fxLayout="row">
+      <div fxFlex="60%">{{'Bill Total: '}}</div>
+      <div>{{calcBillTotal() | currency}}</div>
+    </div>
+
+  </mat-card>
+
+
+</div>
+
