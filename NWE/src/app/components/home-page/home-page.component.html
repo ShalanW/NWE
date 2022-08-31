@@ -1,9 +1,9 @@
 <div class="home-container" fxLayout="row">
 
   <mat-card fxFlex="64.5%" fxLayout="column">
-
-    <div fxLayout="row">
-      <mat-form-field fxFlex="20%">
+    <h1>Base Services, Overages</h1>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field class="type" fxFlex="20%">
         <mat-label>Type</mat-label>
         <mat-select #selectOption (focus)="selectOption.open()" [(ngModel)]="amtType"
                     autofocus>
@@ -12,7 +12,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field fxFlex="20%">
+      <mat-form-field class="amount" fxFlex="20%">
         <mat-label>Amount</mat-label>
         <input #amtInput
                (focus)="amtInput.select()"
@@ -28,8 +28,7 @@
         <span matPrefix>$&nbsp;</span>
 
       </mat-form-field>
-      <mat-form-field
-        fxFlex="20%">
+      <mat-form-field class="frequency" fxFlex="20%">
         <input #frequencyInput
                (focus)="frequencyInput.select()"
                (input)="calcSubtotal()"
@@ -39,7 +38,7 @@
                placeholder="Frequency"
                type="number">
       </mat-form-field>
-      <mat-form-field fxFlex="20%">
+      <mat-form-field class="subtotal" fxFlex="20%">
         <mat-label>Subtotal</mat-label>
         <input #subTotalAmt
                [(ngModel)]="subtotal"
@@ -51,15 +50,13 @@
         <span matPrefix>$&nbsp;</span>
 
       </mat-form-field>
-
       <mat-icon #addNewButton
                 (click)="addNewAmount(); selectOption.focus();">
         add
       </mat-icon>
 
+
     </div>
-
-
     <div *ngFor="let baseAmount of baseAmounts; index as i" fxLayout="row">
 
       <div fxFlex="10%">{{baseAmount.amount | currency}}</div>
@@ -77,27 +74,231 @@
       <mat-icon (click)="deleteLine(i, overageAmount.type)">delete</mat-icon>
     </div>
 
+    <div fxFlex="64.5%" fxLayout="column">
+      <h1>Fuel, ENV, RCR, Franchise</h1>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Fuel Amount From Bill'}}</mat-label>
+          <input #fuelAmountInput
+                 (focus)="fuelAmountInput.select()"
+                 [(ngModel)]="fuelAmount"
+                 mask="separator.2"
+                 matInput
+                 placeholder="0"
+                 thousandSeparator=","
+
+                 type="text">
+          <span matPrefix>$&nbsp;</span>
+
+        </mat-form-field>
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Calculated'}}</mat-label>
+          <input
+            [ngModel]="calcFuelAmount()"
+            disabled
+
+            matInput
+            placeholder="0"
+            type="number">
+          <span matSuffix>%&nbsp;</span>
+
+
+        </mat-form-field>
+
+        <mat-form-field class="fuel-percentage" fxFlex="20%">
+          <mat-label>{{'% Override'}}</mat-label>
+          <input #percentInput
+                 (focus)="percentInput.select()"
+                 (input)="calcSubtotal()"
+                 (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
+                 [(ngModel)]="fuelPercentage"
+                 mask="00.0000"
+                 matInput
+                 placeholder="0"
+
+                 type="text">
+          <span matSuffix>%</span>
+
+        </mat-form-field>
+        <div fxFlex="20%">&nbsp;</div>
+        <mat-icon>
+          &nbsp;
+        </mat-icon>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Fuel Amount From Bill'}}</mat-label>
+          <input #fuelAmountInput
+                 (focus)="fuelAmountInput.select()"
+                 [(ngModel)]="fuelAmount"
+                 mask="separator.2"
+                 matInput
+                 placeholder="0"
+                 thousandSeparator=","
+
+                 type="text">
+          <span matPrefix>$&nbsp;</span>
+
+        </mat-form-field>
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Calculated'}}</mat-label>
+          <input
+            [ngModel]="calcFuelAmount()"
+            disabled
+
+            matInput
+            placeholder="0"
+            type="number">
+          <span matSuffix>%&nbsp;</span>
+
+
+        </mat-form-field>
+
+        <mat-form-field class="fuel-percentage" fxFlex="20%">
+          <mat-label>{{'% Override'}}</mat-label>
+          <input #percentInput
+                 (focus)="percentInput.select()"
+                 (input)="calcSubtotal()"
+                 (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
+                 [(ngModel)]="fuelPercentage"
+                 mask="00.0000"
+                 matInput
+                 placeholder="0"
+
+                 type="text">
+          <span matSuffix>%</span>
+
+        </mat-form-field>
+        <div fxFlex="20%">&nbsp;</div>
+        <mat-icon>
+          &nbsp;
+        </mat-icon>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Fuel Amount From Bill'}}</mat-label>
+          <input #fuelAmountInput
+                 (focus)="fuelAmountInput.select()"
+                 [(ngModel)]="fuelAmount"
+                 mask="separator.2"
+                 matInput
+                 placeholder="0"
+                 thousandSeparator=","
+
+                 type="text">
+          <span matPrefix>$&nbsp;</span>
+
+        </mat-form-field>
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Calculated'}}</mat-label>
+          <input
+            [ngModel]="calcFuelAmount()"
+            disabled
+
+            matInput
+            placeholder="0"
+            type="number">
+          <span matSuffix>%&nbsp;</span>
+
+
+        </mat-form-field>
+
+        <mat-form-field class="fuel-percentage" fxFlex="20%">
+          <mat-label>{{'% Override'}}</mat-label>
+          <input #percentInput
+                 (focus)="percentInput.select()"
+                 (input)="calcSubtotal()"
+                 (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
+                 [(ngModel)]="fuelPercentage"
+                 mask="00.0000"
+                 matInput
+                 placeholder="0"
+
+                 type="text">
+          <span matSuffix>%</span>
+
+        </mat-form-field>
+        <div fxFlex="20%">&nbsp;</div>
+        <mat-icon>
+          &nbsp;
+        </mat-icon>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Fuel Amount From Bill'}}</mat-label>
+          <input #fuelAmountInput
+                 (focus)="fuelAmountInput.select()"
+                 [(ngModel)]="fuelAmount"
+                 mask="separator.2"
+                 matInput
+                 placeholder="0"
+                 thousandSeparator=","
+
+                 type="text">
+          <span matPrefix>$&nbsp;</span>
+
+        </mat-form-field>
+        <mat-form-field class="fuel-amount" fxFlex="20%">
+          <mat-label>{{'Calculated'}}</mat-label>
+          <input
+            [ngModel]="calcFuelAmount()"
+            disabled
+
+            matInput
+            placeholder="0"
+            type="number">
+          <span matSuffix>%&nbsp;</span>
+
+
+        </mat-form-field>
+
+        <mat-form-field class="fuel-percentage" fxFlex="20%">
+          <mat-label>{{'% Override'}}</mat-label>
+          <input #percentInput
+                 (focus)="percentInput.select()"
+                 (input)="calcSubtotal()"
+                 (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
+                 [(ngModel)]="fuelPercentage"
+                 mask="00.0000"
+                 matInput
+                 placeholder="0"
+
+                 type="text">
+          <span matSuffix>%</span>
+
+        </mat-form-field>
+        <div fxFlex="20%">&nbsp;</div>
+        <mat-icon>
+          &nbsp;
+        </mat-icon>
+      </div>
+
+
+    </div>
+
+
   </mat-card>
 
   <div fxFlex="1%"></div>
   <mat-card fxFlex="34.5%" fxLayout="column" fxLayoutAlign="start">
 
     <div fxLayout="row">
-      <div fxFlex="60%">{{'Base Amounts Total: '}}</div>
-      <div>{{calcBaseAmountsTotal() | currency}}</div>
+      <div fxFlex="60%">{{'Base Amounts: '}}</div>
+      <div>{{calcBaseAmounts() | currency}}</div>
     </div>
     <div fxLayout="row">
-      <div fxFlex="60%">{{'Overage Amounts Total: '}}</div>
-      <div>{{calcOverageAmountsTotal() | currency}}</div>
+      <div fxFlex="60%">{{'Overages: '}}</div>
+      <div>{{calcOverageAmounts() | currency}}</div>
     </div>
 
     <div class="total-row" fxLayout="row">
-      <div fxFlex="60%">{{'Bill Total: '}}</div>
-      <div>{{calcBillTotal() | currency}}</div>
+      <div fxFlex="60%">{{'Fee Base Total: '}}</div>
+      <div>{{calcFeeBaseTotal() | currency}}</div>
     </div>
 
   </mat-card>
 
 
 </div>
+
 

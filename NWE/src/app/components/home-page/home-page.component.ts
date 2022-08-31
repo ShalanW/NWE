@@ -14,19 +14,20 @@ interface AmountTypes {
 export class HomePageComponent implements OnInit {
 
 
+  // TAX 1
+  // TAX 2
+  // TAX 3
+  // TAX 4
+
   baseAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
   overageAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
 
-  fuelAmount: number = 0;
-  fuelPercentage: number = 0;
+  fuelAmounts: { amount: number, percentage: number, type: string, frequency: number, subtotal: number }[] = [];
+
 
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
     {value: 'overage', viewValue: 'Overage'},
-    {value: 'fuel', viewValue: 'Fuel'},
-    {value: 'env', viewValue: 'ENV'},
-    {value: 'rcr', viewValue: 'RCR'},
-    {value: 'franchise', viewValue: 'Franchise'},
     {value: 'tax', viewValue: 'Tax'},
     {value: 'admin', viewValue: 'Admin Fee'},
     {value: 'other', viewValue: 'Other'},
@@ -37,6 +38,18 @@ export class HomePageComponent implements OnInit {
   amtType = 'base';
   frequency = 1;
   subtotal = 0;
+
+  fuelAmount: number = 0;
+  fuelPercentage: number = 0;
+
+  envAmount: number = 0;
+  envPercentage: number = 0;
+
+  rcrAmount: number = 0;
+  rcrPercentage: number = 0;
+
+  franchiseAmount: number = 0;
+  franchisePercentage: number = 0;
 
 
   constructor(private fb: FormBuilder) {
@@ -78,11 +91,11 @@ export class HomePageComponent implements OnInit {
     this.amtType = 'base';
   }
 
-  calcBaseAmountsTotal() {
+  calcBaseAmounts() {
     return this.baseAmounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
-  calcOverageAmountsTotal() {
+  calcOverageAmounts() {
     return this.overageAmounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
@@ -96,7 +109,27 @@ export class HomePageComponent implements OnInit {
 
   }
 
-  calcBillTotal() {
-    return this.calcOverageAmountsTotal() + this.calcBaseAmountsTotal()
+  calcFeeBaseTotal() {
+    return this.calcOverageAmounts() + this.calcBaseAmounts()
+  }
+
+  calcFuelAmount() {
+
+    return (this.fuelAmount / this.calcFeeBaseTotal()) * 100;
+  }
+
+  calcEnvAmount() {
+
+    return (this.envAmount / this.calcFeeBaseTotal()) * 100;
+  }
+
+  calcRcrAmount() {
+
+    return (this.rcrAmount / this.calcFeeBaseTotal()) * 100;
+  }
+
+  calcFranchiseAmount() {
+
+    return (this.franchiseAmount / this.calcFeeBaseTotal()) * 100;
   }
 }
