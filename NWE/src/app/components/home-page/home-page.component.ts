@@ -13,17 +13,10 @@ interface AmountTypes {
 })
 export class HomePageComponent implements OnInit {
 
-
-  // TAX 1
-  // TAX 2
-  // TAX 3
-  // TAX 4
+  //----------Field Declarations----------//
 
   baseAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
   overageAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
-
-  fuelAmounts: { amount: number, percentage: number, type: string, frequency: number, subtotal: number }[] = [];
-
 
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
@@ -55,7 +48,7 @@ export class HomePageComponent implements OnInit {
   constructor(private fb: FormBuilder) {
   }
 
-  //------------ GETTERS---------------//
+  //----------Getters----------//
 
   get fuelAmountValue() {
     return this.fuelAmount
@@ -65,10 +58,38 @@ export class HomePageComponent implements OnInit {
     return this.fuelPercentage
   }
 
+  get envAmountValue() {
+    return this.envAmount;
+  }
+
+  get envPercentageValue() {
+    return this.envPercentage;
+  }
+
+  get rcrAmountValue() {
+    return this.rcrAmount;
+  }
+
+  get rcrPercentageValue() {
+    return this.rcrPercentage;
+  }
+
+  get franchiseAmountValue() {
+    return this.franchiseAmount;
+  }
+
+  get franchisePercentageValue() {
+    return this.franchisePercentage;
+  }
+
+
   ngOnInit(): void {
   }
 
-  calcSubtotal() {
+  //----------Base and Overage Amount Calculations----------//
+
+
+  calcSubtotal = () => {
     this.subtotal = this.amount * this.frequency
 
     if (!this.amount || !this.frequency) {
@@ -77,7 +98,7 @@ export class HomePageComponent implements OnInit {
 
   }
 
-  addNewAmount() {
+  addNewBaseOverageAmount() {
     const newAmount = {
       amount: +this.amount,
       type: this.amtType,
@@ -91,12 +112,21 @@ export class HomePageComponent implements OnInit {
       this.overageAmounts.push(newAmount)
     }
 
-    this.clearBaseForm()
+    this.clearBaseOverageAmountForm()
+  }
+
+  deleteNewBaseOverageAmount(i: number, type: string) {
+    if (type === 'base') {
+      this.baseAmounts.splice(i, 1)
+    }
+    if (type === 'overage') {
+      this.overageAmounts.splice(i, 1)
+    }
 
   }
 
-  clearBaseForm() {
-    this.amount = null;
+  clearBaseOverageAmountForm() {
+    this.amount = 0;
     this.frequency = 1;
     this.subtotal = 0;
     this.amtType = 'base';
@@ -110,21 +140,12 @@ export class HomePageComponent implements OnInit {
     return this.overageAmounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
-  //FUEL ----------------------------------
-
-  deleteLine(i: number, type: string) {
-    if (type === 'base') {
-      this.baseAmounts.splice(i, 1)
-    }
-    if (type === 'overage') {
-      this.overageAmounts.splice(i, 1)
-    }
-
-  }
-
   calcFeeBaseTotal = () => {
     return this.calcOverageAmounts() + this.calcBaseAmounts()
   }
+
+
+  //----------Fuel Calculations----------//
 
   calcFuelPercentage = () => {
     return (this.fuelAmountValue / this.calcFeeBaseTotal()) * 100
@@ -138,28 +159,54 @@ export class HomePageComponent implements OnInit {
     }
   };
 
-  //ENV----------------------
+  //----------ENV Calculations----------//
 
-  get envAmountValue() {
-    return this.envAmount;
+  calcEnvPercentage = () => {
+    return (this.envAmountValue / this.calcFeeBaseTotal()) * 100
   }
 
   calcEnvAmount() {
 
-    return (this.envAmountValue / this.calcFeeBaseTotal()) * 100;
+    if (this.envPercentageValue) {
+      return (this.calcFeeBaseTotal() * this.envPercentageValue) / 100
+    } else {
+      return this.calcFeeBaseTotal() * this.calcEnvPercentage() / 100
+    }
+  }
+
+  //----------RCR Calculations----------//
+
+  calcRcrPercentage = () => {
+    return (this.rcrAmountValue / this.calcFeeBaseTotal()) * 100
   }
 
   calcRcrAmount() {
 
-    return (this.rcrAmount / this.calcFeeBaseTotal()) * 100;
+    if (this.rcrPercentageValue) {
+      return (this.calcFeeBaseTotal() * this.rcrPercentageValue) / 100
+    } else {
+      return this.calcFeeBaseTotal() * this.calcRcrPercentage() / 100
+    }
+  }
+
+  //----------Franchise Calculations----------//
+
+  calcFranchisePercentage = () => {
+    return (this.franchiseAmountValue / this.calcFeeBaseTotal()) * 100
   }
 
   calcFranchiseAmount() {
 
-    return (this.franchiseAmount / this.calcFeeBaseTotal()) * 100;
+    if (this.franchisePercentageValue) {
+      return (this.calcFeeBaseTotal() * this.franchisePercentageValue) / 100
+    } else {
+      return this.calcFeeBaseTotal() * this.calcFranchisePercentage() / 100
+    }
   }
 
+  //----------Final Calculations----------//
+
   calcTotalBill() {
-    return this.calcFeeBaseTotal() + this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount()
+    return this.calcFeeBaseTotal() + this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount()
   }
 }

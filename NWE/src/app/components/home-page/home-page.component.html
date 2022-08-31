@@ -54,7 +54,7 @@
 
       </mat-form-field>
       <mat-icon #addNewButton
-                (click)="addNewAmount(); selectOption.focus();">
+                (click)="addNewBaseOverageAmount(); selectOption.focus();">
         add
       </mat-icon>
 
@@ -67,7 +67,7 @@
       <div fxFlex="10%">{{baseAmount.type | titlecase}}</div>
       <div fxFlex="10%">{{baseAmount.frequency}}</div>
       <div fxFlex="10%">{{baseAmount.subtotal | currency}}</div>
-      <mat-icon #deleteLineButton (click)="deleteLine(i, baseAmount.type)">delete</mat-icon>
+      <mat-icon #deleteLineButton (click)="deleteNewBaseOverageAmount(i, baseAmount.type)">delete</mat-icon>
     </div>
     <div *ngFor="let overageAmount of overageAmounts; index as i" fxLayout="row">
 
@@ -75,7 +75,7 @@
       <div fxFlex="10%">{{overageAmount.type | titlecase}}</div>
       <div fxFlex="10%">{{overageAmount.frequency}}</div>
       <div fxFlex="10%">{{overageAmount.subtotal | currency}}</div>
-      <mat-icon (click)="deleteLine(i, overageAmount.type)">delete</mat-icon>
+      <mat-icon (click)="deleteNewBaseOverageAmount(i, overageAmount.type)">delete</mat-icon>
     </div>
 
     <div fxFlex="64.5%" fxLayout="column">
@@ -114,7 +114,6 @@
           <mat-label>{{'% Override'}}</mat-label>
           <input #fuelOverride
                  (focus)="fuelOverride.select()"
-                 (input)="calcSubtotal()"
                  [(ngModel)]="fuelPercentage"
                  matInput
                  placeholder="0"
@@ -144,7 +143,7 @@
         <mat-form-field class="env-calculated" fxFlex="20%">
           <mat-label>{{'ENV % Calculated'}}</mat-label>
           <input
-            [ngModel]="calcEnvAmount()"
+            [ngModel]="calcEnvPercentage()"
             disabled
             matInput
             placeholder="0"
@@ -157,12 +156,10 @@
           <mat-label>{{'% Override'}}</mat-label>
           <input #envOverrideInput
                  (focus)="envOverrideInput.select()"
-                 (input)="calcEnvAmount()"
                  [(ngModel)]="envPercentage"
-                 mask="00.0000"
                  matInput
                  placeholder="0"
-                 type="text">
+                 type="number">
 
           <span matSuffix>%</span>
 
@@ -190,7 +187,7 @@
           <mat-label>{{'RCR % Calculated'}}</mat-label>
 
           <input
-            [ngModel]="calcRcrAmount()"
+            [ngModel]="calcRcrPercentage()"
             disabled
             matInput
             placeholder="0"
@@ -205,12 +202,10 @@
 
           <input #rcrOverrideInput
                  (focus)="rcrOverrideInput.select()"
-                 (input)="calcSubtotal()"
                  [(ngModel)]="rcrPercentage"
-                 mask="00.0000"
                  matInput
                  placeholder="0"
-                 type="text">
+                 type="number">
 
           <span matSuffix>%</span>
 
@@ -241,7 +236,7 @@
           <mat-label>{{'Franchise % Calculated'}}</mat-label>
 
           <input
-            [ngModel]="calcFranchiseAmount()"
+            [ngModel]="calcFranchisePercentage()"
             disabled
             matInput
             placeholder="0"
@@ -257,12 +252,10 @@
           <input #franchiseOverrideInput
 
                  (focus)="franchiseOverrideInput.select()"
-                 (input)="calcSubtotal()"
                  [(ngModel)]="franchisePercentage"
-                 mask="00.0000"
                  matInput
                  placeholder="0"
-                 type="text">
+                 type="number">
 
           <span matSuffix>%</span>
 
