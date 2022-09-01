@@ -17,6 +17,7 @@ export class HomePageComponent implements OnInit {
 
   baseAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
   overageAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
+  taxAmounts: { amount: number, type: string, calculatedPercentage: number, subtotal: number }[] = [];
 
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
@@ -28,9 +29,9 @@ export class HomePageComponent implements OnInit {
   ];
 
   amount: any | null = 0;
-  amtType = 'base';
-  frequency = 1;
-  subtotal = 0;
+  amtType: string = 'base';
+  frequency: number = 1;
+  subtotal: number = 0;
 
   fuelAmount: number = 0;
   fuelPercentage: number = 0;
@@ -38,11 +39,16 @@ export class HomePageComponent implements OnInit {
   envAmount: number = 0;
   envPercentage: number = 0;
 
+  fuelEnvCombinedAmount: number = 0;
+
   rcrAmount: number = 0;
   rcrPercentage: number = 0;
 
   franchiseAmount: number = 0;
   franchisePercentage: number = 0;
+
+  taxAmount: number = 0;
+  taxOverridePercent: number = 0;
 
 
   constructor(private fb: FormBuilder) {
@@ -64,6 +70,10 @@ export class HomePageComponent implements OnInit {
 
   get envPercentageValue() {
     return this.envPercentage;
+  }
+
+  get combinedFuelEnvValue() {
+    return this.fuelEnvCombinedAmount
   }
 
   get rcrAmountValue() {
@@ -165,12 +175,39 @@ export class HomePageComponent implements OnInit {
     return (this.envAmountValue / this.calcFeeBaseTotal()) * 100
   }
 
-  calcEnvAmount() {
+  calcEnvAmount = () => {
 
     if (this.envPercentageValue) {
       return (this.calcFeeBaseTotal() * this.envPercentageValue) / 100
     } else {
       return this.calcFeeBaseTotal() * this.calcEnvPercentage() / 100
+    }
+  }
+
+  //----------Combined Fuel & ENV Calculations----------//
+
+
+  calcSplitFuel = () => {
+    this.fuelAmount = this.combinedFuelEnvValue - this.calcEnvAmount()
+  }
+
+  calcSplitEnv = () => {
+    this.envAmount = this.combinedFuelEnvValue - this.calcFuelAmount()
+  }
+
+  combinedCalc = () => {
+    if (this.fuelPercentageValue > 0 && this.envPercentageValue > 0) {
+      alert('Please enter only the Fuel OR the ENV override %')
+    } else if (!this.fuelPercentageValue && !this.envPercentageValue) {
+      alert('Please enter the Fuel OR the ENV override % 1')
+    } else if (this.fuelPercentageValue < 0 || this.envPercentageValue < 0) {
+      alert('Please enter the Fuel OR the ENV override % 2')
+    } else if (this.fuelPercentageValue) {
+      this.calcSplitEnv();
+      this.calcSplitFuel();
+    } else if (this.envPercentageValue) {
+      this.calcSplitFuel();
+      this.calcSplitEnv();
     }
   }
 
@@ -180,7 +217,7 @@ export class HomePageComponent implements OnInit {
     return (this.rcrAmountValue / this.calcFeeBaseTotal()) * 100
   }
 
-  calcRcrAmount() {
+  calcRcrAmount = () => {
 
     if (this.rcrPercentageValue) {
       return (this.calcFeeBaseTotal() * this.rcrPercentageValue) / 100
@@ -195,7 +232,7 @@ export class HomePageComponent implements OnInit {
     return (this.franchiseAmountValue / this.calcFeeBaseTotal()) * 100
   }
 
-  calcFranchiseAmount() {
+  calcFranchiseAmount = () => {
 
     if (this.franchisePercentageValue) {
       return (this.calcFeeBaseTotal() * this.franchisePercentageValue) / 100
@@ -204,9 +241,17 @@ export class HomePageComponent implements OnInit {
     }
   }
 
+  //----------FeesTotals----------//
+
+  calcFeesTotal = () => {
+    return this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount()
+  }
+
   //----------Final Calculations----------//
 
-  calcTotalBill() {
+  calcTotalBill = () => {
     return this.calcFeeBaseTotal() + this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount()
   }
+
+
 }
