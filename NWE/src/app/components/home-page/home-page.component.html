@@ -1,6 +1,6 @@
 <div class="home-container" fxLayout="row">
 
-  <mat-card fxFlex="64.5%" fxLayout="column">
+  <mat-card fxFlex="80.5%" fxLayout="column">
 
     <mat-card-title>Base Services, Overages</mat-card-title>
 
@@ -76,7 +76,7 @@
       <mat-icon (click)="deleteNewBaseOverageAmount(i, overageAmount.type)">delete</mat-icon>
     </div>
 
-    <div class="fuel-env-rcr-fran-section" fxFlex="64.5%" fxLayout="column">
+    <div class="fuel-env-rcr-fran-section" fxLayout="column">
       <mat-card-title>Fuel, ENV, RCR, Franchise</mat-card-title>
 
       <div class="fuel-row" fxLayout="row" fxLayoutAlign="space-between">
@@ -109,7 +109,7 @@
 
         </mat-form-field>
         <mat-form-field class="fuel-override" fxFlex="20%">
-          <mat-label>{{'% Override'}}</mat-label>
+          <mat-label>{{'Fuel % Override'}}</mat-label>
           <input #fuelOverride
                  (focus)="fuelOverride.select()"
                  [(ngModel)]="fuelPercentage"
@@ -121,7 +121,7 @@
 
         </mat-form-field>
         <mat-form-field class="fuel-env-combined" fxFlex="20%">
-          <mat-label>{{'Combined Fuel/ENV'}}</mat-label>
+          <mat-label>{{'Fuel & ENV Amount From Bill'}}</mat-label>
           <input #fuelEnvCombinedAmountInput
                  (focus)="fuelEnvCombinedAmountInput.select()"
                  [(ngModel)]="fuelEnvCombinedAmount"
@@ -167,7 +167,7 @@
 
         </mat-form-field>
         <mat-form-field class="env-override" fxFlex="20%">
-          <mat-label>{{'% Override'}}</mat-label>
+          <mat-label>{{'ENV % Override'}}</mat-label>
           <input #envOverrideInput
                  (focus)="envOverrideInput.select()"
                  [(ngModel)]="envPercentage"
@@ -262,7 +262,7 @@
         </mat-form-field>
         <mat-form-field class="franchise-percentage" fxFlex="20%">
 
-          <mat-label>{{'% Override'}}</mat-label>
+          <mat-label>{{'Franchise % Override'}}</mat-label>
 
           <input #franchiseOverrideInput
 
@@ -281,63 +281,73 @@
 
     </div>
 
-    <div class="fuel-env-rcr-fran-section" fxFlex="64.5%" fxLayout="column">
+    <div class="taxes-section" fxLayout="column">
       <mat-card-title>Taxes</mat-card-title>
 
       <div class="fuel-row" fxLayout="row" fxLayoutAlign="space-between">
-        <mat-form-field class="fuel-amount" fxFlex="20%">
-          <mat-label>{{'Fuel Amount From Bill'}}</mat-label>
-          <input #fuelAmountInput
-                 (focus)="fuelAmountInput.select()"
-                 (input)="calcFuelAmount()"
-                 [(ngModel)]="fuelAmount"
+
+        <mat-form-field class="tax1-amount" fxFlex="20%">
+          <mat-label>{{'Tax Amount 1 From Bill'}}</mat-label>
+          <input #taxAmountInput
+                 (focus)="taxAmountInput.select()"
+                 (input)="calcTaxAmounts()"
+                 [(ngModel)]="taxAmount"
                  mask="separator.2"
                  matInput
                  placeholder="0"
                  thousandSeparator=","
-
                  type="text">
+
           <span matPrefix>$&nbsp;</span>
 
         </mat-form-field>
-        <mat-form-field class="fuel-calculated" fxFlex="20%">
-          <mat-label>{{'Fuel % Calculated'}}</mat-label>
-          <input
-            [ngModel]="calcFuelPercentage()"
-            disabled
-            mask="00.0000"
-            matInput
-            placeholder="0"
-            type="number">
-          <span matSuffix>%&nbsp;</span>
-
-
-        </mat-form-field>
-        <mat-form-field class="fuel-override" fxFlex="20%">
-          <mat-label>{{'% Override'}}</mat-label>
-          <input #fuelOverride
-                 (focus)="fuelOverride.select()"
-                 [(ngModel)]="fuelPercentage"
+        <mat-form-field class="tax2-amount" fxFlex="20%">
+          <mat-label>{{'Tax Amount 2 From Bill'}}</mat-label>
+          <input #taxAmount2Input
+                 (focus)="taxAmount2Input.select()"
+                 (input)="calcTaxAmounts()"
+                 [(ngModel)]="taxAmount2"
+                 mask="separator.2"
                  matInput
                  placeholder="0"
-                 type="number">
+                 thousandSeparator=","
+                 type="text">
 
-          <span matSuffix>%</span>
+          <span matPrefix>$&nbsp;</span>
 
         </mat-form-field>
-        <mat-form-field class="fuel-env-combined" fxFlex="20%">
-          <mat-label>{{'Combined Fuel/ENV'}}</mat-label>
-          <input #fuelEnvCombinedAmountInput
-                 (focus)="fuelEnvCombinedAmountInput.select()"
-                 [(ngModel)]="fuelEnvCombinedAmount"
+        <mat-form-field class="tax3-amount" fxFlex="20%">
+          <mat-label>{{'Tax Amount 3 From Bill'}}</mat-label>
+          <input #taxAmount3Input
+                 (focus)="taxAmount3Input.select()"
+                 (input)="calcTaxAmounts()"
+                 [(ngModel)]="taxAmount3"
+                 mask="separator.2"
                  matInput
                  placeholder="0"
-                 type="number">
+                 thousandSeparator=","
+                 type="text">
 
-          <span matPrefix>$</span>
+          <span matPrefix>$&nbsp;</span>
 
         </mat-form-field>
-        <mat-icon (click)="calcSplitFuel()">calculate</mat-icon>
+        <mat-form-field class="tax4-amount" fxFlex="20%">
+          <mat-label>{{'Tax Amount 4 From Bill'}}</mat-label>
+          <input #taxAmount4Input
+                 (focus)="taxAmount4Input.select()"
+                 (input)="calcTaxAmounts()"
+                 [(ngModel)]="taxAmount4"
+                 mask="separator.2"
+                 matInput
+                 placeholder="0"
+                 thousandSeparator=","
+                 type="text">
+
+          <span matPrefix>$&nbsp;</span>
+
+        </mat-form-field>
+
+        <mat-icon>&nbsp;</mat-icon>
 
 
       </div>
@@ -350,20 +360,20 @@
 
   <div fxFlex="1%"></div>
 
-  <mat-card fxFlex="34.5%" fxLayout="column" fxLayoutAlign="start">
+  <mat-card fxFlex="19.5%" fxLayout="column" fxLayoutAlign="start">
 
     <div class="subtotal-row" fxLayout="column">
       <div fxLayout="row">
-        <div fxFlex="60%">{{'Base Amounts: '}}</div>
+        <div fxFlex="70%">{{'Base Amounts: '}}</div>
         <div>{{calcBaseAmounts() | currency}}</div>
       </div>
       <div fxLayout="row">
-        <div fxFlex="60%">{{'Overages: '}}</div>
+        <div fxFlex="70%">{{'Overages: '}}</div>
         <div>{{calcOverageAmounts() | currency}}</div>
       </div>
 
       <div class="total-row" fxLayout="row">
-        <div fxFlex="60%">{{'Fee Base Total: '}}</div>
+        <div fxFlex="70%">{{'Fee Base Total: '}}</div>
         <div>{{calcFeeBaseTotal() | currency}}</div>
       </div>
 
@@ -371,25 +381,41 @@
 
     <div class="subtotal-row" fxLayout="column">
       <div fxLayout="row">
-        <div fxFlex="60%">{{'Fuel: '}}</div>
+        <div fxFlex="70%">{{'Fuel: '}}</div>
         <div>{{calcFuelAmount() | currency}}</div>
       </div>
       <div fxLayout="row">
-        <div fxFlex="60%">{{'ENV: '}}</div>
+        <div fxFlex="70%">{{'ENV: '}}</div>
         <div>{{calcEnvAmount() | currency}}</div>
       </div>
       <div fxLayout="row">
-        <div fxFlex="60%">{{'RCR: '}}</div>
+        <div fxFlex="70%">{{'RCR: '}}</div>
         <div>{{calcRcrAmount() | currency}}</div>
       </div>
       <div fxLayout="row">
-        <div fxFlex="60%">{{'Franchise: '}}</div>
+        <div fxFlex="70%">{{'Franchise: '}}</div>
         <div>{{calcFranchiseAmount() | currency}}</div>
       </div>
 
       <div class="total-row" fxLayout="row">
-        <div fxFlex="60%">{{'Fees Total: '}}</div>
+        <div fxFlex="70%">{{'Fees Total: '}}</div>
         <div>{{calcFeesTotal() | currency}}</div>
+      </div>
+
+    </div>
+
+    <div class="subtotal-row" fxLayout="column">
+
+      <div class="total-row" fxLayout="row">
+        <div
+          fxFlex="70%">{{'Taxes @ '}}{{calcTaxAmounts() / (calcFeeBaseTotal() + calcFeesTotal()) * 100 | mask:'separator.4'}}{{'%'}}</div>
+        <div>{{calcTaxAmounts() | currency}}</div>
+      </div>
+
+      <div class="total-row" fxLayout="row">
+        <div
+          fxFlex="70%">{{'Bill Total:'}}</div>
+        <div>{{calcTotalBill() | currency}}</div>
       </div>
 
     </div>

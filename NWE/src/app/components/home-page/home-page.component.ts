@@ -17,7 +17,7 @@ export class HomePageComponent implements OnInit {
 
   baseAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
   overageAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
-  taxAmounts: { amount: number, type: string, calculatedPercentage: number, subtotal: number }[] = [];
+
 
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
@@ -48,7 +48,9 @@ export class HomePageComponent implements OnInit {
   franchisePercentage: number = 0;
 
   taxAmount: number = 0;
-  taxOverridePercent: number = 0;
+  taxAmount2: number = 0;
+  taxAmount3: number = 0;
+  taxAmount4: number = 0;
 
 
   constructor(private fb: FormBuilder) {
@@ -92,6 +94,21 @@ export class HomePageComponent implements OnInit {
     return this.franchisePercentage;
   }
 
+  get taxAmountValue() {
+    return this.taxAmount;
+  }
+
+  get taxAmount2Value() {
+    return this.taxAmount2;
+  }
+
+  get taxAmount3Value() {
+    return this.taxAmount3;
+  }
+
+  get taxAmount4Value() {
+    return this.taxAmount4;
+  }
 
   ngOnInit(): void {
   }
@@ -135,12 +152,14 @@ export class HomePageComponent implements OnInit {
 
   }
 
+
   clearBaseOverageAmountForm() {
     this.amount = 0;
     this.frequency = 1;
     this.subtotal = 0;
     this.amtType = 'base';
   }
+
 
   calcBaseAmounts() {
     return this.baseAmounts.reduce((acc, line) => acc + line.subtotal, 0)
@@ -150,10 +169,13 @@ export class HomePageComponent implements OnInit {
     return this.overageAmounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
+  calcTaxAmounts = () => {
+    return this.taxAmountValue + this.taxAmount2Value + this.taxAmount3Value + this.taxAmount4Value
+  }
+
   calcFeeBaseTotal = () => {
     return this.calcOverageAmounts() + this.calcBaseAmounts()
   }
-
 
   //----------Fuel Calculations----------//
 
@@ -185,7 +207,6 @@ export class HomePageComponent implements OnInit {
   }
 
   //----------Combined Fuel & ENV Calculations----------//
-
 
   calcSplitFuel = () => {
     this.fuelAmount = this.combinedFuelEnvValue - this.calcEnvAmount()
@@ -250,7 +271,7 @@ export class HomePageComponent implements OnInit {
   //----------Final Calculations----------//
 
   calcTotalBill = () => {
-    return this.calcFeeBaseTotal() + this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount()
+    return this.calcFeeBaseTotal() + this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount() + this.calcTaxAmounts()
   }
 
 

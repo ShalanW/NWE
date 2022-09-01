@@ -5,13 +5,17 @@
 }
 
 .home-container {
-  margin: .5em;
+  margin: .5em 20vw;
 }
 
-.fuel-env-rcr-fran-section mat-card-title {
+.fuel-env-rcr-fran-section mat-card-title,
+.taxes-section mat-card-title {
   margin-top: 1em
 }
 
 mat-card-title {
   margin-bottom: 1em;
+}
+
+.fuel-row {
 }
