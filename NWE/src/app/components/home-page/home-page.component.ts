@@ -22,10 +22,6 @@ export class HomePageComponent implements OnInit {
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
     {value: 'overage', viewValue: 'Overage'},
-    {value: 'tax', viewValue: 'Tax'},
-    {value: 'admin', viewValue: 'Admin Fee'},
-    {value: 'other', viewValue: 'Other'},
-    {value: 'late', viewValue: 'Late Fee'},
   ];
 
   amount: any | null = 0;
@@ -46,6 +42,11 @@ export class HomePageComponent implements OnInit {
 
   franchiseAmount: number = 0;
   franchisePercentage: number = 0;
+
+  adminFee: number = 0;
+  otherFee1: number = 0;
+  otherFee2: number = 0;
+  lateFee: number = 0;
 
   taxAmount: number = 0;
   taxAmount2: number = 0;
@@ -92,6 +93,22 @@ export class HomePageComponent implements OnInit {
 
   get franchisePercentageValue() {
     return this.franchisePercentage;
+  }
+
+  get adminFeeValue() {
+    return +this.adminFee
+  }
+
+  get otherFee1Value() {
+    return +this.otherFee1
+  }
+
+  get otherFee2Value() {
+    return +this.otherFee2
+  }
+
+  get lateFeeValue() {
+    return +this.lateFee
   }
 
   get taxAmountValue() {
@@ -170,11 +187,11 @@ export class HomePageComponent implements OnInit {
   }
 
   calcTaxAmounts = () => {
-    return this.taxAmountValue + this.taxAmount2Value + this.taxAmount3Value + this.taxAmount4Value
+    return +this.taxAmountValue + +this.taxAmount2Value + +this.taxAmount3Value + +this.taxAmount4Value
   }
 
   calcFeeBaseTotal = () => {
-    return this.calcOverageAmounts() + this.calcBaseAmounts()
+    return +this.calcOverageAmounts() + +this.calcBaseAmounts()
   }
 
   //----------Fuel Calculations----------//
@@ -268,10 +285,28 @@ export class HomePageComponent implements OnInit {
     return this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount()
   }
 
+  //----------OtherFeesTotals----------//
+
+  calcAdminFeesTotal = () => {
+    return +this.adminFeeValue
+  }
+
+  calcOther12FeesTotal = () => {
+    return +this.otherFee1Value + +this.otherFee2Value
+  }
+
+  calculateLateFeesTotal = () => {
+    return +this.lateFeeValue
+  }
+
+  calcOtherFeesTotal = () => {
+    return +this.calcAdminFeesTotal() + +this.calcOther12FeesTotal()
+  }
+
   //----------Final Calculations----------//
 
   calcTotalBill = () => {
-    return this.calcFeeBaseTotal() + this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount() + this.calcTaxAmounts()
+    return +this.calcFeeBaseTotal() + +this.calcFuelAmount() + +this.calcEnvAmount() + +this.calcRcrAmount() + +this.calcFranchiseAmount() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
   }
 
 
