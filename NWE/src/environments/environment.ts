@@ -4,25 +4,16 @@
 
 export const environment = {
   firebase: {
-    projectId: 'nwenv-a1b35',
-    appId: '1:572375867631:web:eca10209a7bed29d8a3b1a',
-    storageBucket: 'nwenv-a1b35.appspot.com',
-    locationId: 'northamerica-northeast1',
-    apiKey: 'AIzaSyD2UmdLvwZaoyakTR9KqEt45UsKvWGvxW0',
-    authDomain: 'nwenv-a1b35.firebaseapp.com',
-    messagingSenderId: '572375867631',
-    measurementId: 'G-2MTV6MTKQ7',
+    apiKey: "AIzaSyBcfiMJ8CLrI23XCJvmjnvvINuloC-9n10",
+    authDomain: "nw-env.firebaseapp.com",
+    projectId: "nw-env",
+    storageBucket: "nw-env.appspot.com",
+    messagingSenderId: "554823417358",
+    appId: "1:554823417358:web:d591e7097f14665952c65f",
+    measurementId: "G-SJTH1XZC74"
   },
   production: false,
-  // firebaseConfig: {
-  //   apiKey: "AIzaSyD2UmdLvwZaoyakTR9KqEt45UsKvWGvxW0",
-  //   authDomain: "nwenv-a1b35.firebaseapp.com",
-  //   projectId: "nwenv-a1b35",
-  //   storageBucket: "nwenv-a1b35.appspot.com",
-  //   messagingSenderId: "572375867631",
-  //   appId: "1:572375867631:web:eca10209a7bed29d8a3b1a",
-  //   measurementId: "G-2MTV6MTKQ7"
-  // }
+  
 };
 
 /*
