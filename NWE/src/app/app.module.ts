@@ -25,6 +25,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {FlexModule} from "@angular/flex-layout";
 import {AutofocusDirective} from './directives/autofocus.directive';
 import {NgxMaskModule} from "ngx-mask";
+import { BillFixerComponent } from './components/bill-fixer/bill-fixer.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {NgxMaskModule} from "ngx-mask";
     AccountInfoComponent,
     HomePageComponent,
     AutofocusDirective,
+    BillFixerComponent,
   ],
 
   imports: [

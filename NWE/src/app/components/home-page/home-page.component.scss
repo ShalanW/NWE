@@ -1,22 +1,5 @@
-.total-row {
-  border-top: #000000 solid 1px;
-  padding-top: 1em;
-  margin-bottom: 2em;
-}
-
-.home-container {
-  //margin: .5em 20vw;
-}
-
-.fuel-env-rcr-fran-section mat-card-title,
-.taxes-section mat-card-title,
-.admin-other-section mat-card-title {
-  margin-top: 1em
-}
-
-mat-card-title {
-  margin-bottom: 1em;
-}
-
-.fuel-row {
+mat-card {
+  text-align: center;
+  max-width: 250px;
+  margin: 250px auto 0 auto
 }

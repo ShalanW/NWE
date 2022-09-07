@@ -5,13 +5,21 @@
     <mat-nav-list (click)="sidenav.close()">
 
       <a mat-list-item routerLink="home">
-        <mat-icon>money</mat-icon>
-        <span>Bill Fixer</span> </a>
-
-      <a mat-list-item routerLink="medicalInfo">
-        <mat-icon>question_answer</mat-icon>
-        <span>Medical</span>
+        <mat-icon>house</mat-icon>
+        <span>&nbsp;</span>
+        <span>Home</span>
       </a>
+
+      <a mat-list-item routerLink="bill-fixer">
+        <mat-icon>construction</mat-icon>
+        <span>&nbsp;</span>
+        <span>Bill Fixer</span>
+      </a>
+
+      <!--      <a mat-list-item routerLink="medicalInfo">-->
+      <!--        <mat-icon>question_answer</mat-icon>-->
+      <!--        <span>Medical</span>-->
+      <!--      </a>-->
 
 
     </mat-nav-list>
@@ -24,7 +32,7 @@
     <button (click)="sidenav.open()" mat-icon-button>
       <mat-icon>menu</mat-icon>
     </button>
-    <h1>NWE</h1>
+    <h1>NWENV</h1>
 
 
     <!--    <a [matMenuTriggerFor]="dropdown" mat-button>-->
