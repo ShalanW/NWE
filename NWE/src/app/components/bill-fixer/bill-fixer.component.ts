@@ -276,6 +276,16 @@ export class BillFixerComponent implements OnInit {
     }
   }
 
+  //----------TaxTotals-----------//
+
+  calcTax1Percentage = () => {
+    return this.taxAmountValue / (this.calcFeeBaseTotal() + this.calcFeesTotal() + this.calcAdminFeesTotal() + this.calcOther12FeesTotal()) * 100
+  }
+
+  calcTax1Amount = () => {
+
+  }
+
   //----------FeesTotals----------//
 
   calcFeesTotal = () => {
