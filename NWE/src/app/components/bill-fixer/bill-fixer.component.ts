@@ -14,7 +14,6 @@ export class BillFixerComponent implements OnInit {
   baseAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
   overageAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
 
-
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
     {value: 'overage', viewValue: 'Overage'},
@@ -51,7 +50,6 @@ export class BillFixerComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
   }
-
 
   //----------Getters----------//
 
@@ -166,14 +164,12 @@ export class BillFixerComponent implements OnInit {
 
   }
 
-
   clearBaseOverageAmountForm() {
     this.amount = 0;
     this.frequency = 1;
     this.subtotal = 0;
     this.amtType = 'base';
   }
-
 
   calcBaseAmounts() {
     return this.baseAmounts.reduce((acc, line) => acc + line.subtotal, 0)
@@ -208,15 +204,15 @@ export class BillFixerComponent implements OnInit {
   //----------ENV Calculations----------//
 
   calcEnvPercentage = () => {
-    return (this.envAmountValue / this.calcFeeBaseTotal()) * 100
+    return (+this.envAmountValue / +this.calcFeeBaseTotal()) * 100
   }
 
   calcEnvAmount = () => {
 
-    if (this.envPercentageValue) {
-      return (this.calcFeeBaseTotal() * this.envPercentageValue) / 100
+    if (+this.envPercentageValue) {
+      return (+this.calcFeeBaseTotal() * +this.envPercentageValue) / 100
     } else {
-      return this.calcFeeBaseTotal() * this.calcEnvPercentage() / 100
+      return +this.calcFeeBaseTotal() * +this.calcEnvPercentage() / 100
     }
   }
 
@@ -283,7 +279,6 @@ export class BillFixerComponent implements OnInit {
   }
 
   calcTax1Amount = () => {
-
   }
 
   //----------FeesTotals----------//
@@ -318,3 +313,7 @@ export class BillFixerComponent implements OnInit {
 
 
 }
+
+//Todo:
+// add "+" to all functions
+// try to add formBuilder module to form
