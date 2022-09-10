@@ -61,7 +61,14 @@
     <div *ngFor="let baseAmount of baseAmounts; index as i" fxLayout="row" fxLayoutAlign="space-between">
 
       <div fxFlex="20%">{{baseAmount.type | titlecase}}</div>
-      <div fxFlex="20%">{{baseAmount.amount | currency}}</div>
+      <mat-form-field class="frequency" fxFlex="20%">
+        <input
+          [(ngModel)]="baseAmount.amount"
+          matInput
+          placeholder="Frequency"
+          type="number">
+      </mat-form-field>
+      <!--      <div fxFlex="20%">{{baseAmount.amount | currency}}</div>-->
       <div fxFlex="20%">{{baseAmount.frequency}}</div>
       <div fxFlex="20%">{{baseAmount.subtotal | currency}}</div>
       <mat-icon (click)="deleteNewBaseOverageAmount(i, baseAmount.type)">delete</mat-icon>
@@ -84,13 +91,11 @@
           <mat-label>{{'Fuel Amount From Bill'}}</mat-label>
           <input #fuelAmountInput
                  (focus)="fuelAmountInput.select()"
-                 (input)="calcFuelAmount()"
                  [(ngModel)]="fuelAmount"
                  mask="separator.2"
                  matInput
                  placeholder="0"
                  thousandSeparator=","
-
                  type="text">
           <span matPrefix>$&nbsp;</span>
 
@@ -290,7 +295,7 @@
           <mat-label>{{'Admin Fee From Bill'}}</mat-label>
           <input #adminAmountInput
                  (focus)="adminAmountInput.select()"
-                 (input)="calcTaxAmounts()"
+
                  [(ngModel)]="adminFee"
                  mask="separator.2"
                  matInput
@@ -360,7 +365,6 @@
           <mat-label>{{'Tax Amount 1 From Bill'}}</mat-label>
           <input #taxAmountInput
                  (focus)="taxAmountInput.select()"
-                 (input)="calcTaxAmounts()"
                  [(ngModel)]="taxAmount"
                  mask="separator.2"
                  matInput
@@ -385,10 +389,10 @@
 
         </mat-form-field>
         <mat-form-field class="tax-1-override" fxFlex="20%">
-          <mat-label>{{'Fuel % Override'}}</mat-label>
-          <input #fuelOverride
-                 (focus)="fuelOverride.select()"
-                 [(ngModel)]="fuelPercentage"
+          <mat-label>{{'Tax 1 % Override'}}</mat-label>
+          <input #tax1Override
+                 (focus)="tax1Override.select()"
+                 [(ngModel)]="taxAmountPercentage"
                  matInput
                  placeholder="0"
                  type="number">
@@ -406,7 +410,7 @@
           <mat-label>{{'Tax Amount 2 From Bill'}}</mat-label>
           <input #taxAmount2Input
                  (focus)="taxAmount2Input.select()"
-                 (input)="calcTaxAmounts()"
+
                  [(ngModel)]="taxAmount2"
                  mask="separator.2"
                  matInput
@@ -418,9 +422,9 @@
 
         </mat-form-field>
         <mat-form-field class="tax-2-calculated" fxFlex="20%">
-          <mat-label>{{'ENV % Calculated'}}</mat-label>
+          <mat-label>{{'Tax 2 % Calculated'}}</mat-label>
           <input
-            [ngModel]="calcEnvPercentage()"
+            [ngModel]="calcTax2Percentage()"
             disabled
             matInput
             placeholder="0"
@@ -430,10 +434,10 @@
 
         </mat-form-field>
         <mat-form-field class="tax-2-override" fxFlex="20%">
-          <mat-label>{{'ENV % Override'}}</mat-label>
-          <input #envOverrideInput
-                 (focus)="envOverrideInput.select()"
-                 [(ngModel)]="envPercentage"
+          <mat-label>{{'Tax 2 % Override'}}</mat-label>
+          <input #tax2OverrideInput
+                 (focus)="tax2OverrideInput.select()"
+                 [(ngModel)]="taxAmountPercentage2"
                  matInput
                  placeholder="0"
                  type="number">
@@ -450,7 +454,7 @@
           <mat-label>{{'Tax Amount 3 From Bill'}}</mat-label>
           <input #taxAmount3Input
                  (focus)="taxAmount3Input.select()"
-                 (input)="calcTaxAmounts()"
+
                  [(ngModel)]="taxAmount3"
                  mask="separator.2"
                  matInput
@@ -463,10 +467,10 @@
         </mat-form-field>
         <mat-form-field class="tax-3-calculated" fxFlex="20%">
 
-          <mat-label>{{'RCR % Calculated'}}</mat-label>
+          <mat-label>{{'Tax 3 % Calculated'}}</mat-label>
 
           <input
-            [ngModel]="calcRcrPercentage()"
+            [ngModel]="calcTax3Percentage()"
             disabled
             matInput
             placeholder="0"
@@ -477,11 +481,11 @@
         </mat-form-field>
         <mat-form-field class="tax-3-override" fxFlex="20%">
 
-          <mat-label>{{'RCR % Override'}}</mat-label>
+          <mat-label>{{'Tax 3 % Override'}}</mat-label>
 
-          <input #rcrOverrideInput
-                 (focus)="rcrOverrideInput.select()"
-                 [(ngModel)]="rcrPercentage"
+          <input #tax3OverrideInput
+                 (focus)="tax3OverrideInput.select()"
+                 [(ngModel)]="taxAmountPercentage3"
                  matInput
                  placeholder="0"
                  type="number">
@@ -497,7 +501,7 @@
           <mat-label>{{'Tax Amount 4 From Bill'}}</mat-label>
           <input #taxAmount4Input
                  (focus)="taxAmount4Input.select()"
-                 (input)="calcTaxAmounts()"
+
                  [(ngModel)]="taxAmount4"
                  mask="separator.2"
                  matInput
@@ -510,10 +514,10 @@
         </mat-form-field>
         <mat-form-field class="tax-4-calculated" fxFlex="20%">
 
-          <mat-label>{{'Franchise % Calculated'}}</mat-label>
+          <mat-label>{{'Tax 4 % Calculated'}}</mat-label>
 
           <input
-            [ngModel]="calcFranchisePercentage()"
+            [ngModel]="calcTax4Percentage()"
             disabled
             matInput
             placeholder="0"
@@ -524,12 +528,12 @@
         </mat-form-field>
         <mat-form-field class="tax-4-percentage" fxFlex="20%">
 
-          <mat-label>{{'Franchise % Override'}}</mat-label>
+          <mat-label>{{'Tax 4 % Override'}}</mat-label>
 
-          <input #franchiseOverrideInput
+          <input #tax4OverrideInput
 
-                 (focus)="franchiseOverrideInput.select()"
-                 [(ngModel)]="franchisePercentage"
+                 (focus)="tax4OverrideInput.select()"
+                 [(ngModel)]="taxAmountPercentage4"
                  matInput
                  placeholder="0"
                  type="number">
@@ -608,7 +612,7 @@
 
       <div class="total-row" fxLayout="row">
         <div
-          fxFlex="70%">{{'Taxes @ '}}{{calcTaxAmounts() / (calcFeeBaseTotal() + calcFeesTotal() + calcAdminFeesTotal() + calcOther12FeesTotal()) * 100 | mask:'separator.4'}}{{'%'}}</div>
+          fxFlex="70%">{{'Taxes @ '}}{{(calcTaxAmounts() / calcTaxBase()) * 100 | mask:'separator.4'}}{{'%'}}</div>
         <div>{{calcTaxAmounts() | currency}}</div>
       </div>
 
@@ -618,6 +622,13 @@
           fxFlex="70%">{{'Late Fee: '}}{{'Late'}}</div>
         <div>{{calculateLateFeesTotal() | currency}}</div>
       </div>
+
+      <div class="total-row" fxLayout="row">
+        <div
+          fxFlex="70%">{{'Bill Total:'}}</div>
+        <div>{{calcTotalBill() | currency}}</div>
+      </div>
+
 
       <div class="total-row" fxLayout="row">
         <div

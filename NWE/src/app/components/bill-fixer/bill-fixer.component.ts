@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
 import {AmountTypes} from "../../model/general/amount-types";
 
 @Component({
@@ -47,10 +46,15 @@ export class BillFixerComponent implements OnInit {
   taxAmountPercentage: number = 0;
 
   taxAmount2: number = 0;
-  taxAmount3: number = 0;
-  taxAmount4: number = 0;
+  taxAmountPercentage2: number = 0;
 
-  constructor(private fb: FormBuilder) {
+  taxAmount3: number = 0;
+  taxAmountPercentage3: number = 0;
+
+  taxAmount4: number = 0;
+  taxAmountPercentage4: number = 0;
+
+  constructor() {
   }
 
   //----------Getters----------//
@@ -108,19 +112,35 @@ export class BillFixerComponent implements OnInit {
   }
 
   get taxAmountValue() {
-    return this.taxAmount;
+    return +this.taxAmount;
+  }
+
+  get taxAmountPercentageValue() {
+    return +this.taxAmountPercentage;
   }
 
   get taxAmount2Value() {
-    return this.taxAmount2;
+    return +this.taxAmount2;
+  }
+
+  get taxAmountPercentage2Value() {
+    return +this.taxAmountPercentage2
   }
 
   get taxAmount3Value() {
     return this.taxAmount3;
   }
 
+  get taxAmountPercentage3Value() {
+    return +this.taxAmountPercentage3
+  }
+
   get taxAmount4Value() {
     return this.taxAmount4;
+  }
+
+  get taxAmountPercentage4Value() {
+    return +this.taxAmountPercentage4
   }
 
   ngOnInit(): void {
@@ -182,7 +202,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   calcTaxAmounts = () => {
-    return +this.taxAmountValue + +this.taxAmount2Value + +this.taxAmount3Value + +this.taxAmount4Value
+    return +this.calcTax1Amount() + +this.calcTax2Amount() + +this.calcTax3Amount() + +this.calcTax4Amount()
   }
 
   calcFeeBaseTotal = () => {
@@ -276,12 +296,58 @@ export class BillFixerComponent implements OnInit {
 
   //----------TaxTotals-----------//
 
-  calcTax1Percentage = () => {
-    return this.taxAmountValue / (this.calcFeeBaseTotal() + this.calcFeesTotal() + this.calcAdminFeesTotal() + this.calcOther12FeesTotal()) * 100
+  calcTaxBase = () => {
+    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcAdminFeesTotal() + +this.calcOther12FeesTotal()
   }
 
-  calcTax1Amount = () => {
+  calcTax1Percentage = () => {
+    return (this.taxAmountValue / this.calcTaxBase()) * 100
   }
+  calcTax1Amount = () => {
+
+    if (this.taxAmountPercentageValue) {
+      return (this.calcTaxBase() * this.taxAmountPercentageValue) / 100
+    } else {
+      return (this.calcTaxBase() * this.calcTax1Percentage()) / 100
+    }
+  }
+
+  calcTax2Percentage = () => {
+    return (this.taxAmount2Value / this.calcTaxBase()) * 100
+  }
+  calcTax2Amount = () => {
+
+    if (this.taxAmountPercentage2Value) {
+      return (this.calcTaxBase() * this.taxAmountPercentage2Value) / 100
+    } else {
+      return (this.calcTaxBase() * this.calcTax2Percentage()) / 100
+    }
+  }
+
+  calcTax3Percentage = () => {
+    return (this.taxAmount3Value / this.calcTaxBase()) * 100
+  }
+  calcTax3Amount = () => {
+
+    if (this.taxAmountPercentage3Value) {
+      return (this.calcTaxBase() * this.taxAmountPercentage3Value) / 100
+    } else {
+      return (this.calcTaxBase() * this.calcTax3Percentage()) / 100
+    }
+  }
+
+  calcTax4Percentage = () => {
+    return (this.taxAmount4Value / this.calcTaxBase()) * 100
+  }
+  calcTax4Amount = () => {
+
+    if (this.taxAmountPercentage4Value) {
+      return (this.calcTaxBase() * this.taxAmountPercentage4Value) / 100
+    } else {
+      return (this.calcTaxBase() * this.calcTax4Percentage()) / 100
+    }
+  }
+
 
   //----------FeesTotals----------//
 
@@ -310,10 +376,12 @@ export class BillFixerComponent implements OnInit {
   //----------Final Calculations----------//
 
   calcTotalBill = () => {
-    return +this.calcFeeBaseTotal() + +this.calcFuelAmount() + +this.calcEnvAmount() + +this.calcRcrAmount() +
-      +this.calcFranchiseAmount() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
+    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
   }
 
+  calcOverageTotals = () => {
+    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
+  }
 
 }
 
