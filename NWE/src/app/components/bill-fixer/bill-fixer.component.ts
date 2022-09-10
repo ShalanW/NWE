@@ -44,6 +44,8 @@ export class BillFixerComponent implements OnInit {
   lateFee: number = 0;
 
   taxAmount: number = 0;
+  taxAmountPercentage: number = 0;
+
   taxAmount2: number = 0;
   taxAmount3: number = 0;
   taxAmount4: number = 0;
@@ -308,7 +310,8 @@ export class BillFixerComponent implements OnInit {
   //----------Final Calculations----------//
 
   calcTotalBill = () => {
-    return +this.calcFeeBaseTotal() + +this.calcFuelAmount() + +this.calcEnvAmount() + +this.calcRcrAmount() + +this.calcFranchiseAmount() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
+    return +this.calcFeeBaseTotal() + +this.calcFuelAmount() + +this.calcEnvAmount() + +this.calcRcrAmount() +
+      +this.calcFranchiseAmount() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
   }
 
 

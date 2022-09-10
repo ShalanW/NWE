@@ -44,13 +44,13 @@
       </mat-form-field>
       <mat-form-field class="subtotal" fxFlex="20%">
         <mat-label>Subtotal</mat-label>
-        <input #subTotalAmt
-               [(ngModel)]="subtotal"
-               [disabled]="true"
-               mask="separator.2"
-               matInput
-               placeholder="0"
-               thousandSeparator=",">
+        <input
+          [(ngModel)]="subtotal"
+          [disabled]="true"
+          mask="separator.2"
+          matInput
+          placeholder="0"
+          thousandSeparator=",">
         <span matPrefix>$&nbsp;</span>
 
       </mat-form-field>
@@ -132,8 +132,8 @@
           <span matPrefix>$</span>
 
         </mat-form-field>
-        <mat-icon #ico
-                  (click)="combinedCalc()">
+        <mat-icon
+          (click)="combinedCalc()">
           calculate
         </mat-icon>
 
