@@ -632,8 +632,15 @@
 
       <div class="total-row" fxLayout="row">
         <div
-          fxFlex="70%">{{'Bill Total:'}}</div>
-        <div>{{calcTotalBill() | currency}}</div>
+          fxFlex="70%">{{'Overage Amount (Hauler): '}}</div>
+        <div>{{calcCustomerOverages() | currency}}</div>
+      </div>
+
+
+      <div class="total-row" fxLayout="row">
+        <div
+          fxFlex="70%">{{'Overage Amount (Customer): '}}</div>
+        <div>{{calcCustomerOverages() * 1.2 | currency}}</div>
       </div>
 
     </div>

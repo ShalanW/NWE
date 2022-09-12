@@ -198,7 +198,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   calcOverageAmounts = () => {
-    return this.overageAmounts.reduce((acc, line) => acc + line.subtotal, 0)
+    return +this.overageAmounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
   calcTaxAmounts = () => {
@@ -379,10 +379,23 @@ export class BillFixerComponent implements OnInit {
     return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
   }
 
-  calcOverageTotals = () => {
-    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
-  }
+  calcCustomerOverages() {
 
+    const fuel: number = this.fuelPercentageValue ? (this.calcOverageAmounts() * this.fuelPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcFuelPercentage()) / 100
+    const env: number = this.envPercentageValue ? (this.calcOverageAmounts() * this.envPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcEnvPercentage()) / 100
+    const rcr: number = this.rcrPercentageValue ? (this.calcOverageAmounts() * this.rcrPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcRcrPercentage()) / 100
+    const fran: number = this.franchisePercentageValue ? (this.calcOverageAmounts() * this.franchisePercentageValue) / 100 : (this.calcOverageAmounts() * this.calcFranchisePercentage()) / 100
+    const calcFeesTotal = () => +fuel + +env + +rcr + +fran
+
+    const calcTaxBase = () => +this.calcOverageAmounts() + +calcFeesTotal()
+    const tax1: number = this.taxAmountPercentageValue ? (calcTaxBase() * this.taxAmountPercentageValue) / 100 : (calcTaxBase() * this.calcTax1Percentage()) / 100
+    const tax2: number = this.taxAmountPercentage2Value ? (calcTaxBase() * this.taxAmountPercentage2Value) / 100 : (calcTaxBase() * this.calcTax2Percentage()) / 100
+    const tax3: number = this.taxAmountPercentage3Value ? (calcTaxBase() * this.taxAmountPercentage3Value) / 100 : (calcTaxBase() * this.calcTax3Percentage()) / 100
+    const tax4: number = this.taxAmountPercentage4Value ? (calcTaxBase() * this.taxAmountPercentage4Value) / 100 : (calcTaxBase() * this.calcTax4Percentage()) / 100
+
+    return (+this.calcOverageAmounts() + (+fuel + +env + +rcr + +fran) + (+tax1 + +tax2 + +tax3 + +tax4))
+
+  }
 }
 
 //Todo:
