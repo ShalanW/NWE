@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AmountTypes} from "../../model/general/amount-types";
+import {filter, from, of, pipe, reduce} from "rxjs";
 
 @Component({
   selector: 'app-bill-fixer',
@@ -159,6 +160,23 @@ export class BillFixerComponent implements OnInit {
 
   }
 
+  // addNewBaseOverageAmount() {
+  //   const newAmount = {
+  //     amount: +this.amount,
+  //     type: this.amtType,
+  //     frequency: +this.frequency,
+  //     subtotal: +this.subtotal
+  //   }
+  //   if (newAmount.type === 'base') {
+  //     this.baseAmounts.push(newAmount)
+  //   }
+  //   if (newAmount.type === 'overage') {
+  //     this.overageAmounts.push(newAmount)
+  //   }
+  //
+  //   this.clearBaseOverageAmountForm()
+  // }
+
   addNewBaseOverageAmount() {
     const newAmount = {
       amount: +this.amount,
@@ -166,12 +184,9 @@ export class BillFixerComponent implements OnInit {
       frequency: +this.frequency,
       subtotal: +this.subtotal
     }
-    if (newAmount.type === 'base') {
-      this.baseAmounts.push(newAmount)
-    }
-    if (newAmount.type === 'overage') {
-      this.overageAmounts.push(newAmount)
-    }
+
+    this.baseAmounts.push(newAmount)
+
 
     this.clearBaseOverageAmountForm()
   }
@@ -193,8 +208,16 @@ export class BillFixerComponent implements OnInit {
     this.amtType = 'base';
   }
 
+  // calcBaseAmounts() {
+  //   return this.baseAmounts.reduce((acc, line) => acc + line.subtotal, 0)
+  // }
+
   calcBaseAmounts() {
-    return this.baseAmounts.reduce((acc, line) => acc + line.subtotal, 0)
+    return of(this.baseAmounts).pipe(
+      map(base)
+    )
+
+
   }
 
   calcOverageAmounts = () => {

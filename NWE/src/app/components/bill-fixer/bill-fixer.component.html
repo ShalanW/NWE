@@ -1,37 +1,41 @@
 <div class="home-container" fxLayout="row">
 
-  <mat-card fxFlex="75.5%" fxLayout="column">
+  <mat-card fxFlex="70.5%" fxLayout="column">
 
     <mat-card-title>Base Services, Overages</mat-card-title>
 
     <div fxLayout="row" fxLayoutAlign="space-between">
 
+      <mat-form-field class="amount" fxFlex="20%">
+        <mat-label>Amount</mat-label>
+        <input
+          #amtInput
+          (focus)="amtInput.select()"
+          (input)="calcSubtotal()"
+          (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
+          [(ngModel)]="amount"
+          [allowNegativeNumbers]="true"
+          autofocus
+          mask="separator.2"
+          matInput
+          placeholder="0"
+          thousandSeparator=","
+
+          type="text">
+        <span matPrefix>$&nbsp;</span>
+
+      </mat-form-field>
       <mat-form-field class="type" fxFlex="20%">
         <mat-label>Type</mat-label>
         <mat-select #selectOption
                     [(ngModel)]="amtType"
-                    autofocus>
+        >
           <mat-option (click)="selectOption.close()" *ngFor="let type of amountTypes" [value]="type.value">
             {{type.viewValue}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="amount" fxFlex="20%">
-        <mat-label>Amount</mat-label>
-        <input #amtInput
-               (focus)="amtInput.select()"
-               (input)="calcSubtotal()"
-               (keyup.enter)="addNewButton._elementRef.nativeElement.click()"
-               [(ngModel)]="amount"
-               mask="separator.2"
-               matInput
-               placeholder="0"
-               thousandSeparator=","
 
-               type="text">
-        <span matPrefix>$&nbsp;</span>
-
-      </mat-form-field>
       <mat-form-field class="frequency" fxFlex="20%">
         <input #frequencyInput
                (focus)="frequencyInput.select()"
@@ -46,6 +50,7 @@
         <mat-label>Subtotal</mat-label>
         <input
           [(ngModel)]="subtotal"
+          [allowNegativeNumbers]="true"
           [disabled]="true"
           mask="separator.2"
           matInput
@@ -54,30 +59,66 @@
         <span matPrefix>$&nbsp;</span>
 
       </mat-form-field>
-      <mat-icon #addNewButton (click)="addNewBaseOverageAmount(); selectOption.focus();"> add</mat-icon>
+      <mat-icon #addNewButton (click)="addNewBaseOverageAmount(); amtInput.focus();"> add</mat-icon>
 
     </div>
 
     <div *ngFor="let baseAmount of baseAmounts; index as i" fxLayout="row" fxLayoutAlign="space-between">
 
-      <div fxFlex="20%">{{baseAmount.type | titlecase}}</div>
       <mat-form-field class="frequency" fxFlex="20%">
         <input
+          (input)="baseAmount.subtotal = baseAmount.amount * baseAmount.frequency"
           [(ngModel)]="baseAmount.amount"
           matInput
-          placeholder="Frequency"
           type="number">
+
       </mat-form-field>
-      <!--      <div fxFlex="20%">{{baseAmount.amount | currency}}</div>-->
-      <div fxFlex="20%">{{baseAmount.frequency}}</div>
-      <div fxFlex="20%">{{baseAmount.subtotal | currency}}</div>
+      <mat-form-field class="type" fxFlex="20%">
+        <mat-label>Type</mat-label>
+        <mat-select #selectOption
+                    [(ngModel)]="baseAmount.type"
+        >
+          <mat-option (click)="selectOption.close()" *ngFor="let type of amountTypes" [value]="type.value">
+            {{type.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="frequency" fxFlex="20%">
+        <input
+          (input)="baseAmount.subtotal = baseAmount.amount * baseAmount.frequency"
+          [(ngModel)]="baseAmount.frequency"
+          matInput
+          type="number">
+
+      </mat-form-field>
+      <mat-form-field class="subtotal" fxFlex="20%">
+        <mat-label>Subtotal</mat-label>
+        <input
+          [(ngModel)]="baseAmount.subtotal"
+          [allowNegativeNumbers]="true"
+          [disabled]="true"
+          mask="separator.2" matInput
+          placeholder="0"
+          thousandSeparator=","
+        >
+        <span matPrefix>$&nbsp;</span>
+
+      </mat-form-field>
       <mat-icon (click)="deleteNewBaseOverageAmount(i, baseAmount.type)">delete</mat-icon>
 
     </div>
     <div *ngFor="let overageAmount of overageAmounts; index as i" fxLayout="row" fxLayoutAlign="space-between">
 
+      <mat-form-field class="frequency" fxFlex="20%">
+        <input
+          [(ngModel)]="overageAmount.amount"
+          matInput
+          placeholder="Frequency"
+          type="number">
+      </mat-form-field>
+
       <div fxFlex="20%">{{overageAmount.type | titlecase}}</div>
-      <div fxFlex="20%">{{overageAmount.amount | currency}}</div>
       <div fxFlex="20%">{{overageAmount.frequency}}</div>
       <div fxFlex="20%">{{overageAmount.subtotal | currency}}</div>
       <mat-icon (click)="deleteNewBaseOverageAmount(i, overageAmount.type)">delete</mat-icon>
@@ -88,7 +129,7 @@
 
       <div class="fuel-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="fuel-amount" fxFlex="20%">
-          <mat-label>{{'Fuel Amount From Bill'}}</mat-label>
+          <mat-label>{{'Fuel'}}</mat-label>
           <input #fuelAmountInput
                  (focus)="fuelAmountInput.select()"
                  [(ngModel)]="fuelAmount"
@@ -105,7 +146,7 @@
           <input
             [ngModel]="calcFuelPercentage()"
             disabled
-            mask="00.0000"
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -126,7 +167,7 @@
 
         </mat-form-field>
         <mat-form-field class="fuel-env-combined" fxFlex="20%">
-          <mat-label>{{'Fuel & ENV Amount From Bill'}}</mat-label>
+          <mat-label>{{'Combined Fuel & ENV'}}</mat-label>
           <input #fuelEnvCombinedAmountInput
                  (focus)="fuelEnvCombinedAmountInput.select()"
                  [(ngModel)]="fuelEnvCombinedAmount"
@@ -146,7 +187,7 @@
       </div>
       <div class="env-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="env-amount" fxFlex="20%">
-          <mat-label>{{'ENV Amount From Bill'}}</mat-label>
+          <mat-label>{{'ENV'}}</mat-label>
           <input #envAmountInput
                  (focus)="envAmountInput.select()"
                  [(ngModel)]="envAmount"
@@ -164,6 +205,7 @@
           <input
             [ngModel]="calcEnvPercentage()"
             disabled
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -189,7 +231,7 @@
       </div>
       <div class="rcr-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="rcr-amount" fxFlex="20%">
-          <mat-label>{{'RCR Amount From Bill'}}</mat-label>
+          <mat-label>{{'RCR'}}</mat-label>
           <input #rcrAmountInput
                  (focus)="rcrAmountInput.select()"
                  [(ngModel)]="rcrAmount"
@@ -209,6 +251,7 @@
           <input
             [ngModel]="calcRcrPercentage()"
             disabled
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -236,7 +279,7 @@
       <div class="franchise-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="franchise-amount" fxFlex="20%">
 
-          <mat-label>{{'Franchise Amount From Bill'}}</mat-label>
+          <mat-label>{{'Franchise'}}</mat-label>
 
           <input #franchiseAmountInput
 
@@ -258,6 +301,7 @@
           <input
             [ngModel]="calcFranchisePercentage()"
             disabled
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -292,7 +336,7 @@
       <div class="fuel-row" fxLayout="row" fxLayoutAlign="space-between">
 
         <mat-form-field class="admin-amount" fxFlex="20%">
-          <mat-label>{{'Admin Fee From Bill'}}</mat-label>
+          <mat-label>{{'Admin Fee'}}</mat-label>
           <input #adminAmountInput
                  (focus)="adminAmountInput.select()"
 
@@ -307,7 +351,7 @@
 
         </mat-form-field>
         <mat-form-field class="other-1-amount" fxFlex="20%">
-          <mat-label>{{'Other Amount 1 From Bill'}}</mat-label>
+          <mat-label>{{'Other Amount 1'}}</mat-label>
           <input #other1AmountInput
                  (focus)="other1AmountInput.select()"
                  [(ngModel)]="otherFee1"
@@ -321,7 +365,7 @@
 
         </mat-form-field>
         <mat-form-field class="other-2-amount" fxFlex="20%">
-          <mat-label>{{'Other Amount 2 From Bill'}}</mat-label>
+          <mat-label>{{'Other Amount 2'}}</mat-label>
           <input #other2AmountInput
                  (focus)="other2AmountInput.select()"
                  [(ngModel)]="otherFee2"
@@ -335,7 +379,7 @@
 
         </mat-form-field>
         <mat-form-field class="late-fee-amount" fxFlex="20%">
-          <mat-label>{{'Late Fee From Bill'}}</mat-label>
+          <mat-label>{{'Late Fee'}}</mat-label>
           <input #lateFeeInput
                  (focus)="lateFeeInput.select()"
                  [(ngModel)]="lateFee"
@@ -362,7 +406,7 @@
 
       <div class="tax-1-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="tax-1-amount" fxFlex="20%">
-          <mat-label>{{'Tax Amount 1 From Bill'}}</mat-label>
+          <mat-label>{{'Tax 1'}}</mat-label>
           <input #taxAmountInput
                  (focus)="taxAmountInput.select()"
                  [(ngModel)]="taxAmount"
@@ -380,7 +424,7 @@
           <input
             [ngModel]="calcTax1Percentage()"
             disabled
-            mask="00.0000"
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -407,10 +451,9 @@
       </div>
       <div class="tax-2-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="tax-2-amount" fxFlex="20%">
-          <mat-label>{{'Tax Amount 2 From Bill'}}</mat-label>
+          <mat-label>{{'Tax 2'}}</mat-label>
           <input #taxAmount2Input
                  (focus)="taxAmount2Input.select()"
-
                  [(ngModel)]="taxAmount2"
                  mask="separator.2"
                  matInput
@@ -426,6 +469,7 @@
           <input
             [ngModel]="calcTax2Percentage()"
             disabled
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -451,7 +495,7 @@
       </div>
       <div class="tax-3-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="tax-3-amount" fxFlex="20%">
-          <mat-label>{{'Tax Amount 3 From Bill'}}</mat-label>
+          <mat-label>{{'Tax 3'}}</mat-label>
           <input #taxAmount3Input
                  (focus)="taxAmount3Input.select()"
 
@@ -472,6 +516,7 @@
           <input
             [ngModel]="calcTax3Percentage()"
             disabled
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -498,7 +543,7 @@
       </div>
       <div class="tax-4-row" fxLayout="row" fxLayoutAlign="space-between">
         <mat-form-field class="tax-4-amount" fxFlex="20%">
-          <mat-label>{{'Tax Amount 4 From Bill'}}</mat-label>
+          <mat-label>{{'Tax 4'}}</mat-label>
           <input #taxAmount4Input
                  (focus)="taxAmount4Input.select()"
 
@@ -519,6 +564,7 @@
           <input
             [ngModel]="calcTax4Percentage()"
             disabled
+            mask="separator.4"
             matInput
             placeholder="0"
             type="number">
@@ -552,7 +598,7 @@
 
   <div fxFlex="1%"></div>
 
-  <mat-card fxFlex="24.5%" fxLayout="column" fxLayoutAlign="start">
+  <mat-card fxFlex="29.5%" fxLayout="column" fxLayoutAlign="start">
 
     <div class="subtotal-row" fxLayout="column">
       <div fxLayout="row">

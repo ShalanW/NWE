@@ -5,7 +5,7 @@
 }
 
 .home-container {
-  //margin: .5em 20vw;
+  margin: .5em 20vw;
 }
 
 .fuel-env-rcr-fran-section mat-card-title,
@@ -18,11 +18,22 @@ mat-card-title {
   margin-bottom: 1em;
 }
 
-//
-//mat-form-field.mat-form-field input {
-//  font-size: 18px;
-//}
-//
-//mat-form-field.mat-form-field {
-//  font-size: .8em;
-//}
+@media print {
+  mat-form-field.mat-form-field input {
+    font-size: 12px;
+  }
+
+  mat-form-field.mat-form-field {
+    font-size: 12px;
+  }
+
+  .home-container {
+    margin: 0;
+  }
+  mat-card-title {
+    font-size: 85%;
+  }
+  div.subtotal-row {
+    font-size: 12px;
+  }
+}
