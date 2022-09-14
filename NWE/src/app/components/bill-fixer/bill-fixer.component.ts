@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AmountTypes} from "../../model/general/amount-types";
-import {filter, from, of, pipe, reduce} from "rxjs";
+import {LineItem} from "../../model/general/line-item";
+
 
 @Component({
   selector: 'app-bill-fixer',
@@ -11,8 +12,7 @@ export class BillFixerComponent implements OnInit {
 
   //----------Field Declarations----------//
 
-  baseAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
-  overageAmounts: { amount: number, type: string, frequency: number, subtotal: number }[] = [];
+  billAmounts: LineItem[] = [];
 
   amountTypes: AmountTypes[] = [
     {value: 'base', viewValue: 'Base'},
@@ -147,9 +147,7 @@ export class BillFixerComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   //----------Base and Overage Amount Calculations----------//
-
 
   calcSubtotal = () => {
     this.subtotal = this.amount * this.frequency
@@ -160,24 +158,7 @@ export class BillFixerComponent implements OnInit {
 
   }
 
-  // addNewBaseOverageAmount() {
-  //   const newAmount = {
-  //     amount: +this.amount,
-  //     type: this.amtType,
-  //     frequency: +this.frequency,
-  //     subtotal: +this.subtotal
-  //   }
-  //   if (newAmount.type === 'base') {
-  //     this.baseAmounts.push(newAmount)
-  //   }
-  //   if (newAmount.type === 'overage') {
-  //     this.overageAmounts.push(newAmount)
-  //   }
-  //
-  //   this.clearBaseOverageAmountForm()
-  // }
-
-  addNewBaseOverageAmount() {
+  addNewBillAmount() {
     const newAmount = {
       amount: +this.amount,
       type: this.amtType,
@@ -185,47 +166,30 @@ export class BillFixerComponent implements OnInit {
       subtotal: +this.subtotal
     }
 
-    this.baseAmounts.push(newAmount)
+    this.billAmounts.push(newAmount)
 
-
-    this.clearBaseOverageAmountForm()
+    this.clearBillAmountForm()
   }
 
-  deleteNewBaseOverageAmount(i: number, type: string) {
-    if (type === 'base') {
-      this.baseAmounts.splice(i, 1)
-    }
-    if (type === 'overage') {
-      this.overageAmounts.splice(i, 1)
-    }
-
+  deleteBillAmount(i: number) {
+    this.billAmounts.splice(i, 1)
   }
 
-  clearBaseOverageAmountForm() {
+  clearBillAmountForm() {
     this.amount = 0;
     this.frequency = 1;
     this.subtotal = 0;
     this.amtType = 'base';
   }
 
-  // calcBaseAmounts() {
-  //   return this.baseAmounts.reduce((acc, line) => acc + line.subtotal, 0)
-  // }
-
   calcBaseAmounts() {
-    return of(this.baseAmounts).pipe(
-      map(base)
-    )
-
-
+    const amounts = this.billAmounts.filter(amount => amount.type === 'base')
+    return amounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
   calcOverageAmounts = () => {
-    return +this.overageAmounts.reduce((acc, line) => acc + line.subtotal, 0)
-  }
-
-  calcTaxAmounts = () => {
-    return +this.calcTax1Amount() + +this.calcTax2Amount() + +this.calcTax3Amount() + +this.calcTax4Amount()
+    const amounts = this.billAmounts.filter(amount => amount.type === 'overage')
+    return amounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
   calcFeeBaseTotal = () => {
@@ -317,7 +281,32 @@ export class BillFixerComponent implements OnInit {
     }
   }
 
-  //----------TaxTotals-----------//
+
+  //----------FeesTotals----------//
+
+  calcFeesTotal = () => {
+    return this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount()
+  }
+
+  //----------OtherFeesTotals----------//
+
+  calcAdminFeesTotal = () => {
+    return +this.adminFeeValue
+  }
+
+  calcOther12FeesTotal = () => {
+    return +this.otherFee1Value + +this.otherFee2Value
+  }
+
+  calculateLateFeesTotal = () => {
+    return +this.lateFeeValue
+  }
+
+  calcOtherFeesTotal = () => {
+    return +this.calcAdminFeesTotal() + +this.calcOther12FeesTotal()
+  }
+
+  //----------Tax Calculations----------//
 
   calcTaxBase = () => {
     return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcAdminFeesTotal() + +this.calcOther12FeesTotal()
@@ -371,38 +360,17 @@ export class BillFixerComponent implements OnInit {
     }
   }
 
-
-  //----------FeesTotals----------//
-
-  calcFeesTotal = () => {
-    return this.calcFuelAmount() + this.calcEnvAmount() + this.calcRcrAmount() + this.calcFranchiseAmount()
-  }
-
-  //----------OtherFeesTotals----------//
-
-  calcAdminFeesTotal = () => {
-    return +this.adminFeeValue
-  }
-
-  calcOther12FeesTotal = () => {
-    return +this.otherFee1Value + +this.otherFee2Value
-  }
-
-  calculateLateFeesTotal = () => {
-    return +this.lateFeeValue
-  }
-
-  calcOtherFeesTotal = () => {
-    return +this.calcAdminFeesTotal() + +this.calcOther12FeesTotal()
+  calcTaxTotal = () => {
+    return +this.calcTax1Amount() + +this.calcTax2Amount() + +this.calcTax3Amount() + +this.calcTax4Amount()
   }
 
   //----------Final Calculations----------//
 
   calcTotalBill = () => {
-    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcTaxAmounts() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
+    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcTaxTotal() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
   }
 
-  calcCustomerOverages() {
+  calcHaulerOverages() {
 
     const fuel: number = this.fuelPercentageValue ? (this.calcOverageAmounts() * this.fuelPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcFuelPercentage()) / 100
     const env: number = this.envPercentageValue ? (this.calcOverageAmounts() * this.envPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcEnvPercentage()) / 100
@@ -419,8 +387,14 @@ export class BillFixerComponent implements OnInit {
     return (+this.calcOverageAmounts() + (+fuel + +env + +rcr + +fran) + (+tax1 + +tax2 + +tax3 + +tax4))
 
   }
-}
 
-//Todo:
-// add "+" to all functions
-// try to add formBuilder module to form
+  calcCustomerOverages() {
+    if (this.calcHaulerOverages() >= 100) {
+      return +this.calcHaulerOverages() * 1.2
+    } else if (this.calcHaulerOverages() < 100 && this.calcHaulerOverages() > 0) {
+      return +this.calcHaulerOverages() + 20
+    } else return null
+
+
+  }
+}

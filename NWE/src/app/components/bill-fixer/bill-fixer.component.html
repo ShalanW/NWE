@@ -1,6 +1,6 @@
 <div class="home-container" fxLayout="row">
 
-  <mat-card fxFlex="70.5%" fxLayout="column">
+  <mat-card fxFlex="43%" fxLayout="column">
 
     <mat-card-title>Base Services, Overages</mat-card-title>
 
@@ -20,7 +20,6 @@
           matInput
           placeholder="0"
           thousandSeparator=","
-
           type="text">
         <span matPrefix>$&nbsp;</span>
 
@@ -59,11 +58,11 @@
         <span matPrefix>$&nbsp;</span>
 
       </mat-form-field>
-      <mat-icon #addNewButton (click)="addNewBaseOverageAmount(); amtInput.focus();"> add</mat-icon>
+      <mat-icon #addNewButton (click)="addNewBillAmount(); amtInput.focus();"> add</mat-icon>
 
     </div>
 
-    <div *ngFor="let baseAmount of baseAmounts; index as i" fxLayout="row" fxLayoutAlign="space-between">
+    <div *ngFor="let baseAmount of billAmounts; index as i" fxLayout="row" fxLayoutAlign="space-between">
 
       <mat-form-field class="frequency" fxFlex="20%">
         <input
@@ -105,23 +104,8 @@
         <span matPrefix>$&nbsp;</span>
 
       </mat-form-field>
-      <mat-icon (click)="deleteNewBaseOverageAmount(i, baseAmount.type)">delete</mat-icon>
+      <mat-icon (click)="deleteBillAmount(i)">delete</mat-icon>
 
-    </div>
-    <div *ngFor="let overageAmount of overageAmounts; index as i" fxLayout="row" fxLayoutAlign="space-between">
-
-      <mat-form-field class="frequency" fxFlex="20%">
-        <input
-          [(ngModel)]="overageAmount.amount"
-          matInput
-          placeholder="Frequency"
-          type="number">
-      </mat-form-field>
-
-      <div fxFlex="20%">{{overageAmount.type | titlecase}}</div>
-      <div fxFlex="20%">{{overageAmount.frequency}}</div>
-      <div fxFlex="20%">{{overageAmount.subtotal | currency}}</div>
-      <mat-icon (click)="deleteNewBaseOverageAmount(i, overageAmount.type)">delete</mat-icon>
     </div>
 
     <div class="fuel-env-rcr-fran-section" fxLayout="column">
@@ -142,13 +126,11 @@
 
         </mat-form-field>
         <mat-form-field class="fuel-calculated" fxFlex="20%">
-          <mat-label>{{'Fuel % Calculated'}}</mat-label>
           <input
             [ngModel]="calcFuelPercentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
           <span matSuffix>%&nbsp;</span>
 
@@ -201,13 +183,11 @@
 
         </mat-form-field>
         <mat-form-field class="env-calculated" fxFlex="20%">
-          <mat-label>{{'ENV % Calculated'}}</mat-label>
           <input
             [ngModel]="calcEnvPercentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
 
           <span matSuffix>%&nbsp;</span>
@@ -245,15 +225,11 @@
 
         </mat-form-field>
         <mat-form-field class="rcr-calculated" fxFlex="20%">
-
-          <mat-label>{{'RCR % Calculated'}}</mat-label>
-
           <input
             [ngModel]="calcRcrPercentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
 
           <span matSuffix>%&nbsp;</span>
@@ -295,15 +271,11 @@
 
         </mat-form-field>
         <mat-form-field class="franchise-calculated" fxFlex="20%">
-
-          <mat-label>{{'Franchise % Calculated'}}</mat-label>
-
           <input
             [ngModel]="calcFranchisePercentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
 
           <span matSuffix>%&nbsp;</span>
@@ -420,13 +392,11 @@
 
         </mat-form-field>
         <mat-form-field class="tax-1-calculated" fxFlex="20%">
-          <mat-label>{{'Tax 1 % Calculated'}}</mat-label>
           <input
             [ngModel]="calcTax1Percentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
           <span matSuffix>%&nbsp;</span>
 
@@ -465,13 +435,11 @@
 
         </mat-form-field>
         <mat-form-field class="tax-2-calculated" fxFlex="20%">
-          <mat-label>{{'Tax 2 % Calculated'}}</mat-label>
           <input
             [ngModel]="calcTax2Percentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
 
           <span matSuffix>%&nbsp;</span>
@@ -511,14 +479,12 @@
         </mat-form-field>
         <mat-form-field class="tax-3-calculated" fxFlex="20%">
 
-          <mat-label>{{'Tax 3 % Calculated'}}</mat-label>
 
           <input
             [ngModel]="calcTax3Percentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
 
           <span matSuffix>%&nbsp;</span>
@@ -558,15 +524,11 @@
 
         </mat-form-field>
         <mat-form-field class="tax-4-calculated" fxFlex="20%">
-
-          <mat-label>{{'Tax 4 % Calculated'}}</mat-label>
-
           <input
             [ngModel]="calcTax4Percentage()"
             disabled
             mask="separator.4"
             matInput
-            placeholder="0"
             type="number">
 
           <span matSuffix>%&nbsp;</span>
@@ -645,50 +607,50 @@
     <div class="subtotal-row" fxLayout="column">
 
       <div class="total-row" fxLayout="row">
-        <div
-          fxFlex="70%">{{'Admin Fee: '}}</div>
+        <div fxFlex="70%">{{'Admin Fee: '}}</div>
         <div>{{calcAdminFeesTotal() | currency}}</div>
       </div>
 
       <div class="total-row" fxLayout="row">
-        <div
-          fxFlex="70%">{{'Other Fees: '}}</div>
+        <div fxFlex="70%">{{'Other Fees: '}}</div>
         <div>{{calcOther12FeesTotal() | currency}}</div>
       </div>
 
       <div class="total-row" fxLayout="row">
-        <div
-          fxFlex="70%">{{'Taxes @ '}}{{(calcTaxAmounts() / calcTaxBase()) * 100 | mask:'separator.4'}}{{'%'}}</div>
-        <div>{{calcTaxAmounts() | currency}}</div>
+        <div fxFlex="70%">{{'Taxes @ '}}{{(calcTaxTotal() / calcTaxBase()) * 100 | mask:'separator.4'}}{{'%'}}</div>
+        <div>{{calcTaxTotal() | currency}}</div>
       </div>
 
 
       <div class="total-row" fxLayout="row">
-        <div
-          fxFlex="70%">{{'Late Fee: '}}{{'Late'}}</div>
+        <div fxFlex="70%">{{'Late Fee: '}}</div>
         <div>{{calculateLateFeesTotal() | currency}}</div>
       </div>
 
-      <div class="total-row" fxLayout="row">
-        <div
-          fxFlex="70%">{{'Bill Total:'}}</div>
+      <div class="total-row bill-total-amount" fxLayout="row">
+        <div fxFlex="70%">{{'Bill Total:'}}</div>
         <div>{{calcTotalBill() | currency}}</div>
       </div>
 
-
-      <div class="total-row" fxLayout="row">
-        <div
-          fxFlex="70%">{{'Overage Amount (Hauler): '}}</div>
-        <div>{{calcCustomerOverages() | currency}}</div>
-      </div>
+    </div>
 
 
-      <div class="total-row" fxLayout="row">
-        <div
-          fxFlex="70%">{{'Overage Amount (Customer): '}}</div>
-        <div>{{calcCustomerOverages() * 1.2 | currency}}</div>
-      </div>
+  </mat-card>
 
+  <div fxFlex="1%"></div>
+
+  <mat-card fxFlex="29.5%" fxLayout="column" fxLayoutAlign="start">
+
+
+    <div class="total-row2" fxLayout="row">
+      <div fxFlex="70%">{{'Hauler Ovg: '}}</div>
+      <div>{{calcHaulerOverages() | currency}}</div>
+    </div>
+
+
+    <div class="total-row" fxLayout="row">
+      <div fxFlex="70%">{{'Customer Ovg: '}}</div>
+      <div>{{ calcCustomerOverages() | currency}}</div>
     </div>
 
 

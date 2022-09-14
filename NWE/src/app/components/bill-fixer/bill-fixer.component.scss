@@ -1,11 +1,19 @@
+.bill-total-amount {
+  text-decoration: underline white 2.5px;
+}
+
 .total-row {
-  border-top: #000000 solid 1px;
+  border-top: #797979 solid 1px;
   padding-top: 1em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
+}
+
+.total-row2 {
+  margin-bottom: 1em;
 }
 
 .home-container {
-  margin: .5em 20vw;
+  margin: .5em 10vw;
 }
 
 .fuel-env-rcr-fran-section mat-card-title,
