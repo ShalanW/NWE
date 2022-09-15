@@ -1,8 +1,6 @@
-import {Account} from "../model/stericycle/account";
-import {ServiceAddress} from "../model/general/service-address";
-import {Container} from "../model/stericycle/container";
+import {OnCallAccount} from "../model/stericycle/OnCallAccount";
 
-export const STERICYCLEACCOUNTS: Account[] = [
+export const STERICYCLEACCOUNTS: OnCallAccount[] = [
   {
     id: 1,
 

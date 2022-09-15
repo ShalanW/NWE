@@ -26,6 +26,7 @@ import {FlexModule} from "@angular/flex-layout";
 import {AutofocusDirective} from './directives/autofocus.directive';
 import {NgxMaskModule} from "ngx-mask";
 import { BillFixerComponent } from './components/bill-fixer/bill-fixer.component';
+import { HaulerContactComponent } from './components/hauler-contact/hauler-contact.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { BillFixerComponent } from './components/bill-fixer/bill-fixer.component
     HomePageComponent,
     AutofocusDirective,
     BillFixerComponent,
+    HaulerContactComponent,
   ],
 
   imports: [

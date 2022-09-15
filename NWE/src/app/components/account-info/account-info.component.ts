@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {STERICYCLEACCOUNTS} from "../../hardCodeData/hardCodeData";
-import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
+import {ServiceAddress} from "../../model/general/service-address";
+import {OnCallAccountService} from "../../services/on-call-account.service";
+import {OnCallAccount} from "../../model/stericycle/OnCallAccount";
+import {Container} from "../../model/stericycle/container";
+
 
 @Component({
   selector: 'app-account-info',
@@ -10,29 +13,67 @@ import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/
 })
 export class AccountInfoComponent implements OnInit {
 
-  ssAccounts = STERICYCLEACCOUNTS[0];
-  form = this.fb.group({
-    example: ['', [Validators.required]]
-  });
+  accountForm = this.fb.group({
 
+    type: [''],
 
-  constructor(private db: AngularFirestore, private fb: FormBuilder) {
+    address: [{} as ServiceAddress],
+
+    accountNumber: [''],
+    siteNumber: [''],
+    container: [{}],
+
+  })
+
+  addressForm = this.fb.group({
+    streetAddress: [''],
+    city: [''],
+    state: [''],
+    zip: [''],
+  })
+
+  containerForm = this.fb.group({
+
+    type: [''],
+
+    count: [''],
+    size: [''],
+    unit: [''],
+    description: [''],
+
+    price: [''],
+    minimumPerService: [''],
+    frequencyByWeeks: [''],
+
+    perServiceCost: [''],
+    monthlyCost: [''],
+
+    extraBoxCostHauler: [''],
+    extraBoxCostCustomer: [''],
+
+  })
+
+  constructor(private fb: FormBuilder, private ocaService: OnCallAccountService) {
   }
 
   ngOnInit(): void {
   }
 
+  onAddNewAccount() {
+    const account = <OnCallAccount>{
+      ...this.accountForm.value,
+      address: this.addressForm.value as ServiceAddress,
+      container: this.containerForm.value as Container,
 
-  helper() {
-    const tutorialsref = this.db.collection('NaderCollection');
-    const tutorial = {title: 'Hi 😘', url: 'bezkoder.com/zkoder-tutorial'};
+    }
 
-    tutorialsref.add({...tutorial});
-
+    this.ocaService.addHaulerContact(account);
+    this.containerForm.reset()
+    this.accountForm.reset()
+    this.addressForm.reset()
   }
-
-
 }
+
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)
 

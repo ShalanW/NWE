@@ -1,37 +1,21 @@
 export interface Container {
 
-  coType: string;
+  type: string;
 
-  coCount: number;
-  coSize: number;
-  coUnit: string;
-  coDescription: string;
+  count: string;
+  size: string;
+  unit: string;
+  description: string;
 
-  coPrice: number;
-  coMinimumPerService: number;
-  coFrequencyByWeeks: number;
+  price: string;
+  minimumPerService: string;
+  frequencyByWeeks: string;
 
-  coPerServiceCost: number;
-  coMonthlyCost: number;
+  perServiceCost: string;
+  monthlyCost: string;
 
-  coExtraBoxCostHauler: number;
-  coExtraBoxCostCustomer: number;
+  extraBoxCostHauler: string;
+  extraBoxCostCustomer: string;
 
-
-  //--------------------------------------- Hauler Info Below
-
-  coHaulerCount: number;
-  coHaulerSize: number;
-  coHaulerUnit: string;
-  coHaulerDescription: string;
-
-  coHaulerPrice: number;
-  coHaulerMinimumPerService: number;
-  coHaulerFrequencyByWeeks: number;
-
-  coHaulerPerServiceCost: number;
-  coHaulerMonthlyCost: number;
-
-  coHaulerExtraBoxCostHauler: number;
 
 }
