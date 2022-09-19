@@ -13,6 +13,8 @@ import {Container} from "../../model/stericycle/container";
 })
 export class AccountInfoComponent implements OnInit {
 
+  noteArray: string[] = []
+
   accountForm = this.fb.group({
 
     type: [''],
@@ -22,6 +24,7 @@ export class AccountInfoComponent implements OnInit {
     accountNumber: [''],
     siteNumber: [''],
     container: [{}],
+    customer: [''],
 
   })
 
@@ -64,7 +67,7 @@ export class AccountInfoComponent implements OnInit {
       ...this.accountForm.value,
       address: this.addressForm.value as ServiceAddress,
       container: this.containerForm.value as Container,
-
+      notes: this.noteArray
     }
 
     this.ocaService.addHaulerContact(account);

@@ -1,48 +1,64 @@
-<mat-card>
+<mat-card class="page-container" fxFlex.gt-md="50" fxLayout="column">
+
   <mat-card-title class="page-title">New On-Call Account</mat-card-title>
+
   <mat-card-content>
 
+    <mat-card-title>Service Info</mat-card-title>
+
     <form [formGroup]="accountForm" class="login-form" fxLayout="column">
+      <mat-form-field class="customer">
+        <mat-label>Customer</mat-label>
+        <input formControlName="customer" matInput type="text">
+      </mat-form-field>
 
       <mat-form-field class="account-type">
         <mat-label>Type</mat-label>
         <input formControlName="type" matInput type="text">
       </mat-form-field>
 
-      <form [formGroup]="addressForm" class="login-form" fxLayout="column">
+      <form [formGroup]="addressForm" class="login-form">
 
-        <mat-card-title>Service Address</mat-card-title>
+
         <mat-form-field>
           <mat-label>Street Address</mat-label>
           <input formControlName="streetAddress" matInput>
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>City</mat-label>
-          <input formControlName="city" matInput>
-        </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>State</mat-label>
-          <input formControlName="state" matInput>
-        </mat-form-field>
+        <div fxLayout="row">
+          <mat-form-field fxFlex="50">
+            <mat-label>City</mat-label>
+            <input formControlName="city" matInput>
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Zip</mat-label>
-          <input formControlName="zip" matInput>
-        </mat-form-field>
+          <mat-form-field fxFlex="20">
+            <mat-label>State</mat-label>
+            <input formControlName="state" matInput>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="30">
+            <mat-label>Zip</mat-label>
+            <input formControlName="zip" matInput>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+        </div>
 
       </form>
+      <div>
+        <mat-form-field class="account-number">
+          <mat-label>Account Number</mat-label>
+          <input formControlName="accountNumber" matInput type="text">
+        </mat-form-field>
 
-      <mat-form-field class="account-number">
-        <mat-label>Account Number</mat-label>
-        <input formControlName="accountNumber" matInput type="text">
-      </mat-form-field>
-      <mat-form-field class="site-number">
-        <mat-label>Site Number or Sub Account #</mat-label>
-        <input formControlName="siteNumber" matInput type="text">
-      </mat-form-field>
-
+        <mat-form-field class="site-number">
+          <mat-label>Site Number or Sub Account #</mat-label>
+          <input formControlName="siteNumber" matInput type="text">
+        </mat-form-field>
+      </div>
       <form [formGroup]="containerForm" class="login-form" fxLayout="column">
 
         <mat-card-title>Container</mat-card-title>
