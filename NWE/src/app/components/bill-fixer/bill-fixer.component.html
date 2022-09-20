@@ -140,7 +140,7 @@
           <mat-label>{{'Fuel % Override'}}</mat-label>
           <input #fuelOverride
                  (focus)="fuelOverride.select()"
-                 [(ngModel)]="fuelPercentage"
+                 [(ngModel)]="fuelPercentageOverride"
                  matInput
                  placeholder="0"
                  type="number">
@@ -197,7 +197,7 @@
           <mat-label>{{'ENV % Override'}}</mat-label>
           <input #envOverrideInput
                  (focus)="envOverrideInput.select()"
-                 [(ngModel)]="envPercentage"
+                 [(ngModel)]="envPercentageOverride"
                  matInput
                  placeholder="0"
                  type="number">
@@ -241,7 +241,7 @@
 
           <input #rcrOverrideInput
                  (focus)="rcrOverrideInput.select()"
-                 [(ngModel)]="rcrPercentage"
+                 [(ngModel)]="rcrPercentageOverride"
                  matInput
                  placeholder="0"
                  type="number">
@@ -288,7 +288,7 @@
           <input #franchiseOverrideInput
 
                  (focus)="franchiseOverrideInput.select()"
-                 [(ngModel)]="franchisePercentage"
+                 [(ngModel)]="franchisePercentageOverride"
                  matInput
                  placeholder="0"
                  type="number">
@@ -406,7 +406,7 @@
           <mat-label>{{'Tax 1 % Override'}}</mat-label>
           <input #tax1Override
                  (focus)="tax1Override.select()"
-                 [(ngModel)]="taxAmountPercentage"
+                 [(ngModel)]="taxAmountPercentageOverride"
                  matInput
                  placeholder="0"
                  type="number">
@@ -449,7 +449,7 @@
           <mat-label>{{'Tax 2 % Override'}}</mat-label>
           <input #tax2OverrideInput
                  (focus)="tax2OverrideInput.select()"
-                 [(ngModel)]="taxAmountPercentage2"
+                 [(ngModel)]="taxAmountPercentage2Override"
                  matInput
                  placeholder="0"
                  type="number">
@@ -496,7 +496,7 @@
 
           <input #tax3OverrideInput
                  (focus)="tax3OverrideInput.select()"
-                 [(ngModel)]="taxAmountPercentage3"
+                 [(ngModel)]="taxAmountPercentage3Override"
                  matInput
                  placeholder="0"
                  type="number">
@@ -541,7 +541,7 @@
           <input #tax4OverrideInput
 
                  (focus)="tax4OverrideInput.select()"
-                 [(ngModel)]="taxAmountPercentage4"
+                 [(ngModel)]="taxAmountPercentage4Override"
                  matInput
                  placeholder="0"
                  type="number">

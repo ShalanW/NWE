@@ -1,4 +1,4 @@
-<mat-card class="page-container" fxFlex.gt-md="50" fxLayout="column">
+<mat-card class="page-container" fxFlex.gt-sm="50" fxLayout="column">
 
   <mat-card-title class="page-title">New On-Call Account</mat-card-title>
 
@@ -9,117 +9,117 @@
     <form [formGroup]="accountForm" class="login-form" fxLayout="column">
       <mat-form-field class="customer">
         <mat-label>Customer</mat-label>
-        <input formControlName="customer" matInput type="text">
+        <input autocomplete="off" formControlName="customer" matInput type="text">
       </mat-form-field>
 
-      <mat-form-field class="account-type">
-        <mat-label>Type</mat-label>
-        <input formControlName="type" matInput type="text">
-      </mat-form-field>
 
       <form [formGroup]="addressForm" class="login-form">
 
 
-        <mat-form-field>
+        <mat-form-field fxFill>
           <mat-label>Street Address</mat-label>
-          <input formControlName="streetAddress" matInput>
+          <input autocomplete="off" formControlName="streetAddress" matInput>
         </mat-form-field>
 
 
         <div fxLayout="row">
           <mat-form-field fxFlex="50">
             <mat-label>City</mat-label>
-            <input formControlName="city" matInput>
+            <input autocomplete="off" formControlName="city" matInput>
           </mat-form-field>
 
           <mat-form-field fxFlex="20">
             <mat-label>State</mat-label>
-            <input formControlName="state" matInput>
+            <input autocomplete="off" formControlName="state" matInput>
           </mat-form-field>
 
           <mat-form-field fxFlex="30">
             <mat-label>Zip</mat-label>
-            <input formControlName="zip" matInput>
+            <input autocomplete="off" formControlName="zip" matInput>
           </mat-form-field>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-
-        </div>
 
       </form>
-      <div>
-        <mat-form-field class="account-number">
-          <mat-label>Account Number</mat-label>
-          <input formControlName="accountNumber" matInput type="text">
+      <div fxLayout="row">
+
+        <mat-form-field class="account-type" fxFlex="20">
+          <mat-label>Type</mat-label>
+          <input autocomplete="off" formControlName="type" matInput type="text">
         </mat-form-field>
 
-        <mat-form-field class="site-number">
-          <mat-label>Site Number or Sub Account #</mat-label>
-          <input formControlName="siteNumber" matInput type="text">
+        <mat-form-field class="account-number" fxFlex="40">
+          <mat-label>Account #</mat-label>
+          <input autocomplete="off" formControlName="accountNumber" matInput type="text">
+        </mat-form-field>
+
+        <mat-form-field class="site-number" fxFlex="40">
+          <mat-label>Site # or Sub Account #</mat-label>
+          <input autocomplete="off" formControlName="siteNumber" matInput type="text">
         </mat-form-field>
       </div>
+
       <form [formGroup]="containerForm" class="login-form" fxLayout="column">
 
         <mat-card-title>Container</mat-card-title>
         <mat-form-field>
           <mat-label>Type</mat-label>
-          <input formControlName="type" matInput>
+          <input autocomplete="off" formControlName="type" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Count</mat-label>
-          <input formControlName="count" matInput>
+          <input autocomplete="off" formControlName="count" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Size</mat-label>
-          <input formControlName="size" matInput>
+          <input autocomplete="off" formControlName="size" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Unit</mat-label>
-          <input formControlName="unit" matInput>
+          <input autocomplete="off" formControlName="unit" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Description</mat-label>
-          <input formControlName="description" matInput>
+          <input autocomplete="off" formControlName="description" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Price</mat-label>
-          <input formControlName="price" matInput>
+          <input autocomplete="off" formControlName="price" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Minimum Per Service</mat-label>
-          <input formControlName="minimumPerService" matInput>
+          <input autocomplete="off" formControlName="minimumPerService" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Frequency in Weeks</mat-label>
-          <input formControlName="frequencyByWeeks" matInput>
+          <input autocomplete="off" formControlName="frequencyByWeeks" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Per Service Cost</mat-label>
-          <input formControlName="perServiceCost" matInput>
+          <input autocomplete="off" formControlName="perServiceCost" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Monthly Cost</mat-label>
-          <input formControlName="monthlyCost" matInput>
+          <input autocomplete="off" formControlName="monthlyCost" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Extra Boxes Cost Hauler</mat-label>
-          <input formControlName="extraBoxCostHauler" matInput>
+          <input autocomplete="off" formControlName="extraBoxCostHauler" matInput>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Extra Boxes Cost Hauler</mat-label>
-          <input formControlName="extraBoxCostCustomer" matInput>
+          <input autocomplete="off" formControlName="extraBoxCostCustomer" matInput>
         </mat-form-field>
 
       </form>

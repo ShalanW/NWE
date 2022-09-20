@@ -25,18 +25,18 @@ export class BillFixerComponent implements OnInit {
   subtotal: number = 0;
 
   fuelAmount: number = 0;
-  fuelPercentage: number = 0;
+  fuelPercentageOverride: number = 0;
 
   envAmount: number = 0;
-  envPercentage: number = 0;
+  envPercentageOverride: number = 0;
 
   fuelEnvCombinedAmount: number = 0;
 
   rcrAmount: number = 0;
-  rcrPercentage: number = 0;
+  rcrPercentageOverride: number = 0;
 
   franchiseAmount: number = 0;
-  franchisePercentage: number = 0;
+  franchisePercentageOverride: number = 0;
 
   adminFee: number = 0;
   otherFee1: number = 0;
@@ -44,16 +44,16 @@ export class BillFixerComponent implements OnInit {
   lateFee: number = 0;
 
   taxAmount: number = 0;
-  taxAmountPercentage: number = 0;
+  taxAmountPercentageOverride: number = 0;
 
   taxAmount2: number = 0;
-  taxAmountPercentage2: number = 0;
+  taxAmountPercentage2Override: number = 0;
 
   taxAmount3: number = 0;
-  taxAmountPercentage3: number = 0;
+  taxAmountPercentage3Override: number = 0;
 
   taxAmount4: number = 0;
-  taxAmountPercentage4: number = 0;
+  taxAmountPercentage4Override: number = 0;
 
   constructor() {
   }
@@ -65,7 +65,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   get fuelPercentageValue() {
-    return this.fuelPercentage
+    return this.fuelPercentageOverride
   }
 
   get envAmountValue() {
@@ -73,7 +73,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   get envPercentageValue() {
-    return this.envPercentage;
+    return this.envPercentageOverride;
   }
 
   get combinedFuelEnvValue() {
@@ -85,7 +85,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   get rcrPercentageValue() {
-    return this.rcrPercentage;
+    return this.rcrPercentageOverride;
   }
 
   get franchiseAmountValue() {
@@ -93,7 +93,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   get franchisePercentageValue() {
-    return this.franchisePercentage;
+    return this.franchisePercentageOverride;
   }
 
   get adminFeeValue() {
@@ -117,7 +117,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   get taxAmountPercentageValue() {
-    return +this.taxAmountPercentage;
+    return +this.taxAmountPercentageOverride;
   }
 
   get taxAmount2Value() {
@@ -125,7 +125,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   get taxAmountPercentage2Value() {
-    return +this.taxAmountPercentage2
+    return +this.taxAmountPercentage2Override
   }
 
   get taxAmount3Value() {
@@ -133,7 +133,7 @@ export class BillFixerComponent implements OnInit {
   }
 
   get taxAmountPercentage3Value() {
-    return +this.taxAmountPercentage3
+    return +this.taxAmountPercentage3Override
   }
 
   get taxAmount4Value() {
@@ -141,13 +141,14 @@ export class BillFixerComponent implements OnInit {
   }
 
   get taxAmountPercentage4Value() {
-    return +this.taxAmountPercentage4
+    return +this.taxAmountPercentage4Override
   }
 
   ngOnInit(): void {
   }
 
   //----------Base and Overage Amount Calculations----------//
+
 
   calcSubtotal = () => {
     this.subtotal = this.amount * this.frequency
