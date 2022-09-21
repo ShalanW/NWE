@@ -15,6 +15,10 @@ export class AccountInfoComponent implements OnInit {
 
   noteArray: string[] = []
 
+  customerForm = this.fb.group({
+    customer: ['']
+  })
+
   accountForm = this.fb.group({
 
     type: [''],
