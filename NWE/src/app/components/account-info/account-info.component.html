@@ -1,25 +1,27 @@
-<div fxLayout="column">
-  <mat-card class="page-container" fxFlex.gt-sm="50" fxLayout="column">
+<div fxLayout="column" fxLayoutAlign="space-evenly center ">
+  <div fxLayout="row">
+    <mat-card class="page-container" fxLayout="column">
 
-    <mat-card-title class="page-title">New Customer</mat-card-title>
-    <h3 class="page-title">🚨 Copy DIRECTLY from Feenix 🚨</h3>
-    <mat-card-content>
-      <form [formGroup]="customerForm" class="login-form" fxLayout="column">
-        <mat-form-field class="customer">
-          <mat-label>Customer</mat-label>
-          <input autocomplete="off" formControlName="customer" matInput type="text">
-        </mat-form-field>
+      <mat-card-title class="page-title">New Customer</mat-card-title>
+      <h3 class="page-title">🚨 Copy DIRECTLY from Feenix 🚨</h3>
+      <mat-card-content>
+        <form [formGroup]="customerForm" class="login-form">
+          <mat-form-field class="customer">
+            <mat-label>Customer</mat-label>
+            <input autocomplete="off" formControlName="customer" matInput type="text">
+          </mat-form-field>
 
-      </form>
+        </form>
 
-    </mat-card-content>
+      </mat-card-content>
 
-    <button (click)="onAddNewAccount()" color="primary" mat-raised-button>Add Account</button>
+      <button (click)="onAddNewAccount()" color="primary" mat-raised-button>Add Account</button>
 
-  </mat-card>
+    </mat-card>
+  </div>
 
 
-  <mat-card class="page-container" fxFlex.gt-sm="50" fxLayout="column">
+  <mat-card class="page-container" fxLayout="column">
 
     <mat-card-title class="page-title">New On-Call Account</mat-card-title>
 
