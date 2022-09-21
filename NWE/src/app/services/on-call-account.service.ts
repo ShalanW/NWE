@@ -14,7 +14,7 @@ export class OnCallAccountService {
   }
 
 
-  loadHaulerContacts(): Observable<OnCallAccount[]> {
+  loadOnCallAccounts(): Observable<OnCallAccount[]> {
     return this.collectionRef.snapshotChanges()
       .pipe(
         map(contacts => {
