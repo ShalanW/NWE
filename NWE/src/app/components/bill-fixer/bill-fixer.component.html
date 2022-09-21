@@ -565,16 +565,16 @@
     <div class="subtotal-row" fxLayout="column">
       <div fxLayout="row">
         <div fxFlex="70%">{{'Base Amounts: '}}</div>
-        <div>{{calcBaseAmounts() | currency}}</div>
+        <div>{{getBaseSubtotal() | currency}}</div>
       </div>
       <div fxLayout="row">
         <div fxFlex="70%">{{'Overages: '}}</div>
-        <div>{{calcOverageAmounts() | currency}}</div>
+        <div>{{getOverageSubtotal() | currency}}</div>
       </div>
 
       <div class="total-row" fxLayout="row">
         <div fxFlex="70%">{{'Fee Base Total: '}}</div>
-        <div>{{calcFeeBaseTotal() | currency}}</div>
+        <div>{{getBase_Overage_Total() | currency}}</div>
       </div>
 
     </div>

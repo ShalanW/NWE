@@ -183,46 +183,46 @@ export class BillFixerComponent implements OnInit {
     this.amtType = 'base';
   }
 
-  calcBaseAmounts() {
+  getBaseSubtotal = () => {
     const amounts = this.billAmounts.filter(amount => amount.type === 'base')
     return amounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
-  calcOverageAmounts = () => {
+  getOverageSubtotal = () => {
     const amounts = this.billAmounts.filter(amount => amount.type === 'overage')
     return amounts.reduce((acc, line) => acc + line.subtotal, 0)
   }
 
-  calcFeeBaseTotal = () => {
-    return +this.calcOverageAmounts() + +this.calcBaseAmounts()
+  getBase_Overage_Total = () => {
+    return +this.getOverageSubtotal() + +this.getBaseSubtotal()
   }
 
   //----------Fuel Calculations----------//
 
   calcFuelPercentage = () => {
-    return (this.fuelAmountValue / this.calcFeeBaseTotal()) * 100
+    return (this.fuelAmountValue / this.getBase_Overage_Total()) * 100
   }
 
   calcFuelAmount = () => {
     if (this.fuelPercentageValue) {
-      return (this.calcFeeBaseTotal() * this.fuelPercentageValue) / 100
+      return (this.getBase_Overage_Total() * this.fuelPercentageValue) / 100
     } else {
-      return this.calcFeeBaseTotal() * this.calcFuelPercentage() / 100
+      return this.getBase_Overage_Total() * this.calcFuelPercentage() / 100
     }
   };
 
   //----------ENV Calculations----------//
 
   calcEnvPercentage = () => {
-    return (+this.envAmountValue / +this.calcFeeBaseTotal()) * 100
+    return (+this.envAmountValue / +this.getBase_Overage_Total()) * 100
   }
 
   calcEnvAmount = () => {
 
     if (+this.envPercentageValue) {
-      return (+this.calcFeeBaseTotal() * +this.envPercentageValue) / 100
+      return (+this.getBase_Overage_Total() * +this.envPercentageValue) / 100
     } else {
-      return +this.calcFeeBaseTotal() * +this.calcEnvPercentage() / 100
+      return +this.getBase_Overage_Total() * +this.calcEnvPercentage() / 100
     }
   }
 
@@ -255,30 +255,30 @@ export class BillFixerComponent implements OnInit {
   //----------RCR Calculations----------//
 
   calcRcrPercentage = () => {
-    return (this.rcrAmountValue / this.calcFeeBaseTotal()) * 100
+    return (this.rcrAmountValue / this.getBase_Overage_Total()) * 100
   }
 
   calcRcrAmount = () => {
 
     if (this.rcrPercentageValue) {
-      return (this.calcFeeBaseTotal() * this.rcrPercentageValue) / 100
+      return (this.getBase_Overage_Total() * this.rcrPercentageValue) / 100
     } else {
-      return this.calcFeeBaseTotal() * this.calcRcrPercentage() / 100
+      return this.getBase_Overage_Total() * this.calcRcrPercentage() / 100
     }
   }
 
   //----------Franchise Calculations----------//
 
   calcFranchisePercentage = () => {
-    return (this.franchiseAmountValue / this.calcFeeBaseTotal()) * 100
+    return (this.franchiseAmountValue / this.getBase_Overage_Total()) * 100
   }
 
   calcFranchiseAmount = () => {
 
     if (this.franchisePercentageValue) {
-      return (this.calcFeeBaseTotal() * this.franchisePercentageValue) / 100
+      return (this.getBase_Overage_Total() * this.franchisePercentageValue) / 100
     } else {
-      return this.calcFeeBaseTotal() * this.calcFranchisePercentage() / 100
+      return this.getBase_Overage_Total() * this.calcFranchisePercentage() / 100
     }
   }
 
@@ -310,7 +310,7 @@ export class BillFixerComponent implements OnInit {
   //----------Tax Calculations----------//
 
   calcTaxBase = () => {
-    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcAdminFeesTotal() + +this.calcOther12FeesTotal()
+    return +this.getBase_Overage_Total() + +this.calcFeesTotal() + +this.calcAdminFeesTotal() + +this.calcOther12FeesTotal()
   }
 
   calcTax1Percentage = () => {
@@ -368,24 +368,25 @@ export class BillFixerComponent implements OnInit {
   //----------Final Calculations----------//
 
   calcTotalBill = () => {
-    return +this.calcFeeBaseTotal() + +this.calcFeesTotal() + +this.calcTaxTotal() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
+    return +this.getBase_Overage_Total() + +this.calcFeesTotal() + +this.calcTaxTotal() + +this.calcOtherFeesTotal() + +this.calculateLateFeesTotal()
   }
 
   calcHaulerOverages() {
 
-    const fuel: number = this.fuelPercentageValue ? (this.calcOverageAmounts() * this.fuelPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcFuelPercentage()) / 100
-    const env: number = this.envPercentageValue ? (this.calcOverageAmounts() * this.envPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcEnvPercentage()) / 100
-    const rcr: number = this.rcrPercentageValue ? (this.calcOverageAmounts() * this.rcrPercentageValue) / 100 : (this.calcOverageAmounts() * this.calcRcrPercentage()) / 100
-    const fran: number = this.franchisePercentageValue ? (this.calcOverageAmounts() * this.franchisePercentageValue) / 100 : (this.calcOverageAmounts() * this.calcFranchisePercentage()) / 100
-    const calcFeesTotal = () => +fuel + +env + +rcr + +fran
+    const fuel: number = this.fuelPercentageValue ? (this.getOverageSubtotal() * this.fuelPercentageValue) / 100 : (this.getOverageSubtotal() * this.calcFuelPercentage()) / 100
+    const env: number = this.envPercentageValue ? (this.getOverageSubtotal() * this.envPercentageValue) / 100 : (this.getOverageSubtotal() * this.calcEnvPercentage()) / 100
+    const rcr: number = this.rcrPercentageValue ? (this.getOverageSubtotal() * this.rcrPercentageValue) / 100 : (this.getOverageSubtotal() * this.calcRcrPercentage()) / 100
+    const fran: number = this.franchisePercentageValue ? (this.getOverageSubtotal() * this.franchisePercentageValue) / 100 : (this.getOverageSubtotal() * this.calcFranchisePercentage()) / 100
+    const get_fuel_env_rcr_fran = +fuel + +env + +rcr + +fran
 
-    const calcTaxBase = () => +this.calcOverageAmounts() + +calcFeesTotal()
+    const calcTaxBase = () => +this.getOverageSubtotal() + +get_fuel_env_rcr_fran
     const tax1: number = this.taxAmountPercentageValue ? (calcTaxBase() * this.taxAmountPercentageValue) / 100 : (calcTaxBase() * this.calcTax1Percentage()) / 100
     const tax2: number = this.taxAmountPercentage2Value ? (calcTaxBase() * this.taxAmountPercentage2Value) / 100 : (calcTaxBase() * this.calcTax2Percentage()) / 100
     const tax3: number = this.taxAmountPercentage3Value ? (calcTaxBase() * this.taxAmountPercentage3Value) / 100 : (calcTaxBase() * this.calcTax3Percentage()) / 100
     const tax4: number = this.taxAmountPercentage4Value ? (calcTaxBase() * this.taxAmountPercentage4Value) / 100 : (calcTaxBase() * this.calcTax4Percentage()) / 100
+    const get_tax1_tax2_tax3_tax4 = +tax1 + +tax2 + +tax3 + +tax4
 
-    return (+this.calcOverageAmounts() + (+fuel + +env + +rcr + +fran) + (+tax1 + +tax2 + +tax3 + +tax4))
+    return (+this.getOverageSubtotal() + get_fuel_env_rcr_fran + get_tax1_tax2_tax3_tax4)
 
   }
 
@@ -395,7 +396,5 @@ export class BillFixerComponent implements OnInit {
     } else if (this.calcHaulerOverages() < 100 && this.calcHaulerOverages() > 0) {
       return +this.calcHaulerOverages() + 20
     } else return null
-
-
   }
 }
