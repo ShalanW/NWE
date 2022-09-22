@@ -28,6 +28,8 @@ import {NgxMaskModule} from "ngx-mask";
 import {BillFixerComponent} from './components/bill-fixer/bill-fixer.component';
 import {HaulerContactComponent} from './components/hauler-contact/hauler-contact.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatTableModule} from "@angular/material/table";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MatListModule,
     MatMenuModule,
     MatExpansionModule,
+    MatTabsModule,
     FlexModule,
     NgxMaskModule.forRoot(),
 
