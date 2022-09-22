@@ -1,8 +1,17 @@
 
+.test {
+  background-color: crimson;
+}
+
 .page-title {
-  margin-bottom: 1em;
+
+  margin: .5em auto
 }
 
 mat-card-title {
   margin-top: 1em;
+}
+
+mat-card {
+  margin-top: .5em;
 }

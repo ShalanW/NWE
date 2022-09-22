@@ -4,6 +4,8 @@ import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
 import {OnCallAccount} from "../../model/stericycle/OnCallAccount";
 import {Container} from "../../model/stericycle/container";
+import {Customer} from "../../model/general/customer";
+import {CustomerService} from "../../services/customer.service";
 
 
 @Component({
@@ -16,7 +18,7 @@ export class AccountInfoComponent implements OnInit {
   noteArray: string[] = []
 
   customerForm = this.fb.group({
-    customer: ['']
+    customerName: ['']
   })
 
   accountForm = this.fb.group({
@@ -28,7 +30,6 @@ export class AccountInfoComponent implements OnInit {
     accountNumber: [''],
     siteNumber: [''],
     container: [{}],
-    customer: [''],
 
   })
 
@@ -60,7 +61,7 @@ export class AccountInfoComponent implements OnInit {
 
   })
 
-  constructor(private fb: FormBuilder, private ocaService: OnCallAccountService) {
+  constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
   }
 
   ngOnInit(): void {
@@ -78,6 +79,14 @@ export class AccountInfoComponent implements OnInit {
     this.containerForm.reset()
     this.accountForm.reset()
     this.addressForm.reset()
+  }
+
+  onAddNewCustomer() {
+    const newCustomer = <Customer>{
+      ...this.customerForm.value
+    }
+
+    this.cs.addCustomer(newCustomer)
   }
 }
 

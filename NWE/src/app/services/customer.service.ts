@@ -29,8 +29,10 @@ export class CustomerService {
   }
 
 
-  addCustomer(customer: Customer) {
-    this.collectionRef.add({...customer})
+  addCustomer(customer: Partial<Customer>) {
+    const id = customer.customerName
+    customer = {accounts: []}
+    this.collectionRef.doc(id).set(customer, {merge: true})
   }
 
 
