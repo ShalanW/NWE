@@ -6,6 +6,8 @@ import {OnCallAccount} from "../../model/stericycle/OnCallAccount";
 import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
+import {Observable} from "rxjs";
+import {HaulerContact} from "../../model/general/hauler-contact";
 
 
 @Component({
@@ -14,6 +16,15 @@ import {CustomerService} from "../../services/customer.service";
   styleUrls: ['./account-info.component.scss']
 })
 export class AccountInfoComponent implements OnInit {
+
+  $customers: Observable<Customer[]>;
+
+  selectedCustomer: Customer = {customerName: '', accounts: []};
+
+
+  //----------New Customer / On-Call Account Input----------//
+
+  panelOpenState = false;
 
   noteArray: string[] = []
 
@@ -62,6 +73,7 @@ export class AccountInfoComponent implements OnInit {
   })
 
   constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
+    this.$customers = this.cs.loadCustomers();
   }
 
   ngOnInit(): void {
@@ -75,7 +87,7 @@ export class AccountInfoComponent implements OnInit {
       notes: this.noteArray
     }
 
-    this.ocaService.addHaulerContact(account);
+    this.ocaService.addHaulerContact(account, this.selectedCustomer.customerName);
     this.containerForm.reset()
     this.accountForm.reset()
     this.addressForm.reset()

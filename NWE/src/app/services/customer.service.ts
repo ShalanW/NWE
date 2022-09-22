@@ -21,7 +21,8 @@ export class CustomerService {
           return customers.map(customer => {
             return <Customer>{
               id: customer.payload.doc.id,
-              ...customer.payload.doc.data() as Customer
+              ...customer.payload.doc.data() as Customer,
+              customerName: customer.payload.doc.id,
             }
           })
         })
@@ -31,7 +32,7 @@ export class CustomerService {
 
   addCustomer(customer: Partial<Customer>) {
     const id = customer.customerName
-    customer = {accounts: []}
+    customer = {}
     this.collectionRef.doc(id).set(customer, {merge: true})
   }
 

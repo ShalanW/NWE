@@ -25,8 +25,9 @@ import {MatMenuModule} from "@angular/material/menu";
 import {FlexModule} from "@angular/flex-layout";
 import {AutofocusDirective} from './directives/autofocus.directive';
 import {NgxMaskModule} from "ngx-mask";
-import { BillFixerComponent } from './components/bill-fixer/bill-fixer.component';
-import { HaulerContactComponent } from './components/hauler-contact/hauler-contact.component';
+import {BillFixerComponent} from './components/bill-fixer/bill-fixer.component';
+import {HaulerContactComponent} from './components/hauler-contact/hauler-contact.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { HaulerContactComponent } from './components/hauler-contact/hauler-conta
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
+    MatExpansionModule,
     FlexModule,
     NgxMaskModule.forRoot(),
 

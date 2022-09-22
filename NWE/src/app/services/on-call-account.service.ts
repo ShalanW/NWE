@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {map, Observable} from "rxjs";
 import {OnCallAccount} from "../model/stericycle/OnCallAccount";
+import firebase from "firebase/compat/app";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OnCallAccountService {
 
-  collectionRef = this.db.collection('OnCallServiceAccounts');
+  collectionRef = this.db.collection('Customers');
 
   constructor(private db: AngularFirestore) {
   }
@@ -29,7 +30,12 @@ export class OnCallAccountService {
       )
   }
 
-  addHaulerContact(account: OnCallAccount) {
-    this.collectionRef.add({...account});
+  addHaulerContact(account: OnCallAccount, selectedCustomer: string) {
+
+
+    this.collectionRef.doc(selectedCustomer).set({accounts: firebase.firestore.FieldValue.arrayUnion(account)}, {merge: true})
+
+
+    // this.collectionRef.add({...account});
   }
 }
