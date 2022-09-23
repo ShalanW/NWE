@@ -32,10 +32,9 @@ export class OnCallAccountService {
 
   addHaulerContact(account: OnCallAccount, selectedCustomer: string) {
 
-
-    this.collectionRef.doc(selectedCustomer).set({accounts: firebase.firestore.FieldValue.arrayUnion(account)}, {merge: true})
-
-
-    // this.collectionRef.add({...account});
+    this.collectionRef.doc(selectedCustomer).set({
+        accounts: firebase.firestore.FieldValue.arrayUnion(account)
+      },
+      {merge: true})
   }
 }

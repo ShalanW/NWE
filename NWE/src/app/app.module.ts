@@ -28,8 +28,9 @@ import {NgxMaskModule} from "ngx-mask";
 import {BillFixerComponent} from './components/bill-fixer/bill-fixer.component';
 import {HaulerContactComponent} from './components/hauler-contact/hauler-contact.component';
 import {MatExpansionModule} from "@angular/material/expansion";
-import {MatTableModule} from "@angular/material/table";
 import {MatTabsModule} from "@angular/material/tabs";
+import {FilterCustomerPipe} from './pipes/filterCustomer.pipe';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     AutofocusDirective,
     BillFixerComponent,
     HaulerContactComponent,
+    FilterCustomerPipe,
   ],
 
   imports: [
@@ -62,6 +64,7 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatMenuModule,
     MatExpansionModule,
     MatTabsModule,
+    MatAutocompleteModule,
     FlexModule,
     NgxMaskModule.forRoot(),
 

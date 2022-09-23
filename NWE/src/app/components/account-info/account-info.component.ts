@@ -7,7 +7,6 @@ import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
-import {HaulerContact} from "../../model/general/hauler-contact";
 
 
 @Component({
@@ -17,14 +16,13 @@ import {HaulerContact} from "../../model/general/hauler-contact";
 })
 export class AccountInfoComponent implements OnInit {
 
+  filteredString: string = '';
+
   $customers: Observable<Customer[]>;
 
   selectedCustomer: Customer = {customerName: '', accounts: []};
 
-
   //----------New Customer / On-Call Account Input----------//
-
-  panelOpenState = false;
 
   noteArray: string[] = []
 
@@ -76,6 +74,10 @@ export class AccountInfoComponent implements OnInit {
     this.$customers = this.cs.loadCustomers();
   }
 
+  displayFn(customer: Customer): string {
+    return customer && customer.customerName ? customer.customerName : ''
+  };
+
   ngOnInit(): void {
   }
 
@@ -100,8 +102,15 @@ export class AccountInfoComponent implements OnInit {
 
     this.cs.addCustomer(newCustomer)
   }
-}
 
+  resetSelectedCustomer() {
+    this.selectedCustomer = {customerName: '', accounts: []}
+  }
+
+  resetFilteredString() {
+    this.filteredString = ''
+  }
+}
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)
 

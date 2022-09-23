@@ -4,15 +4,51 @@
 
     <mat-card fxFlex.gt-sm="50" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
 
+      <div fxLayout="row" fxLayoutAlign=" center">
+        <mat-form-field fxFlex>
+          <mat-label>Select Customer</mat-label>
+          <input (keyup.escape)="resetFilteredString(); resetSelectedCustomer()"
+                 [(ngModel)]="filteredString"
+                 [matAutocomplete]="auto"
+                 matInput
+                 placeholder="Choose One" type="text">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedCustomer = $event.option.value"
+                            [displayWith]="displayFn"
+                            autoActiveFirstOption>
+            <mat-option *ngFor="let customer of $customers | async | filterCustomer:filteredString"
+                        [value]="customer">
+              {{customer.customerName}}
+            </mat-option>
+          </mat-autocomplete>
+
+
+        </mat-form-field>
+        <mat-icon (click)="resetFilteredString(); resetSelectedCustomer(); auto.showPanel = false ">delete
+        </mat-icon>
+      </div>
+
+
+      <!--      <mat-form-field appearance="fill" fxFill>-->
+      <!--        <mat-label>Choose a Customer</mat-label>-->
+      <!--        <mat-select [(ngModel)]="selectedCustomer">-->
+      <!--          <mat-option *ngFor="let customer of $customers | async "-->
+      <!--                      [value]="customer">-->
+      <!--            {{customer.customerName}}-->
+      <!--          </mat-option>-->
+      <!--        </mat-select>-->
+      <!--      </mat-form-field>-->
+
       <mat-accordion>
 
-        <mat-expansion-panel hideToggle>
+        <mat-expansion-panel [disabled]="!!filteredString">
           <mat-expansion-panel-header>
             <mat-panel-title>
               New Customer
             </mat-panel-title>
             <mat-panel-description>
-              🚨 Copy DIRECTLY from Feenix 🚨
+              <!--              🚨 Copy DIRECTLY from Feenix 🚨-->
+
+
             </mat-panel-description>
           </mat-expansion-panel-header>
 
@@ -21,23 +57,24 @@
               <mat-label>Customer</mat-label>
               <input autocomplete="off" formControlName="customerName" matInput type="text">
             </mat-form-field>
-
           </form>
+
           <button (click)="onAddNewCustomer()" color="primary" mat-raised-button>Add New Customer</button>
 
         </mat-expansion-panel>
 
-        <mat-expansion-panel (closed)="panelOpenState = false"
-                             (opened)="panelOpenState = true">
+
+        <mat-expansion-panel>
+
           <mat-expansion-panel-header>
             <mat-panel-title>
               New On-Call Account
             </mat-panel-title>
             <mat-panel-description>
               For: {{this.selectedCustomer.customerName}}
-              <!--              Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
             </mat-panel-description>
           </mat-expansion-panel-header>
+
           <mat-card-title>Service Info</mat-card-title>
 
           <form [formGroup]="addressForm" class="login-form">
@@ -151,7 +188,7 @@
             </mat-form-field>
 
           </form>
-          <button (click)="onAddNewAccount()" [disabled]="selectedCustomer.customerName ? false : true" color="primary"
+          <button (click)="onAddNewAccount()" [disabled]="!selectedCustomer.customerName" color="primary"
                   mat-raised-button>Add Account
           </button>
 
@@ -176,12 +213,23 @@
 
         <mat-tab-group *ngIf="selectedCustomer as customer">
           <ng-container *ngFor="let accounts of selectedCustomer.accounts">
-            <mat-tab label="{{accounts.type}}"> Content 1</mat-tab>
+            <mat-tab label="{{customer.customerName}}{{' - '}}{{accounts.type}}">
+
+              <div fxLayout="column">
+                <div fxLayout="column">
+                  {{'Service Address: '}}{{accounts.address.streetAddress}}
+                </div>
+              </div>
+
+            </mat-tab>
 
           </ng-container>
         </mat-tab-group>
 
 
+        <div>
+
+        </div>
       </mat-card-content>
 
     </mat-card>
