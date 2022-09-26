@@ -184,7 +184,7 @@
             </mat-form-field>
 
             <mat-form-field>
-              <mat-label>Extra Boxes Cost Hauler</mat-label>
+              <mat-label>Extra Boxes Cost Customer</mat-label>
               <input autocomplete="off" formControlName="extraBoxCostCustomer" matInput>
             </mat-form-field>
 
@@ -220,7 +220,7 @@
                 <div fxLayout="column">
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Service Address: '}}
                     </div>
                     <div class="field-data">
@@ -229,7 +229,7 @@
                   </div>
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Account #: '}}
                     </div>
                     <div class="field-data">
@@ -237,7 +237,7 @@
                     </div>
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Site #: '}}
                     </div>
                     <div class="field-data">
@@ -246,7 +246,7 @@
                   </div>
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Container: '}}
                     </div>
                     <div class="field-data">
@@ -254,7 +254,7 @@
                     </div>
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Min. Containers Per Service: '}}
                     </div>
                     <div class="field-data">
@@ -262,7 +262,7 @@
                     </div>
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Frequency: '}}
                     </div>
                     <div class="field-data">
@@ -270,7 +270,7 @@
                     </div>
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Price per Box: '}}
                     </div>
                     <div class="field-data">
@@ -280,7 +280,7 @@
                   </div>
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Expected Bill Amount: '}}
                     </div>
                     <div class="field-data">
@@ -289,7 +289,7 @@
                   </div>
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Extra Box Amount (Cust): '}}
                     </div>
                     <div class="field-data" fxFlex="7">
@@ -312,7 +312,7 @@
 
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Extra Box Amount (Hauler): '}}
                     </div>
                     <div class="field-data" fxFlex="7">
@@ -336,8 +336,18 @@
 
                   </div>
 
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
+                    <div class="field-label" fxFlex="30">
+                      {{'Description/API Notes: '}}
+                    </div>
+                    <div class="field-data" fxFlex="75">
+                      {{accounts.container.description}}
+                    </div>
+
+                  </div>
+
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                    <div class="field-label" fxFlex="20">
+                    <div class="field-label" fxFlex="30">
                       {{'Notes: '}}
                     </div>
                     <div fxFlex="column">
@@ -345,11 +355,12 @@
                         <div>{{note}}</div>
                       </div>
                       <div #deleteButton>
-                        <button (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"
+                        <button
+                          (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"
 
-                                class="delete-button"
-                                color="primary"
-                                mat-raised-button>
+                          class="delete-button"
+                          color="primary"
+                          mat-raised-button>
                           Delete
                           Account
                         </button>
