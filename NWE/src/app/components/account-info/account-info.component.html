@@ -2,7 +2,7 @@
 
   <div fxFlex="row" fxLayoutAlign="center center">
 
-    <mat-card fxFlex.gt-sm="50" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
+    <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
 
       <div fxLayout="row" fxLayoutAlign=" center">
         <mat-form-field fxFlex>
@@ -206,7 +206,7 @@
 <div fxLayout="column" fxLayoutAlign="space-between stretch">
 
   <div fxFlex="row" fxLayoutAlign="center center">
-    <mat-card fxFlex.gt-sm="50" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
+    <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
 
 
       <mat-card-content>
@@ -215,9 +215,11 @@
           <ng-container *ngFor="let accounts of selectedCustomer.accounts">
             <mat-tab label="{{customer.customerName}}{{' - '}}{{accounts.type}}">
 
-              <div fxLayout="column">
+              <div class="service-box" fxLayout="column">
                 <div fxLayout="column">
-                  {{'Service Address: '}}{{accounts.address.streetAddress}}
+                  <div class="service-address">
+                    {{'Service Address: '}}{{accounts.address.streetAddress}}
+                  </div>
                 </div>
               </div>
 
