@@ -105,6 +105,7 @@ export class AccountInfoComponent implements OnInit {
     }
 
     this.cs.addCustomer(newCustomer)
+    this.customerForm.reset()
   }
 
   resetSelectedCustomer() {
