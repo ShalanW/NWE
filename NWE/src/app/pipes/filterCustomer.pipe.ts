@@ -13,7 +13,7 @@ export class FilterCustomerPipe implements PipeTransform {
 
     const customers: any = []
     value.map((customer: Customer) => {
-      const lowerString = filterString
+      const lowerString = filterString.toLowerCase()
       const lowerCustomer = customer.customerName.toLowerCase()
       console.log()
       if (lowerCustomer.includes(lowerString)) {
