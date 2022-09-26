@@ -127,10 +127,6 @@
           <form [formGroup]="containerForm" class="login-form" fxLayout="column">
 
             <mat-card-title>Container</mat-card-title>
-            <mat-form-field>
-              <mat-label>Type</mat-label>
-              <input autocomplete="off" formControlName="type" matInput>
-            </mat-form-field>
 
             <mat-form-field>
               <mat-label>Count</mat-label>
@@ -144,7 +140,12 @@
 
             <mat-form-field>
               <mat-label>Unit</mat-label>
-              <input autocomplete="off" formControlName="unit" matInput>
+              <input autocomplete="off" formControlName="unit" matInput placeholder="Gal, etc.">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Type</mat-label>
+              <input autocomplete="off" formControlName="type" matInput placeholder="Tub, Box, etc.">
             </mat-form-field>
 
             <mat-form-field>
@@ -167,7 +168,7 @@
               <input autocomplete="off" formControlName="frequencyByWeeks" matInput>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field disabled>
               <mat-label>Per Service Cost</mat-label>
               <input autocomplete="off" formControlName="perServiceCost" matInput>
             </mat-form-field>
@@ -217,9 +218,161 @@
 
               <div class="service-box" fxLayout="column">
                 <div fxLayout="column">
-                  <div class="service-address">
-                    {{'Service Address: '}}{{accounts.address.streetAddress}}
+
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Service Address: '}}
+                    </div>
+                    <div class="field-data">
+                      {{accounts.address.streetAddress}}
+                    </div>
                   </div>
+
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Account #: '}}
+                    </div>
+                    <div class="field-data">
+                      {{accounts.accountNumber}}
+                    </div>
+                  </div>
+                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Site #: '}}
+                    </div>
+                    <div class="field-data">
+                      {{accounts.siteNumber}}
+                    </div>
+                  </div>
+
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Container: '}}
+                    </div>
+                    <div class="field-data">
+                      {{'(' + accounts.container.count + ')'}}&nbsp;{{accounts.container.size}}&nbsp;{{accounts.container.unit}}&nbsp;{{accounts.container.type}}
+                    </div>
+                  </div>
+                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Min. Containers Per Service: '}}
+                    </div>
+                    <div class="field-data">
+                      {{accounts.container.minimumPerService}}
+                    </div>
+                  </div>
+                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Frequency: '}}
+                    </div>
+                    <div class="field-data">
+                      {{'Every ' + accounts.container.frequencyByWeeks + ' Weeks'}}
+                    </div>
+                  </div>
+                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Price per Box: '}}
+                    </div>
+                    <div class="field-data">
+                      {{accounts.container.price | currency}}
+
+                    </div>
+                  </div>
+
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Expected Bill Amount: '}}
+                    </div>
+                    <div class="field-data">
+                      {{accounts.container.monthlyCost | currency}}
+                    </div>
+                  </div>
+
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
+                    <div class="field-label" fxFlex="20">
+                      {{'Extra Box Amount (Cust): '}}
+                    </div>
+                    <div class="field-data" fxFlex="7">
+                      {{accounts.container.extraBoxCostCustomer | currency}}
+                    </div>
+
+                    <input #extraBoxesCustomerInput (focus)="extraBoxesCustomerInput.select()"
+                           [(ngModel)]="extraBoxesCustomer"
+                           fxFlex="5"
+                           matInput
+                           placeholder="0"
+                           type="number">
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+                    <div class="field-data" fxFlex="2">
+                      {{calcExtraCustomer(accounts.container.extraBoxCostCustomer) | currency}}
+                    </div>
+
+                  </div>
+                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Extra Box Amount (Hauler): '}}
+                    </div>
+                    <div class="field-data" fxFlex="7">
+                      {{accounts.container.extraBoxCostHauler | currency}}
+
+                    </div>
+
+                    <input #extraBoxesHaulerInput (focus)="extraBoxesHaulerInput.select()"
+                           [(ngModel)]="extraBoxesHauler"
+                           fxFlex="5"
+                           matInput
+                           placeholder="0"
+                           type="number">
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+                    <div class="field-data" fxFlex="10">
+                      {{calcExtraHauler(accounts.container.extraBoxCostHauler) | currency}}
+                    </div>
+
+
+                  </div>
+
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="20">
+                      {{'Notes: '}}
+                    </div>
+                    <div fxFlex="column">
+                      <div *ngFor="let note of accounts.notes">
+                        <div>{{note}}</div>
+                      </div>
+                      <div #deleteButton>
+                        <button (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"
+
+                                class="delete-button"
+                                color="primary"
+                                mat-raised-button>
+                          Delete
+                          Account
+                        </button>
+                      </div>
+                      <div #confirmButtons [hidden]="true">
+                        <button #denyButton
+                                (click)="confirmDeleteButton.disabled = true; denyButton.disabled = true; confirmButtons.hidden = true; deleteButton.hidden = false"
+                                [disabled]="true"
+                                class="deny-button"
+                                color="primary" mat-raised-button>
+                          No
+                        </button>
+                        <button #confirmDeleteButton (click)="onConfirmDeleteAccount(accounts)" [disabled]="true"
+                                class="confirm-button"
+                                color="primary" mat-raised-button> Yes
+                        </button>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
 

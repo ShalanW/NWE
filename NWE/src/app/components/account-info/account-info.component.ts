@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {Component, ElementRef, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from "@angular/forms";
 import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
 import {OnCallAccount} from "../../model/stericycle/OnCallAccount";
@@ -56,19 +56,23 @@ export class AccountInfoComponent implements OnInit {
     count: [''],
     size: [''],
     unit: [''],
-    description: [''],
+    description: ['N/A'],
 
     price: [''],
     minimumPerService: [''],
     frequencyByWeeks: [''],
 
-    perServiceCost: [''],
+    perServiceCost: ['N/A'],
     monthlyCost: [''],
 
     extraBoxCostHauler: [''],
     extraBoxCostCustomer: [''],
 
   })
+  extraBoxesCustomer: number = 0;
+  extraBoxesHauler: number = 0;
+  showConfirmButtons: boolean = false;
+
 
   constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
     this.$customers = this.cs.loadCustomers();
@@ -89,7 +93,7 @@ export class AccountInfoComponent implements OnInit {
       notes: this.noteArray
     }
 
-    this.ocaService.addHaulerContact(account, this.selectedCustomer.customerName);
+    this.ocaService.addOnCallAccount(account, this.selectedCustomer.customerName);
     this.containerForm.reset()
     this.accountForm.reset()
     this.addressForm.reset()
@@ -109,6 +113,24 @@ export class AccountInfoComponent implements OnInit {
 
   resetFilteredString() {
     this.filteredString = ''
+  }
+
+  calcExtraCustomer(extraBoxesCustomer: string) {
+    return this.extraBoxesCustomer * +extraBoxesCustomer
+  }
+
+  calcExtraHauler(extraBoxCostHauler: string) {
+    return this.extraBoxesHauler * +extraBoxCostHauler
+  }
+
+  onDeleteAccount(element: ElementRef) {
+    element.nativeElement.disabled = false
+    element.nativeElement.visible = true
+  }
+
+  onConfirmDeleteAccount(account: OnCallAccount) {
+
+    this.ocaService.removeOnCallAccount(account, this.selectedCustomer.customerName)
   }
 }
 
