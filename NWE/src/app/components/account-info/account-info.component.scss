@@ -26,3 +26,11 @@ mat-card {
   margin-top: .5em;
   margin-right: .5em;
 }
+
+.rainbow-text {
+  background-image: repeating-linear-gradient(65deg, indigo, blue, green, violet, yellow, orange, red);
+  text-align: center;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow 2s ease infinite;
+}

@@ -31,6 +31,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTabsModule} from "@angular/material/tabs";
 import {FilterCustomerPipe} from './pipes/filterCustomer.pipe';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     MatExpansionModule,
     MatTabsModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     FlexModule,
     NgxMaskModule.forRoot(),
 

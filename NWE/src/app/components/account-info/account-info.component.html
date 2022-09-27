@@ -60,9 +60,28 @@
               <mat-label>Customer</mat-label>
               <input autocomplete="off" formControlName="customerName" matInput type="text">
             </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Next Hauler API</mat-label>
+              <input [matDatepicker]="picker1" formControlName="haulerApiDate" matInput>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle [for]="picker1" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Next Customer API</mat-label>
+              <input [matDatepicker]="picker2" formControlName="customerApiDate" matInput>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle [for]="picker2" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
           </form>
 
+
           <button (click)="onAddNewCustomer()" color="primary" mat-raised-button>Add New Customer</button>
+
 
         </mat-expansion-panel>
 
@@ -309,8 +328,11 @@
                     <div>&nbsp;</div>
                     <div>&nbsp;</div>
 
-                    <div class="field-data" fxFlex="2">
+                    <div class="field-data" fxFlex="10">
                       {{calcExtraCustomer(accounts.container.extraBoxCostCustomer) | currency}}
+                    </div>
+                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="15">*Update
+                      Pricing*
                     </div>
 
                   </div>
@@ -329,25 +351,38 @@
                            matInput
                            placeholder="0"
                            type="number">
+
                     <div>&nbsp;</div>
                     <div>&nbsp;</div>
 
                     <div class="field-data" fxFlex="10">
                       {{calcExtraHauler(accounts.container.extraBoxCostHauler) | currency}}
                     </div>
-
+                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="15">*Update
+                      Pricing*
+                    </div>
 
                   </div>
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
                     <div class="field-label" fxFlex="30">
-                      {{'Description/API Notes: '}}
+                      {{'Next Hauler API: '}}
                     </div>
-                    <div class="field-data" fxFlex="75">
-                      {{accounts.container.description}}
+                    <div class="field-data" fxFlex="40">
+                      {{selectedCustomer.haulerApiDate | date:'MMMM dd, yyyy'}}
                     </div>
 
                   </div>
+                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="30">
+                      {{'Next Customer API: '}}
+                    </div>
+                    <div class="field-data" fxFlex="40">
+                      {{selectedCustomer.customerApiDate  | date:'MMMM dd, yyyy'}}
+                    </div>
+
+                  </div>
+
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                     <div class="field-label" fxFlex="30">

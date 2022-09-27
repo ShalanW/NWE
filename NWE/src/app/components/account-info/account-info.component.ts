@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
 import {OnCallAccount} from "../../model/stericycle/OnCallAccount";
@@ -16,18 +16,22 @@ import {Observable} from "rxjs";
 })
 export class AccountInfoComponent implements OnInit {
 
+  today = new Date()
+
   filteredString: string = '';
 
   $customers: Observable<Customer[]>;
 
-  selectedCustomer: Customer = {customerName: '', accounts: []};
+  selectedCustomer: Customer = {customerName: '', haulerApiDate: undefined, customerApiDate: undefined, accounts: []};
 
   //----------New Customer / On-Call Account Input----------//
 
   noteArray: string[] = []
 
   customerForm = this.fb.group({
-    customerName: ['']
+    customerName: [''],
+    haulerApiDate: [new Date()],
+    customerApiDate: [new Date()]
   })
 
   accountForm = this.fb.group({
@@ -100,9 +104,14 @@ export class AccountInfoComponent implements OnInit {
   }
 
   onAddNewCustomer() {
+
+
     const newCustomer = <Customer>{
       ...this.customerForm.value
     }
+
+    newCustomer.haulerApiDate = new Date(this.customerForm.value.haulerApiDate?.getFullYear() ?? 2000, this.customerForm?.value.haulerApiDate?.getMonth() ?? 0, this.customerForm.value.haulerApiDate?.getDate() ?? 1)
+    newCustomer.customerApiDate = new Date(this.customerForm.value.customerApiDate?.getFullYear() ?? 2000, this.customerForm?.value.customerApiDate?.getMonth() ?? 0, this.customerForm.value.customerApiDate?.getDate() ?? 1)
 
     this.cs.addCustomer(newCustomer)
     this.customerForm.reset()
@@ -132,6 +141,13 @@ export class AccountInfoComponent implements OnInit {
   onConfirmDeleteAccount(account: OnCallAccount) {
 
     this.ocaService.removeOnCallAccount(account, this.selectedCustomer.customerName)
+  }
+
+  compareDates(date: any) {
+
+    if (date && date <= this.today) {
+      return true
+    } else return false
   }
 }
 

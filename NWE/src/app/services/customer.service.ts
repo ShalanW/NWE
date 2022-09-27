@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {map, Observable} from "rxjs";
 import {Customer} from "../model/general/customer";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,8 @@ export class CustomerService {
               id: customer.payload.doc.id,
               ...customer.payload.doc.data() as Customer,
               customerName: customer.payload.doc.id,
+              haulerApiDate: customer.payload.doc?.get('haulerApiDate')?.toDate(),
+              customerApiDate: customer.payload.doc?.get('customerApiDate')?.toDate()
             }
           })
         })
@@ -30,10 +33,12 @@ export class CustomerService {
   }
 
 
-  addCustomer(customer: Partial<Customer>) {
-    const id = customer.customerName
-    customer = {}
-    this.collectionRef.doc(id).set(customer, {merge: true})
+  addCustomer(newCustomer: Partial<Customer>) {
+    const id = newCustomer.customerName
+
+    newCustomer = {haulerApiDate: newCustomer.haulerApiDate, customerApiDate: newCustomer.customerApiDate}
+
+    this.collectionRef.doc(id).set(newCustomer, {merge: true})
   }
 
 
