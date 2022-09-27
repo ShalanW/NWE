@@ -7,6 +7,7 @@ import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
+import {sendEmailVerification} from "@angular/fire/auth";
 
 
 @Component({
@@ -22,7 +23,13 @@ export class AccountInfoComponent implements OnInit {
 
   $customers: Observable<Customer[]>;
 
-  selectedCustomer: Customer = {customerName: '', haulerApiDate: undefined, customerApiDate: undefined, accounts: []};
+  selectedCustomer: Customer = {
+    customerName: '',
+    haulerApiDate: undefined,
+    customerApiDate: undefined,
+    customerApiRate: '',
+    accounts: []
+  };
 
   //----------New Customer / On-Call Account Input----------//
 
@@ -149,9 +156,19 @@ export class AccountInfoComponent implements OnInit {
     } else return false
   }
 
-  onUpdateCustomer(selctedCustomer: Customer, customerForm: FormGroup) {
-    this.cs.updateCustomer(selctedCustomer, customerForm)
+  onUpdateCustomer(selectedCustomer: Customer, customerForm: FormGroup) {
+    this.cs.updateCustomer(selectedCustomer, customerForm)
     this.customerForm.reset()
+  }
+
+  addOneYear(selectedCustomer: Customer) {
+    const oldYear: any = selectedCustomer.customerApiDate ? selectedCustomer.haulerApiDate?.getFullYear() : undefined
+    const newYear = oldYear ? oldYear + 1 : undefined
+    return selectedCustomer.customerApiDate?.setFullYear(newYear)
+  }
+
+  addOneApi(cost: any, apiRate: any): number {
+    return +((+cost * (+apiRate / 100)) + +cost)
   }
 }
 

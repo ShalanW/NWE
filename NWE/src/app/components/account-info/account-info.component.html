@@ -99,8 +99,10 @@
 
           <mat-card-title>Service Info</mat-card-title>
 
-          <form *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate" [formGroup]="customerForm"
-                class="login-form">
+          <form
+            *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate || !selectedCustomer.customerApiRate"
+            [formGroup]="customerForm"
+            class="login-form">
 
 
             <mat-form-field appearance="fill">
@@ -382,7 +384,7 @@
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
                     <div class="field-label" fxFlex="30">
-                      {{'Next Customer API: '}}
+                      {{'Customer Start: '}}
                     </div>
                     <div class="field-data" fxFlex="40">
                       {{selectedCustomer.customerApiDate | date:'MMMM dd, yyyy'}}
@@ -391,7 +393,27 @@
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
                     <div class="field-label" fxFlex="30">
-                      {{'Next Hauler API: '}}
+                      {{'Customer APIs: ' + '@' + selectedCustomer.customerApiRate + '%'}}
+                    </div>
+                    <div class="field-data" fxFlex="40">
+                      {{addOneYear(selectedCustomer) | date:'MMMM dd, yyyy'}} {{addOneApi(accounts.container.extraBoxCostCustomer, selectedCustomer.customerApiRate) | currency}}
+                    </div>
+
+
+                  </div>
+
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
+                    <div class="field-label" fxFlex="30">
+                      {{'Customer Start: '}}
+                    </div>
+                    <div class="field-data" fxFlex="40">
+                      {{selectedCustomer.customerApiDate | date:'MMMM dd, yyyy'}}
+                    </div>
+
+                  </div>
+                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                    <div class="field-label" fxFlex="30">
+                      {{'Hauler Start: '}}
                     </div>
                     <div class="field-data" fxFlex="40">
                       {{selectedCustomer.haulerApiDate  | date:'MMMM dd, yyyy'}}
