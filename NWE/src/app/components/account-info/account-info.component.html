@@ -77,6 +77,11 @@
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
 
+            <mat-form-field class="customer" fxFill>
+              <mat-label>API Rate</mat-label>
+              <input autocomplete="off" formControlName="customerApiRate" matInput type="text">
+            </mat-form-field>
+
           </form>
 
 
@@ -93,7 +98,7 @@
               New On-Call Account
             </mat-panel-title>
             <mat-panel-description>
-              For: {{this.selectedCustomer.customerName}}
+              For: {{selectedCustomer.customerName}}
             </mat-panel-description>
           </mat-expansion-panel-header>
 

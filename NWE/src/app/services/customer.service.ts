@@ -26,7 +26,8 @@ export class CustomerService {
               ...customer.payload.doc.data() as Customer,
               customerName: customer.payload.doc.id,
               haulerApiDate: customer.payload.doc?.get('haulerApiDate')?.toDate(),
-              customerApiDate: customer.payload.doc?.get('customerApiDate')?.toDate()
+              customerApiDate: customer.payload.doc?.get('customerApiDate')?.toDate(),
+              customerApiRate: customer.payload.doc?.get('customerApiRate')
             }
           })
         })
@@ -50,11 +51,13 @@ export class CustomerService {
 
     const haulerDate = customerForm.controls['haulerApiDate'].value
     const customerDate = customerForm.controls['customerApiDate'].value
+    const customerApiRate = customerForm.controls['customerApiRate'].value
 
 
     this.collectionRef.doc(selectedCustomer.customerName).update({
       customerApiDate: customerDate,
-      haulerApiDate: haulerDate
+      haulerApiDate: haulerDate,
+      customerApiRate: customerApiRate
     })
   }
 

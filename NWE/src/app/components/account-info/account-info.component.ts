@@ -7,7 +7,6 @@ import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
-import {sendEmailVerification} from "@angular/fire/auth";
 
 
 @Component({
@@ -38,7 +37,8 @@ export class AccountInfoComponent implements OnInit {
   customerForm = this.fb.group({
     customerName: [''],
     haulerApiDate: [new Date()],
-    customerApiDate: [new Date()]
+    customerApiDate: [new Date()],
+    customerApiRate: ['']
   })
 
   accountForm = this.fb.group({
@@ -173,4 +173,3 @@ export class AccountInfoComponent implements OnInit {
 }
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)
-
