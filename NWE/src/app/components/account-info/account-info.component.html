@@ -170,13 +170,9 @@
               <input autocomplete="off" formControlName="type" matInput placeholder="Tub, Box, etc.">
             </mat-form-field>
 
-            <mat-form-field>
-              <mat-label>Description</mat-label>
-              <input autocomplete="off" formControlName="description" matInput>
-            </mat-form-field>
 
             <mat-form-field>
-              <mat-label>Price</mat-label>
+              <mat-label>Price Per Container</mat-label>
               <input autocomplete="off" formControlName="price" matInput>
             </mat-form-field>
 
@@ -188,11 +184,6 @@
             <mat-form-field>
               <mat-label>Frequency in Weeks</mat-label>
               <input autocomplete="off" formControlName="frequencyByWeeks" matInput>
-            </mat-form-field>
-
-            <mat-form-field disabled>
-              <mat-label>Per Service Cost</mat-label>
-              <input autocomplete="off" formControlName="perServiceCost" matInput>
             </mat-form-field>
 
             <mat-form-field>
@@ -366,19 +357,19 @@
 
                   <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
                     <div class="field-label" fxFlex="30">
-                      {{'Next Hauler API: '}}
+                      {{'Next Customer API: '}}
                     </div>
                     <div class="field-data" fxFlex="40">
-                      {{selectedCustomer.haulerApiDate | date:'MMMM dd, yyyy'}}
+                      {{selectedCustomer.customerApiDate | date:'MMMM dd, yyyy'}}
                     </div>
 
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
                     <div class="field-label" fxFlex="30">
-                      {{'Next Customer API: '}}
+                      {{'Next Hauler API: '}}
                     </div>
                     <div class="field-data" fxFlex="40">
-                      {{selectedCustomer.customerApiDate  | date:'MMMM dd, yyyy'}}
+                      {{selectedCustomer.haulerApiDate  | date:'MMMM dd, yyyy'}}
                     </div>
 
                   </div>

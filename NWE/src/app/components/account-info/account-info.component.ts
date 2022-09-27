@@ -60,13 +60,11 @@ export class AccountInfoComponent implements OnInit {
     count: [''],
     size: [''],
     unit: [''],
-    description: ['N/A'],
 
     price: [''],
     minimumPerService: [''],
     frequencyByWeeks: [''],
 
-    perServiceCost: ['N/A'],
     monthlyCost: [''],
 
     extraBoxCostHauler: [''],
