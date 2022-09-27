@@ -99,6 +99,31 @@
 
           <mat-card-title>Service Info</mat-card-title>
 
+          <form *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate" [formGroup]="customerForm"
+                class="login-form">
+
+
+            <mat-form-field appearance="fill">
+              <mat-label>Next Hauler API</mat-label>
+              <input [matDatepicker]="picker3" formControlName="haulerApiDate" matInput>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle [for]="picker3" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Next Customer API</mat-label>
+              <input [matDatepicker]="picker4" formControlName="customerApiDate" matInput>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle [for]="picker4" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker4></mat-datepicker>
+            </mat-form-field>
+            <button
+              (click)="onUpdateCustomer(selectedCustomer, customerForm)"
+              color="primary" mat-raised-button>Add Dates
+            </button>
+          </form>
+
           <form [formGroup]="addressForm" class="login-form">
 
 

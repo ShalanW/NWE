@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
 import {OnCallAccount} from "../../model/stericycle/OnCallAccount";
@@ -78,6 +78,7 @@ export class AccountInfoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
     this.$customers = this.cs.loadCustomers();
+
   }
 
   displayFn(customer: Customer): string {
@@ -146,6 +147,11 @@ export class AccountInfoComponent implements OnInit {
     if (date && date <= this.today) {
       return true
     } else return false
+  }
+
+  onUpdateCustomer(selctedCustomer: Customer, customerForm: FormGroup) {
+    this.cs.updateCustomer(selctedCustomer, customerForm)
+    this.customerForm.reset()
   }
 }
 

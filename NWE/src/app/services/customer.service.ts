@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {map, Observable} from "rxjs";
 import {Customer} from "../model/general/customer";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {FormGroup} from "@angular/forms";
 
 
 @Injectable({
@@ -39,6 +40,18 @@ export class CustomerService {
     newCustomer = {haulerApiDate: newCustomer.haulerApiDate, customerApiDate: newCustomer.customerApiDate}
 
     this.collectionRef.doc(id).set(newCustomer, {merge: true})
+  }
+
+  updateCustomer(selectedCustomer: Customer, customerForm: FormGroup) {
+
+    const haulerDate = customerForm.controls['haulerApiDate'].value
+    const customerDate = customerForm.controls['customerApiDate'].value
+
+
+    this.collectionRef.doc(selectedCustomer.customerName).update({
+      customerApiDate: customerDate,
+      haulerApiDate: haulerDate
+    })
   }
 
 
