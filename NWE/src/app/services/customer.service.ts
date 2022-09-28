@@ -28,10 +28,12 @@ export class CustomerService {
               haulerApiDate: customer.payload.doc?.get('haulerApiDate')?.toDate(),
               customerApiDate: customer.payload.doc?.get('customerApiDate')?.toDate(),
               customerApiRate: customer.payload.doc?.get('customerApiRate')
+              
             }
           })
         })
       )
+
   }
 
 
@@ -47,11 +49,11 @@ export class CustomerService {
     this.collectionRef.doc(id).set(newCustomer, {merge: true})
   }
 
-  updateCustomer(selectedCustomer: Customer, customerForm: FormGroup) {
+  updateCustomer(selectedCustomer: Customer) {
 
-    const haulerDate = customerForm.controls['haulerApiDate'].value
-    const customerDate = customerForm.controls['customerApiDate'].value
-    const customerApiRate = customerForm.controls['customerApiRate'].value
+    const haulerDate = selectedCustomer.haulerApiDate
+    const customerDate = selectedCustomer.customerApiDate
+    const customerApiRate = selectedCustomer.customerApiRate
 
 
     this.collectionRef.doc(selectedCustomer.customerName).update({

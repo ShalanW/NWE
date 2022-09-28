@@ -15,7 +15,7 @@
             placeholder="Choose One"
             type="text">
           <mat-autocomplete #auto="matAutocomplete"
-                            (optionSelected)="selectedCustomer = $event.option.value"
+                            (optionSelected)="selectedCustomer = $event.option.value; docheck()"
                             [displayWith]="displayFn"
                             autoActiveFirstOption>
             <mat-option *ngFor="let customer of $customers | async | filterCustomer:filteredString"
@@ -77,7 +77,7 @@
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field class="customer" fxFill>
+            <mat-form-field class="customer">
               <mat-label>API Rate</mat-label>
               <input autocomplete="off" formControlName="customerApiRate" matInput type="text">
             </mat-form-field>
@@ -104,37 +104,37 @@
 
           <mat-card-title>Service Info</mat-card-title>
 
-          <form
+          <div
             *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate || !selectedCustomer.customerApiRate"
-            [formGroup]="customerForm"
             class="login-form">
 
 
             <mat-form-field appearance="fill">
-              <mat-label>Next Hauler API</mat-label>
-              <input [matDatepicker]="picker3" formControlName="haulerApiDate" matInput>
+              <mat-label>Hauler Start Date</mat-label>
+              <input [(ngModel)]="selectedCustomer.haulerApiDate" [matDatepicker]="picker3"
+                     matInput>
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle [for]="picker3" matSuffix></mat-datepicker-toggle>
               <mat-datepicker #picker3></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
-              <mat-label>Next Customer API</mat-label>
-              <input [matDatepicker]="picker4" formControlName="customerApiDate" matInput>
+              <mat-label>Customer Start Date</mat-label>
+              <input [(ngModel)]="selectedCustomer.customerApiDate" [matDatepicker]="picker4" matInput>
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle [for]="picker4" matSuffix></mat-datepicker-toggle>
               <mat-datepicker #picker4></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field class="customer" fxFill>
+            <mat-form-field class="customer">
               <mat-label>API Rate</mat-label>
-              <input autocomplete="off" formControlName="customerApiRate" matInput type="text">
+              <input [ngModel]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
             </mat-form-field>
             <button
-              (click)="onUpdateCustomer(selectedCustomer, customerForm)"
-              color="primary" mat-raised-button>Add Dates
+              (click)="onUpdateCustomer(selectedCustomer)"
+              color="primary" mat-raised-button>Add Data
             </button>
-          </form>
+          </div>
 
           <form [formGroup]="addressForm" class="login-form">
 
@@ -231,6 +231,11 @@
             <mat-form-field>
               <mat-label>Extra Boxes Cost Hauler</mat-label>
               <input autocomplete="off" formControlName="extraBoxCostHauler" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Extra Boxes Cost Customer (Start)</mat-label>
+              <input autocomplete="off" formControlName="extraBoxCostCustomerOriginal" matInput>
             </mat-form-field>
 
             <mat-form-field>
@@ -346,6 +351,7 @@
                       {{accounts.container.extraBoxCostCustomer | currency}}
                     </div>
 
+
                     <input #extraBoxesCustomerInput (focus)="extraBoxesCustomerInput.select()"
                            [(ngModel)]="extraBoxesCustomer"
                            fxFlex="5"
@@ -359,9 +365,10 @@
                     <div class="field-data" fxFlex="10">
                       {{calcExtraCustomer(accounts.container.extraBoxCostCustomer) | currency}}
                     </div>
-                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="15">*Update
-                      Pricing*
-                    </div>
+                    <!--                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
+                    <!--                      Pricing*-->
+                    <!--                    </div>-->
+                    <!--                    this was cool - use it somewhere else-->
 
                   </div>
                   <div class="group-row" fxFlex="row" fxLayoutAlign="start">
@@ -386,9 +393,10 @@
                     <div class="field-data" fxFlex="10">
                       {{calcExtraHauler(accounts.container.extraBoxCostHauler) | currency}}
                     </div>
-                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="15">*Update
-                      Pricing*
-                    </div>
+
+                    <!--                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
+                    <!--                      Pricing*-->
+                    <!--                    </div>-->
 
                   </div>
 
@@ -397,31 +405,31 @@
                       {{'Customer Start: '}}
                     </div>
                     <div class="field-data" fxFlex="40">
-                      {{selectedCustomer.customerApiDate | date:'MMMM dd, yyyy'}}
+                      {{selectedCustomer.customerApiDate | date:'MM/dd/yy'}}
+                      - {{accounts.container.extraBoxCostCustomerOriginal | currency}}
                     </div>
 
                   </div>
-                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                  <div class="display-row" fxLayout="row" fxLayoutAlign="start">
                     <div class="field-label" fxFlex="30">
                       {{'Customer APIs: ' + '@' + selectedCustomer.customerApiRate + '%'}}
                     </div>
-                    <div class="field-data" fxFlex="40">
-                      {{addOneYear(selectedCustomer) | date:'MMMM dd, yyyy'}} {{addOneApi(accounts.container.extraBoxCostCustomer, selectedCustomer.customerApiRate) | currency}}
+                    <div class="field-data" fxFlex="40" fxLayout="column">
+                      <div>
+                        {{addOneYear(selectedCustomer) | date:'MM/dd/yy'}}
+                        - {{addOneApi(accounts.container.extraBoxCostCustomerOriginal, selectedCustomer.customerApiRate) | currency}}
+                      </div>
+                      <div>
+                        {{addTwoYears(selectedCustomer) | date:'MM/dd/yy'}}
+                        - {{addTwoApis(accounts.container.extraBoxCostCustomerOriginal, selectedCustomer.customerApiRate) | currency}}
+                      </div>
+
                     </div>
 
 
                   </div>
 
-                  <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
-                    <div class="field-label" fxFlex="30">
-                      {{'Customer Start: '}}
-                    </div>
-                    <div class="field-data" fxFlex="40">
-                      {{selectedCustomer.customerApiDate | date:'MMMM dd, yyyy'}}
-                    </div>
-
-                  </div>
-                  <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                  <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                     <div class="field-label" fxFlex="30">
                       {{'Hauler Start: '}}
                     </div>

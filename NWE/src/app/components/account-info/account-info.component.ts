@@ -16,7 +16,9 @@ import {Observable} from "rxjs";
 })
 export class AccountInfoComponent implements OnInit {
 
+
   today = new Date()
+
 
   filteredString: string = '';
 
@@ -75,6 +77,7 @@ export class AccountInfoComponent implements OnInit {
     monthlyCost: [''],
 
     extraBoxCostHauler: [''],
+    extraBoxCostCustomerOriginal: [''],
     extraBoxCostCustomer: [''],
 
   })
@@ -85,7 +88,6 @@ export class AccountInfoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
     this.$customers = this.cs.loadCustomers();
-
   }
 
   displayFn(customer: Customer): string {
@@ -149,15 +151,17 @@ export class AccountInfoComponent implements OnInit {
     this.ocaService.removeOnCallAccount(account, this.selectedCustomer.customerName)
   }
 
-  compareDates(date: any) {
+  // compareDates(date: any) {
+  //
+  //   if (date && date <= this.today) {
+  //     return true
+  //   } else return false
+  // }
 
-    if (date && date <= this.today) {
-      return true
-    } else return false
-  }
+  // this was cool - use it again
 
-  onUpdateCustomer(selectedCustomer: Customer, customerForm: FormGroup) {
-    this.cs.updateCustomer(selectedCustomer, customerForm)
+  onUpdateCustomer(selectedCustomer: Customer) {
+    this.cs.updateCustomer(selectedCustomer)
     this.customerForm.reset()
   }
 
@@ -167,8 +171,27 @@ export class AccountInfoComponent implements OnInit {
     return selectedCustomer.customerApiDate?.setFullYear(newYear)
   }
 
+  addTwoYears(selectedCustomer: Customer) {
+    const oldYear: any = selectedCustomer.customerApiDate ? selectedCustomer.haulerApiDate?.getFullYear() : undefined
+    const newYear = oldYear ? oldYear + 2 : undefined
+    return selectedCustomer.customerApiDate?.setFullYear(newYear)
+  }
+
   addOneApi(cost: any, apiRate: any): number {
     return +((+cost * (+apiRate / 100)) + +cost)
+  }
+
+  addTwoApis(cost: any, apiRate: any): number {
+
+    const firstApi = +((+cost * (+apiRate / 100)) + +cost)
+
+    return (+(+firstApi * (+apiRate / 100)) + +firstApi)
+  }
+
+
+  docheck() {
+    console.log(this.selectedCustomer.customerApiDate)
+    console.log(this.selectedCustomer.haulerApiDate)
   }
 }
 

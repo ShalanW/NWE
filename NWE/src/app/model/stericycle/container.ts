@@ -13,6 +13,7 @@ export interface Container {
   monthlyCost: string;
 
   extraBoxCostHauler: string;
+  extraBoxCostCustomerOriginal: string;
   extraBoxCostCustomer: string;
 
 
