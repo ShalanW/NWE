@@ -125,6 +125,11 @@
               <mat-datepicker-toggle [for]="picker4" matSuffix></mat-datepicker-toggle>
               <mat-datepicker #picker4></mat-datepicker>
             </mat-form-field>
+
+            <mat-form-field class="customer" fxFill>
+              <mat-label>API Rate</mat-label>
+              <input autocomplete="off" formControlName="customerApiRate" matInput type="text">
+            </mat-form-field>
             <button
               (click)="onUpdateCustomer(selectedCustomer, customerForm)"
               color="primary" mat-raised-button>Add Dates
