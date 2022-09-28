@@ -19,6 +19,7 @@ export class AccountInfoComponent implements OnInit {
 
   today = new Date()
 
+  newAmount: string = ''
 
   filteredString: string = '';
 
@@ -160,8 +161,9 @@ export class AccountInfoComponent implements OnInit {
 
   // this was cool - use it again
 
-  onUpdateCustomer(selectedCustomer: Customer) {
-    this.cs.updateCustomer(selectedCustomer)
+  onUpdateCustomer(selectedCustomer: Customer, date: string) {
+    const newDate = new Date(date)
+    this.cs.updateCustomer(selectedCustomer, newDate)
     this.customerForm.reset()
   }
 
@@ -189,8 +191,9 @@ export class AccountInfoComponent implements OnInit {
   }
 
 
-  docheck() {
-    console.log(this.selectedCustomer.customerApiDate)
+  docheck(value: any) {
+    this.newAmount = value
+    console.log(new Date(this.newAmount))
     console.log(this.selectedCustomer.haulerApiDate)
   }
 }

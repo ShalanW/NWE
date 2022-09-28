@@ -15,7 +15,7 @@
             placeholder="Choose One"
             type="text">
           <mat-autocomplete #auto="matAutocomplete"
-                            (optionSelected)="selectedCustomer = $event.option.value; docheck()"
+                            (optionSelected)="selectedCustomer = $event.option.value;"
                             [displayWith]="displayFn"
                             autoActiveFirstOption>
             <mat-option *ngFor="let customer of $customers | async | filterCustomer:filteredString"
@@ -102,39 +102,50 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <mat-card-title>Service Info</mat-card-title>
+          <mat-card-title>Customer Info</mat-card-title>
 
-          <div
-            *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate || !selectedCustomer.customerApiRate"
-            class="login-form">
+          <div class="customer-info">
 
 
-            <mat-form-field appearance="fill">
-              <mat-label>Hauler Start Date</mat-label>
-              <input [(ngModel)]="selectedCustomer.haulerApiDate" [matDatepicker]="picker3"
-                     matInput>
+            <mat-form-field>
+              <mat-label>Customer Start Date</mat-label>
+              <input #customerApiDateInput (dateChange)="docheck(customerApiDateInput.value)"
+                     [matDatepicker]="picker"
+                     [value]="selectedCustomer.customerApiDate"
+                     matInput
+
+                     ngmod>
               <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle [for]="picker3" matSuffix></mat-datepicker-toggle>
-              <mat-datepicker #picker3></mat-datepicker>
+              <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
-              <mat-label>Customer Start Date</mat-label>
-              <input [(ngModel)]="selectedCustomer.customerApiDate" [matDatepicker]="picker4" matInput>
+
+            <mat-form-field>
+
+              <mat-label>Hauler Start Date</mat-label>
+              <input [(ngModel)]="selectedCustomer.haulerApiDate" [matDatepicker]="picker4"
+                     matInput>
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle [for]="picker4" matSuffix></mat-datepicker-toggle>
               <mat-datepicker #picker4></mat-datepicker>
             </mat-form-field>
 
+
             <mat-form-field class="customer">
               <mat-label>API Rate</mat-label>
-              <input [ngModel]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
+              <input [(ngModel)]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
             </mat-form-field>
             <button
-              (click)="onUpdateCustomer(selectedCustomer)"
+              (click)="onUpdateCustomer(selectedCustomer, this.newAmount)"
               color="primary" mat-raised-button>Add Data
             </button>
           </div>
+
+
+          <mat-card-title>Service Info</mat-card-title>
+          <!--          *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate || !selectedCustomer.customerApiRate"-->
+
 
           <form [formGroup]="addressForm" class="login-form">
 

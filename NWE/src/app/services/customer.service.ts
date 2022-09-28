@@ -28,7 +28,7 @@ export class CustomerService {
               haulerApiDate: customer.payload.doc?.get('haulerApiDate')?.toDate(),
               customerApiDate: customer.payload.doc?.get('customerApiDate')?.toDate(),
               customerApiRate: customer.payload.doc?.get('customerApiRate')
-              
+
             }
           })
         })
@@ -49,10 +49,10 @@ export class CustomerService {
     this.collectionRef.doc(id).set(newCustomer, {merge: true})
   }
 
-  updateCustomer(selectedCustomer: Customer) {
+  updateCustomer(selectedCustomer: Customer, date: any) {
 
     const haulerDate = selectedCustomer.haulerApiDate
-    const customerDate = selectedCustomer.customerApiDate
+    const customerDate = date
     const customerApiRate = selectedCustomer.customerApiRate
 
 
