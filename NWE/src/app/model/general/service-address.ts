@@ -1,8 +1,8 @@
 export interface ServiceAddress {
 
-  streetAddress: string;
-  city: string;
-  state: string;
-  zip: string;
+  streetAddress: string | undefined;
+  city: string | undefined;
+  state?: string | undefined;
+  zip?: string | undefined;
 
 }

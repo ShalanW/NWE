@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
@@ -7,7 +7,8 @@ import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
+import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from "@angular/material/autocomplete";
+import {MatOption} from "@angular/material/core";
 
 
 @Component({
@@ -17,8 +18,6 @@ import {MatAutocomplete, MatAutocompleteSelectedEvent} from "@angular/material/a
 })
 export class AccountInfoComponent implements OnInit {
 
-  currentOption!: MatAutocompleteSelectedEvent;
-
   today = new Date()
 
   newCustomerStartDate: string = ''
@@ -26,6 +25,7 @@ export class AccountInfoComponent implements OnInit {
   filteredString: string = '';
 
   $customers: Observable<Customer[]>;
+  $selectedCustomer: Observable<Customer[]>
 
   selectedCustomer: Customer = {
     customerName: '',
@@ -92,6 +92,7 @@ export class AccountInfoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
     this.$customers = this.cs.loadCustomers();
+    this.$selectedCustomer = this.cs.loadSelectedCustomer();
 
   }
 
@@ -115,12 +116,13 @@ export class AccountInfoComponent implements OnInit {
     this.accountForm.reset()
     this.addressForm.reset()
 
-    console.log(this.selectedCustomer)
+    this.resetSelectedCustomer()
+    this.resetFilteredString()
+
 
   }
 
-  onAddNewCustomer(auto: any) {
-
+  onAddNewCustomer() {
 
     const newCustomer = <Customer>{
       ...this.customerForm.value
@@ -131,7 +133,6 @@ export class AccountInfoComponent implements OnInit {
 
     this.cs.addCustomer(newCustomer)
     this.customerForm.reset()
-
 
   }
 
@@ -200,7 +201,16 @@ export class AccountInfoComponent implements OnInit {
   }
 
 
-  onOptionSelected() {
+  // onOptionSelected(event: Customer) {
+  //   this.currentCustomer = event
+  //
+  // }
+
+  onTest(auto: MatAutocomplete) {
+
+    this.resetFilteredString()
+    this.resetSelectedCustomer()
+
 
   }
 }

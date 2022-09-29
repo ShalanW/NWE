@@ -4,6 +4,7 @@ import {OnCallAccount} from "../model/stericycle/OnCallAccount";
 import firebase from "firebase/compat/app";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Customer} from "../model/general/customer";
+import {where} from "@angular/fire/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -17,31 +18,16 @@ export class OnCallAccountService {
 
 
   // loadOnCallAccounts(): Observable<OnCallAccount[]> {
-  //   return this.collectionRef.snapshotChanges()
+  //   return this.collectionRef.valueChanges({idField: 'id'})
   //     .pipe(
   //       map(contacts => {
   //           return contacts.map(contact => {
-  //             return <OnCallAccount>{
-  //               id: contact.payload.doc.id,
-  //               ...contact.payload.doc.data() as OnCallAccount
-  //             };
+  //             return <OnCallAccount>{};
   //           })
   //         }
   //       )
   //     )
   // }
-
-  loadOnCallAccounts(): Observable<OnCallAccount[]> {
-    return this.collectionRef.valueChanges({idField: 'id'})
-      .pipe(
-        map(contacts => {
-            return contacts.map(contact => {
-              return <OnCallAccount>{};
-            })
-          }
-        )
-      )
-  }
 
   addOnCallAccount(account: OnCallAccount, selectedCustomerName: string, selectedCustomer: Customer) {
 
