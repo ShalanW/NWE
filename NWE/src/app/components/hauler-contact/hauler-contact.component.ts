@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {HaulerContact} from "../../model/general/hauler-contact";
-import {HaulerContactServiceService} from "../../services/hauler-contact-service.service";
+import {Hauler} from "../../model/general/hauler";
+import {HaulerService} from "../../services/hauler.service";
 
 @Component({
   selector: 'app-hauler-contact',
@@ -17,10 +17,10 @@ export class HaulerContactComponent implements OnInit {
     phone: ['', [Validators.required]],
   });
 
-  $haulerContacts: Observable<HaulerContact[]>;
+  $haulerContacts: Observable<Hauler[]>;
 
 
-  constructor(private hcs: HaulerContactServiceService, private fb: FormBuilder) {
+  constructor(private hcs: HaulerService, private fb: FormBuilder) {
     this.$haulerContacts = this.hcs.loadHaulerContacts();
 
   }
@@ -29,7 +29,12 @@ export class HaulerContactComponent implements OnInit {
   }
 
   onAddHaulerContact() {
-    this.hcs.addHaulerContact(this.form.value as HaulerContact)
+    this.hcs.addHaulerContact(this.form.value)
+    this.form.reset()
+  }
+
+  onUpdateHaulerContact() {
+    this.hcs.updateHaulerContact(this.form.value)
     this.form.reset()
   }
 }

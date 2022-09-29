@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
 import {OnCallAccount} from "../../model/stericycle/OnCallAccount";
@@ -30,8 +30,9 @@ export class AccountInfoComponent implements OnInit {
     haulerApiDate: undefined,
     customerApiDate: undefined,
     customerApiRate: '',
-    accounts: []
-  };
+    accounts: {'': {} as OnCallAccount}
+  }
+  ;
 
   //----------New Customer / On-Call Account Input----------//
 
@@ -106,7 +107,7 @@ export class AccountInfoComponent implements OnInit {
       notes: this.noteArray
     }
 
-    this.ocaService.addOnCallAccount(account, this.selectedCustomer.customerName);
+    this.ocaService.addOnCallAccount(account, this.selectedCustomer.customerName, this.selectedCustomer);
     this.containerForm.reset()
     this.accountForm.reset()
     this.addressForm.reset()
@@ -127,18 +128,18 @@ export class AccountInfoComponent implements OnInit {
   }
 
   resetSelectedCustomer() {
-    this.selectedCustomer = {customerName: '', accounts: []}
+    this.selectedCustomer = {customerName: '', accounts: {'': {} as OnCallAccount}}
   }
 
   resetFilteredString() {
     this.filteredString = ''
   }
 
-  calcExtraCustomer(extraBoxesCustomer: string) {
-    return this.extraBoxesCustomer * +extraBoxesCustomer
+  calcExtraCustomer(extraBoxesCustomer: any) {
+    return +this.extraBoxesCustomer * +extraBoxesCustomer
   }
 
-  calcExtraHauler(extraBoxCostHauler: string) {
+  calcExtraHauler(extraBoxCostHauler: any) {
     return this.extraBoxesHauler * +extraBoxCostHauler
   }
 
@@ -191,11 +192,6 @@ export class AccountInfoComponent implements OnInit {
   }
 
 
-  docheck(value: any) {
-    this.newAmount = value
-    console.log(new Date(this.newAmount))
-    console.log(this.selectedCustomer.haulerApiDate)
-  }
 }
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)

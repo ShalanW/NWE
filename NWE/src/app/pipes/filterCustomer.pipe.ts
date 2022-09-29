@@ -15,17 +15,30 @@ export class FilterCustomerPipe implements PipeTransform {
     value.map((customer: Customer) => {
       const lowerString = filterString.toLowerCase()
       const lowerCustomer = customer.customerName.toLowerCase()
-      console.log()
+      console.log(customer.accounts)
       if (lowerCustomer.includes(lowerString)) {
         customers.push(customer)
       }
 
       if (customer.accounts) {
-        for (const account of customer.accounts) {
-          if (account.accountNumber.includes(filterString)) {
-            customers.push(customer)
-          }
-        }
+
+        const array = new Array(customer.accounts)
+
+        console.log(customer.accounts)
+
+        // for (const account of Array(customer.accounts)) {
+        //   if (account['accountNumber'].accountNumber.includes(filterString)) {
+        //     customers.push(customer)
+        //   }
+        // }
+
+        // for (const account of customer.accounts) {
+        //   if (account.accountNumber.includes(filterString)) {
+        //     customers.push(customer)
+        //   }
+        // }
+
+
       }
 
     })

@@ -5,18 +5,25 @@
     <form [formGroup]="form" class="login-form" fxLayout="column">
 
       <mat-form-field>
+        <mat-label>Rep</mat-label>
+
         <input formControlName="name" matInput name="example">
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>Hauler</mat-label>
+
         <input formControlName="hauler" matInput name="example">
       </mat-form-field>
 
       <mat-form-field>
+        <mat-label>phone</mat-label>
+
         <input formControlName="phone" matInput name="example">
       </mat-form-field>
 
       <button (click)="onAddHaulerContact()" color="primary" mat-raised-button>Add Hauler</button>
+      <button (click)="onUpdateHaulerContact()" color="primary" mat-raised-button>Update Hauler</button>
 
     </form>
     <!--    <div>{{form.value | json}}</div>-->
@@ -27,9 +34,9 @@
 <mat-card>
   <mat-card-title>Contacts</mat-card-title>
   <div>&nbsp;</div>
-  <mat-card-content *ngFor="let contact of $haulerContacts | async" fxLayout="row" fxLayoutAlign="space-between center">
-    <div>{{contact.name}}</div>
-    <div>{{contact.hauler}}</div>
-    <div>{{contact.phone}}</div>
+  <mat-card-content *ngFor="let contact of $haulerContacts | async" fxLayout="column">
+    <div *ngFor="let rep of contact.reps | keyvalue">
+      Rep: {{rep.key}} - Phone: {{rep.value.phone}}
+    </div>
   </mat-card-content>
 </mat-card>
