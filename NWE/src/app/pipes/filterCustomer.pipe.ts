@@ -24,7 +24,6 @@ export class FilterCustomerPipe implements PipeTransform {
 
         const array = new Array(customer.accounts)
 
-        console.log(customer.accounts)
 
         // for (const account of Array(customer.accounts)) {
         //   if (account['accountNumber'].accountNumber.includes(filterString)) {
@@ -32,11 +31,11 @@ export class FilterCustomerPipe implements PipeTransform {
         //   }
         // }
 
-        // for (const account of customer.accounts) {
-        //   if (account.accountNumber.includes(filterString)) {
-        //     customers.push(customer)
-        //   }
-        // }
+        for (const account of array) {
+          if (account.accountNumber.includes(filterString)) {
+            customers.push(customer)
+          }
+        }
 
 
       }

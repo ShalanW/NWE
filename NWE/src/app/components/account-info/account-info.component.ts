@@ -7,6 +7,7 @@ import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
+import {MatAutocomplete, MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
 
 @Component({
@@ -16,10 +17,11 @@ import {Observable} from "rxjs";
 })
 export class AccountInfoComponent implements OnInit {
 
+  currentOption!: MatAutocompleteSelectedEvent;
 
   today = new Date()
 
-  newAmount: string = ''
+  newCustomerStartDate: string = ''
 
   filteredString: string = '';
 
@@ -90,6 +92,7 @@ export class AccountInfoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
     this.$customers = this.cs.loadCustomers();
+
   }
 
   displayFn(customer: Customer): string {
@@ -99,7 +102,7 @@ export class AccountInfoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAddNewAccount() {
+  onAddNewAccount(auto: MatAutocomplete) {
     const account = <OnCallAccount>{
       ...this.accountForm.value,
       address: this.addressForm.value as ServiceAddress,
@@ -111,9 +114,12 @@ export class AccountInfoComponent implements OnInit {
     this.containerForm.reset()
     this.accountForm.reset()
     this.addressForm.reset()
+
+    console.log(this.selectedCustomer)
+
   }
 
-  onAddNewCustomer() {
+  onAddNewCustomer(auto: any) {
 
 
     const newCustomer = <Customer>{
@@ -125,10 +131,12 @@ export class AccountInfoComponent implements OnInit {
 
     this.cs.addCustomer(newCustomer)
     this.customerForm.reset()
+
+
   }
 
   resetSelectedCustomer() {
-    this.selectedCustomer = {customerName: '', accounts: {'': {} as OnCallAccount}}
+    this.selectedCustomer = {customerName: '', accounts: {}}
   }
 
   resetFilteredString() {
@@ -192,6 +200,9 @@ export class AccountInfoComponent implements OnInit {
   }
 
 
+  onOptionSelected() {
+
+  }
 }
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)

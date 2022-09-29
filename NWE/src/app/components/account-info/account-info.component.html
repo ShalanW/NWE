@@ -85,7 +85,7 @@
           </form>
 
 
-          <button (click)="onAddNewCustomer()" color="primary" mat-raised-button>Add New Customer</button>
+          <button (click)="onAddNewCustomer(auto)" color="primary" mat-raised-button>Add New Customer</button>
 
 
         </mat-expansion-panel>
@@ -137,13 +137,17 @@
               <input [(ngModel)]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
             </mat-form-field>
             <button
-              (click)="onUpdateCustomer(selectedCustomer, this.newAmount)"
+              (click)="onUpdateCustomer(selectedCustomer, this.newCustomerStartDate)"
               color="primary" mat-raised-button>Add Data
             </button>
           </div>
 
 
           <mat-card-title>Service Info</mat-card-title>
+          <button (click)="onAddNewAccount(auto)"
+                  [disabled]="!selectedCustomer.customerName" color="primary"
+                  mat-raised-button>Add Account
+          </button>
           <!--          *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate || !selectedCustomer.customerApiRate"-->
 
 
@@ -255,7 +259,7 @@
             </mat-form-field>
 
           </form>
-          <button (click)="onAddNewAccount()" [disabled]="!selectedCustomer.customerName" color="primary"
+          <button (click)="onAddNewAccount(auto)" [disabled]="!selectedCustomer.customerName" color="primary"
                   mat-raised-button>Add Account
           </button>
 

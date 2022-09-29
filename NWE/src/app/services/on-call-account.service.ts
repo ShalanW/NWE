@@ -16,15 +16,27 @@ export class OnCallAccountService {
   }
 
 
+  // loadOnCallAccounts(): Observable<OnCallAccount[]> {
+  //   return this.collectionRef.snapshotChanges()
+  //     .pipe(
+  //       map(contacts => {
+  //           return contacts.map(contact => {
+  //             return <OnCallAccount>{
+  //               id: contact.payload.doc.id,
+  //               ...contact.payload.doc.data() as OnCallAccount
+  //             };
+  //           })
+  //         }
+  //       )
+  //     )
+  // }
+
   loadOnCallAccounts(): Observable<OnCallAccount[]> {
-    return this.collectionRef.snapshotChanges()
+    return this.collectionRef.valueChanges({idField: 'id'})
       .pipe(
         map(contacts => {
             return contacts.map(contact => {
-              return <OnCallAccount>{
-                id: contact.payload.doc.id,
-                ...contact.payload.doc.data() as OnCallAccount
-              };
+              return <OnCallAccount>{};
             })
           }
         )
@@ -33,31 +45,30 @@ export class OnCallAccountService {
 
   addOnCallAccount(account: OnCallAccount, selectedCustomerName: string, selectedCustomer: Customer) {
 
-    const i = new Array(selectedCustomer.accounts).length
+
+    this.collectionRef.doc(selectedCustomer.customerName).set({
+        accounts: firebase.firestore.FieldValue.arrayUnion(account)
+      },
+      {merge: true})
+
+    // this.collectionRef.doc(selectedCustomerName).set({
+    //   accounts: {
+    //     [account.type]: {
+    //       ...account
+    //     }
+    //   }
+    // }, {merge: true})
 
 
-    this.collectionRef.doc(selectedCustomerName).set({
-      accounts: {
-        [account.type]: {
-          ...account
-        }
-      }
-    }, {merge: true})
   }
+
 
   removeOnCallAccount(account: OnCallAccount, selectedCustomer: string) {
-
-
-
-    this.collectionRef.doc(selectedCustomer).set({accounts: })
+    this.collectionRef.doc(selectedCustomer).set({
+        accounts: firebase.firestore.FieldValue.arrayRemove(account)
+      },
+      {merge: true})
   }
-
-  // removeOnCallAccount(account: OnCallAccount, selectedCustomer: string) {
-  //   this.collectionRef.doc(selectedCustomer).set({
-  //       accounts: firebase.firestore.FieldValue.arrayRemove(account)
-  //     },
-  //     {merge: true})
-  // }
 
 
 }
