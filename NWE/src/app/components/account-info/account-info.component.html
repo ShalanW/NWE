@@ -8,6 +8,7 @@
         <mat-form-field fxFlex>
           <mat-label>Select Customer</mat-label>
           <input
+            (input)="runStuff()"
             (keyup.escape)="resetFilteredString(); resetSelectedCustomer()"
             [(ngModel)]="filteredString"
             [matAutocomplete]="auto"
@@ -15,7 +16,7 @@
             placeholder="Choose One"
             type="text">
           <mat-autocomplete #auto="matAutocomplete"
-                            (optionSelected)="selectedCustomer = $event.option.value;"
+                            (optionSelected)="selectedCustomer = $event.option.value; runStuff()"
                             [displayWith]="displayFn"
                             autoActiveFirstOption>
             <mat-option *ngFor="let customer of $customers | async | filterCustomer:filteredString"
@@ -283,11 +284,11 @@
 
       <mat-card-content>
 
-        <mat-tab-group *ngIf="selectedCustomer as customer">
+        <mat-tab-group>
           <!--          <ng-container *ngFor="let accounts of selectedCustomer.accounts | keyvalue">-->
           <ng-container *ngFor="let customer of $selectedCustomer | async">
             <ng-container *ngFor="let accounts of customer.accounts | keyvalue ">
-              <mat-tab label="{{customer.customerName}}{{' - '}}{{accounts.value.accountNumber}}">
+              <mat-tab label="{{customer.customerName}}{{' - '}}{{accounts.value.type}}">
 
                 <div class="service-box" fxLayout="column">
                   <div fxLayout="column">

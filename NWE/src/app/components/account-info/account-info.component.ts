@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
@@ -7,8 +7,7 @@ import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
-import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from "@angular/material/autocomplete";
-import {MatOption} from "@angular/material/core";
+import {MatAutocomplete} from "@angular/material/autocomplete";
 
 
 @Component({
@@ -18,6 +17,8 @@ import {MatOption} from "@angular/material/core";
 })
 export class AccountInfoComponent implements OnInit {
 
+  manualString: string = '';
+
   today = new Date()
 
   newCustomerStartDate: string = ''
@@ -25,9 +26,10 @@ export class AccountInfoComponent implements OnInit {
   filteredString: string = '';
 
   $customers: Observable<Customer[]>;
-  $selectedCustomer: Observable<Customer[]>
+  $selectedCustomer: Observable<Customer[]> = new Observable<Customer[]>()
 
   selectedCustomer: Customer = {
+    id: '',
     customerName: '',
     haulerApiDate: undefined,
     customerApiDate: undefined,
@@ -92,7 +94,7 @@ export class AccountInfoComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
     this.$customers = this.cs.loadCustomers();
-    this.$selectedCustomer = this.cs.loadSelectedCustomer();
+
 
   }
 
@@ -101,6 +103,11 @@ export class AccountInfoComponent implements OnInit {
   };
 
   ngOnInit(): void {
+  }
+
+  runStuff() {
+    this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName)
+
   }
 
   onAddNewAccount(auto: MatAutocomplete) {
@@ -137,7 +144,14 @@ export class AccountInfoComponent implements OnInit {
   }
 
   resetSelectedCustomer() {
-    this.selectedCustomer = {customerName: '', accounts: {}}
+    this.selectedCustomer = {
+      id: '',
+      customerName: '',
+      haulerApiDate: undefined,
+      customerApiDate: undefined,
+      customerApiRate: '',
+      accounts: {'': {} as OnCallAccount}
+    }
   }
 
   resetFilteredString() {
@@ -213,6 +227,8 @@ export class AccountInfoComponent implements OnInit {
 
 
   }
+
+
 }
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)

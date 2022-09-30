@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {map, Observable} from "rxjs";
 import {Customer} from "../model/general/customer";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {FormGroup} from "@angular/forms";
-import {OnCallAccount} from "../model/stericycle/OnCallAccount";
 
 
 @Injectable({
@@ -23,7 +21,7 @@ export class CustomerService {
         map(customers => {
           return customers.map(customer => {
             return <Customer>{
-              id: customer.payload.doc.id,
+              // id: customer.payload.doc.id,
               ...customer.payload.doc.data() as Customer,
               customerName: customer.payload.doc.id,
               customerNameLower: customer.payload.doc.id,
@@ -38,22 +36,22 @@ export class CustomerService {
 
   }
 
-  loadSelectedCustomer(): Observable<Customer[]> {
+  loadSelectedCustomer(manualString: string): Observable<Customer[]> {
     return this.db.collection(
       'Customers',
-      ref => ref.where('customerName', '==', 'New Customer')
+      ref => ref.where('customerName', '==', manualString)
     ).snapshotChanges()
       .pipe(
         map(customers => {
           return customers.map(customer => {
             return <Customer>{
-              id: customer.payload.doc.id,
+              // id: customer.payload.doc.id,
               ...customer.payload.doc.data() as Customer,
               customerName: customer.payload.doc.id,
-              customerNameLower: customer.payload.doc.id,
               haulerApiDate: customer.payload.doc?.get('haulerApiDate')?.toDate(),
               customerApiDate: customer.payload.doc?.get('customerApiDate')?.toDate(),
               customerApiRate: customer.payload.doc?.get('customerApiRate')
+
 
             }
           })
@@ -61,6 +59,7 @@ export class CustomerService {
       )
 
   }
+
 
   addCustomer(newCustomer: Partial<Customer>) {
     const id = newCustomer.customerName
