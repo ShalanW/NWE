@@ -486,7 +486,8 @@
                                   color="primary" mat-raised-button>
                             No
                           </button>
-                          <button #confirmDeleteButton (click)="onConfirmDeleteAccount(accounts.value)"
+                          <button #confirmDeleteButton
+                                  (click)="onConfirmDeleteAccount(accounts.value, selectedCustomer.customerName)"
                                   [disabled]="true"
                                   class="confirm-button"
                                   color="primary" mat-raised-button> Yes

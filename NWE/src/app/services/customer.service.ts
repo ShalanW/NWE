@@ -21,7 +21,7 @@ export class CustomerService {
         map(customers => {
           return customers.map(customer => {
             return <Customer>{
-              // id: customer.payload.doc.id,
+              id: customer.payload.doc.id,
               ...customer.payload.doc.data() as Customer,
               customerName: customer.payload.doc.id,
               customerNameLower: customer.payload.doc.id,
@@ -36,16 +36,40 @@ export class CustomerService {
 
   }
 
-  loadSelectedCustomer(manualString: string): Observable<Customer[]> {
+  // loadSelectedCustomer(manualString: string): Observable<Customer[]> {
+  //   return this.db.collection(
+  //     'Customers',
+  //     ref => ref.where('customerName', '==', manualString)
+  //   ).snapshotChanges()
+  //     .pipe(
+  //       map(customers => {
+  //         return customers.map(customer => {
+  //           return <Customer>{
+  //             id: customer.payload.doc.id,
+  //             ...customer.payload.doc.data() as Customer,
+  //             customerName: customer.payload.doc.id,
+  //             haulerApiDate: customer.payload.doc?.get('haulerApiDate')?.toDate(),
+  //             customerApiDate: customer.payload.doc?.get('customerApiDate')?.toDate(),
+  //             customerApiRate: customer.payload.doc?.get('customerApiRate')
+  //
+  //
+  //           }
+  //         })
+  //       })
+  //     )
+  //
+  // }
+
+  loadSelectedCustomer(customerName: string, selectedCustomer: Customer): Observable<Customer[]> {
     return this.db.collection(
       'Customers',
-      ref => ref.where('customerName', '==', manualString)
+      ref => ref.where('customerName', '==', selectedCustomer.customerName)
     ).snapshotChanges()
       .pipe(
         map(customers => {
           return customers.map(customer => {
             return <Customer>{
-              // id: customer.payload.doc.id,
+              id: customer.payload.doc.id,
               ...customer.payload.doc.data() as Customer,
               customerName: customer.payload.doc.id,
               haulerApiDate: customer.payload.doc?.get('haulerApiDate')?.toDate(),
@@ -57,6 +81,7 @@ export class CustomerService {
           })
         })
       )
+
 
   }
 

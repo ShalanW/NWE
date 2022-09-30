@@ -29,7 +29,6 @@ export class AccountInfoComponent implements OnInit {
   $selectedCustomer: Observable<Customer[]> = new Observable<Customer[]>()
 
   selectedCustomer: Customer = {
-    id: '',
     customerName: '',
     haulerApiDate: undefined,
     customerApiDate: undefined,
@@ -106,7 +105,11 @@ export class AccountInfoComponent implements OnInit {
   }
 
   runStuff() {
-    this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName)
+    this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName, this.selectedCustomer)
+    this.$selectedCustomer.subscribe(value => {
+      console.log(value)
+    })
+    console.log(this.selectedCustomer.customerName)
 
   }
 
@@ -145,7 +148,6 @@ export class AccountInfoComponent implements OnInit {
 
   resetSelectedCustomer() {
     this.selectedCustomer = {
-      id: '',
       customerName: '',
       haulerApiDate: undefined,
       customerApiDate: undefined,
@@ -171,9 +173,8 @@ export class AccountInfoComponent implements OnInit {
     element.nativeElement.visible = true
   }
 
-  onConfirmDeleteAccount(account: OnCallAccount) {
-
-    this.ocaService.removeOnCallAccount(account, this.selectedCustomer.customerName)
+  onConfirmDeleteAccount(account: OnCallAccount, name: string) {
+    this.ocaService.removeOnCallAccount(account, name)
   }
 
   // compareDates(date: any) {

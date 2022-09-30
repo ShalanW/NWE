@@ -1,7 +1,6 @@
 import {OnCallAccount} from "../stericycle/OnCallAccount";
 
 export interface Customer {
-  id: string;
   customerName: string
   haulerApiDate?: Date
   customerApiRate?: string
