@@ -21,7 +21,7 @@ export class CustomerService {
         map(customers => {
           return customers.map(customer => {
             return <Customer>{
-              id: customer.payload.doc.id,
+              // id: customer.payload.doc.id,
               ...customer.payload.doc.data() as Customer,
               customerName: customer.payload.doc.id,
               customerNameLower: customer.payload.doc.id,

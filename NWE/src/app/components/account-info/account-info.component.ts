@@ -28,7 +28,14 @@ export class AccountInfoComponent implements OnInit {
   $customers: Observable<Customer[]>;
   $selectedCustomer: Observable<Customer[]> = new Observable<Customer[]>()
 
-  selectedCustomer: Customer = {customerName: '', accounts: {}}
+  selectedCustomer: Customer = {
+    id: '',
+    customerName: '',
+    haulerApiDate: undefined,
+    customerApiDate: undefined,
+    customerApiRate: '',
+    accounts: {'': {} as OnCallAccount}
+  }
   ;
 
   //----------New Customer / On-Call Account Input----------//
@@ -100,9 +107,10 @@ export class AccountInfoComponent implements OnInit {
 
   runStuff() {
     this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName)
+
   }
 
-  onAddNewAccount() {
+  onAddNewAccount(auto: MatAutocomplete) {
     const account = <OnCallAccount>{
       ...this.accountForm.value,
       address: this.addressForm.value as ServiceAddress,
@@ -136,7 +144,14 @@ export class AccountInfoComponent implements OnInit {
   }
 
   resetSelectedCustomer() {
-    this.selectedCustomer = {customerName: '', accounts: {}}
+    this.selectedCustomer = {
+      id: '',
+      customerName: '',
+      haulerApiDate: undefined,
+      customerApiDate: undefined,
+      customerApiRate: '',
+      accounts: {'': {} as OnCallAccount}
+    }
   }
 
   resetFilteredString() {
