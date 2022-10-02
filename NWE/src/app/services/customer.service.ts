@@ -92,15 +92,7 @@ export class CustomerService {
 
 
   addCustomer(newCustomer: Partial<Customer>) {
-    const id = newCustomer.customerName
-
-    newCustomer = {
-      haulerApiDate: newCustomer.haulerApiDate,
-      customerApiDate: newCustomer.customerApiDate,
-      customerApiRate: newCustomer.customerApiRate
-    }
-
-    this.collectionRef.doc(id).set(newCustomer, {merge: true})
+    this.collectionRef.doc(newCustomer.customerName).set(newCustomer, {merge: true})
   }
 
   updateCustomer(selectedCustomer: any, date: string | '') {

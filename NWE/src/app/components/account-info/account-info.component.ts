@@ -8,6 +8,8 @@ import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
+import {MatDialog} from "@angular/material/dialog";
+import {OnCallAccountDialogComponent} from "./on-call-account-dialog/on-call-account-dialog.component";
 
 
 @Component({
@@ -17,12 +19,9 @@ import {DatePipe} from "@angular/common";
 })
 export class AccountInfoComponent implements OnInit {
 
-  manualString: string = '';
+  newCustomerStartDate: string = ''
 
-  today = new Date()
-
-  newCustomerStartDate: Date = new Date('00/00/0000');
-  nextNewCustomerStartDate: string = ''
+  newHaulerStartDate: string = ''
 
   filteredString: string = '';
 
@@ -37,120 +36,103 @@ export class AccountInfoComponent implements OnInit {
     accounts: []
   }
 
-
   //----------New Customer / On-Call Account Input----------//
+
+  newCustomer!: Customer
 
   noteArray: string[] = []
 
-  customerForm = this.fb.group({
-    customerName: [''],
-    haulerApiDate: [new Date()],
-    customerApiDate: [new Date()],
-    customerApiRate: ['']
-  })
-
-  accountForm = this.fb.group({
-
-    type: [''],
-
-    address: [{} as ServiceAddress],
-
-    accountNumber: [''],
-    siteNumber: [''],
-    container: [{}],
-
-  })
-
-  addressForm = this.fb.group({
-    streetAddress: [''],
-    city: [''],
-    state: [''],
-    zip: [''],
-  })
-
-  containerForm = this.fb.group({
-
-    type: [''],
-
-    count: [''],
-    size: [''],
-    unit: [''],
-
-    price: [''],
-    minimumPerService: [''],
-    frequencyByWeeks: [''],
-
-    monthlyCost: [''],
-
-    extraBoxCostHauler: [''],
-    extraBoxCostCustomerOriginal: [''],
-    extraBoxCostCustomer: [''],
-
-  })
   extraBoxesCustomer: number = 0;
   extraBoxesHauler: number = 0;
   showConfirmButtons: boolean = false;
 
 
-  constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService, public datePipe: DatePipe) {
+  constructor(private fb: FormBuilder,
+              private ocaService: OnCallAccountService,
+              private cs: CustomerService,
+              public datePipe: DatePipe,
+              public dialog: MatDialog) {
     this.$customers = this.cs.loadCustomers();
 
+  }
 
+
+  ngOnInit(): void {
+
+  }
+
+  openNewCustomerDialog() {
+    const dialogRef = this.dialog.open(OnCallAccountDialogComponent, {
+      data: {dialogType: 'New Customer'}
+    })
+
+    dialogRef.afterClosed().subscribe(customerForm => {
+
+      if (customerForm) {
+        this.onAddNewCustomer(customerForm.value)
+      }
+
+    })
+  }
+
+  openNewAccountDialog() {
+    const dialogRef = this.dialog.open(OnCallAccountDialogComponent, {
+      data: {dialogType: "New Account", customer: this.selectedCustomer}
+    })
+
+    dialogRef.afterClosed().subscribe(data => {
+
+      if (data) {
+        this.onAddNewAccount(data)
+      }
+    })
   }
 
   displayFn(customer: Customer): string {
     return customer && customer.customerName ? customer.customerName : ''
   };
 
-  ngOnInit(): void {
-  }
-
-  runOtherStuff(panel: any) {
+  runOtherStuff() {
 
     if (this.filteredString === '') {
-      this.onReset(panel)
+      this.onReset()
     }
 
   }
 
   runStuff() {
     this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName, this.selectedCustomer)
-    const thing = this.datePipe.transform(this.selectedCustomer?.customerApiDate, 'yyyy-MM-dd') || ''
-    this.nextNewCustomerStartDate = thing
+    this.newCustomerStartDate = this.datePipe.transform(this.selectedCustomer?.customerApiDate, 'yyyy-MM-dd') || ''
   }
 
+  onAddNewAccount(data: any) {
 
-  onAddNewAccount() {
+    console.log(data)
+
     const account = <OnCallAccount>{
-      ...this.accountForm.value,
-      address: this.addressForm.value as ServiceAddress,
-      container: this.containerForm.value as Container,
-      notes: this.noteArray
+      ...data?.accountForm?.value,
+      address: data?.addressForm?.value as ServiceAddress,
+      container: data?.containerForm?.value as Container,
+      notes: []
     }
 
     this.ocaService.addOnCallAccount(account, this.selectedCustomer.customerName, this.selectedCustomer);
-    this.containerForm.reset()
-    this.accountForm.reset()
-    this.addressForm.reset()
-
   }
 
   onConfirmDeleteAccount(account: OnCallAccount, selectedCustomer: Customer) {
     this.ocaService.removeOnCallAccount(account, selectedCustomer.customerName)
   }
 
-
-  onAddNewCustomer() {
+  onAddNewCustomer(newCustomerForm: Customer) {
 
     const newCustomer = <Customer>{
-      ...this.customerForm.value
+      ...newCustomerForm
     }
 
-    newCustomer.haulerApiDate = new Date(this.customerForm.value.haulerApiDate?.getFullYear() ?? 2000, this.customerForm?.value.haulerApiDate?.getMonth() ?? 0, this.customerForm.value.haulerApiDate?.getDate() ?? 1)
-    newCustomer.customerApiDate = new Date(this.customerForm.value.customerApiDate?.getFullYear() ?? 2000, this.customerForm?.value.customerApiDate?.getMonth() ?? 0, this.customerForm.value.customerApiDate?.getDate() ?? 1)
+    newCustomer.haulerApiDate = new Date(newCustomerForm.haulerApiDate?.getFullYear() ?? 2000, newCustomerForm.haulerApiDate?.getMonth() ?? 0, newCustomerForm.haulerApiDate?.getDate() ?? 1)
+    newCustomer.customerApiDate = new Date(newCustomerForm.customerApiDate?.getFullYear() ?? 2000, newCustomerForm.customerApiDate?.getMonth() ?? 0, newCustomerForm.customerApiDate?.getDate() ?? 1)
 
     this.cs.addCustomer(newCustomer)
-    this.customerForm.reset()
 
   }
 
@@ -193,7 +175,6 @@ export class AccountInfoComponent implements OnInit {
 
   onUpdateCustomer(selectedCustomer: Customer, date: string | '') {
     this.cs.updateCustomer(selectedCustomer, date)
-    this.customerForm.reset()
   }
 
   addOneYear(selectedCustomer: Customer) {
@@ -223,20 +204,19 @@ export class AccountInfoComponent implements OnInit {
 
   }
 
-  onReset(panel: any) {
+  onReset() {
     this.resetFilteredString();
     this.resetSelectedCustomer();
     this.runStuff();
-    panel.close()
   }
 
   runHelper() {
     this.cs.updateCustomerHelper(this.selectedCustomer)
   }
 
-  onDeleteCustomer(selectecCustomer: Customer, panel: any) {
-    this.cs.deleteCustomer(selectecCustomer)
-    this.onReset(panel)
+  onDeleteCustomer(selectedCustomer: Customer) {
+    this.cs.deleteCustomer(selectedCustomer)
+    this.onReset()
   }
 }
 

@@ -1,0 +1,175 @@
+<h1 *ngIf="data.dialogType === 'New Customer'" mat-dialog-title>Add New Customer</h1>
+
+<h1 *ngIf="data.dialogType === 'New Account'" mat-dialog-title>Add New Account</h1>
+<h3 *ngIf="data.dialogType === 'New Account'" mat-dialog-title>
+  {{data.customer?.customerName ?? 'damn'}} </h3>
+
+<mat-dialog-content *ngIf="data.dialogType === 'New Customer'" class="new-customer-menu">
+
+  <form [formGroup]="customerForm" class="login-form" fxLayout="column">
+
+    <div fxLayout="row">
+
+      <mat-form-field class="customer" fxFlex>
+        <mat-label>Customer</mat-label>
+        <input autocomplete="off" formControlName="customerName" matInput
+               placeholder=" 🚨 Copy DIRECTLY from Feenix 🚨 " type="text">
+      </mat-form-field>
+
+    </div>
+
+    <div fxLayout="column">
+
+      <mat-form-field fxFlex>
+        <mat-label>Customer Start</mat-label>
+        <input [matDatepicker]="picker2" formControlName="customerApiDate" matInput>
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle [for]="picker2" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field fxFlex>
+        <mat-label>Customer API Rate</mat-label>
+        <input autocomplete="off" formControlName="customerApiRate" matInput type="text">
+      </mat-form-field>
+
+      <mat-form-field fxFlex>
+        <mat-label>Hauler Start</mat-label>
+        <input [matDatepicker]="picker1" formControlName="haulerApiDate" matInput>
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle [for]="picker1" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+    </div>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-content *ngIf="data.dialogType === 'New Account'">
+
+  <form [formGroup]="addressForm" class="login-form">
+
+
+    <mat-form-field fxFill>
+      <mat-label>Street Address</mat-label>
+      <input autocomplete="off" formControlName="streetAddress" matInput>
+    </mat-form-field>
+
+
+    <div fxLayout="row">
+      <mat-form-field fxFlex="50">
+        <mat-label>City</mat-label>
+        <input autocomplete="off" formControlName="city" matInput>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="20">
+        <mat-label>State</mat-label>
+        <input autocomplete="off" formControlName="state" matInput>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="30">
+        <mat-label>Zip</mat-label>
+        <input autocomplete="off" formControlName="zip" matInput>
+      </mat-form-field>
+    </div>
+
+
+  </form>
+  <form [formGroup]="accountForm" class="login-form" fxLayout="column">
+    <div fxLayout="row">
+
+      <mat-form-field class="account-type" fxFlex="20">
+        <mat-label>Type</mat-label>
+        <input autocomplete="off" formControlName="type" matInput type="text">
+      </mat-form-field>
+
+      <mat-form-field class="account-number" fxFlex="40">
+        <mat-label>Account #</mat-label>
+        <input autocomplete="off" formControlName="accountNumber" matInput type="text">
+      </mat-form-field>
+
+      <mat-form-field class="site-number" fxFlex="40">
+        <mat-label>Site # or Sub Account #</mat-label>
+        <input autocomplete="off" formControlName="siteNumber" matInput type="text">
+      </mat-form-field>
+    </div>
+  </form>
+  <form [formGroup]="containerForm" class="login-form" fxLayout="column">
+
+    <mat-card-title>Container</mat-card-title>
+
+    <mat-form-field>
+      <mat-label>Count</mat-label>
+      <input autocomplete="off" formControlName="count" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Size</mat-label>
+      <input autocomplete="off" formControlName="size" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Unit</mat-label>
+      <input autocomplete="off" formControlName="unit" matInput placeholder="Gal, etc.">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <input autocomplete="off" formControlName="type" matInput placeholder="Tub, Box, etc.">
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-label>Price Per Container</mat-label>
+      <input autocomplete="off" formControlName="price" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Minimum Per Service</mat-label>
+      <input autocomplete="off" formControlName="minimumPerService" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Frequency in Weeks</mat-label>
+      <input autocomplete="off" formControlName="frequencyByWeeks" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Monthly Cost</mat-label>
+      <input autocomplete="off" formControlName="monthlyCost" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Extra Boxes Cost Hauler</mat-label>
+      <input autocomplete="off" formControlName="extraBoxCostHauler" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Extra Boxes Cost Customer (Start)</mat-label>
+      <input autocomplete="off" formControlName="extraBoxCostCustomerOriginal" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Extra Boxes Cost Customer (Current)</mat-label>
+      <input autocomplete="off" formControlName="extraBoxCostCustomer" matInput>
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+<div [align]="'end'" mat-dialog-actions>
+
+  <button *ngIf="data.dialogType === 'New Customer'" [matDialogClose]="customerForm" color="primary" mat-button
+          mat-flat-button>Add Customer
+  </button>
+
+  <button (click)="onAddAccount()" *ngIf="data.dialogType === 'New Account'"
+          color="primary" mat-button mat-flat-button>Add Account
+  </button>
+
+  <button (click)="onClose()" color="primary" mat-button>Just Kidding</button>
+
+</div>

@@ -33,6 +33,10 @@ import {FilterCustomerPipe} from './pipes/filterCustomer.pipe';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatNativeDateModule} from "@angular/material/core";
 import {DatePipe} from "@angular/common";
+import {
+  OnCallAccountDialogComponent
+} from './components/account-info/on-call-account-dialog/on-call-account-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -43,6 +47,7 @@ import {DatePipe} from "@angular/common";
     BillFixerComponent,
     HaulerContactComponent,
     FilterCustomerPipe,
+    OnCallAccountDialogComponent,
   ],
 
   imports: [
@@ -70,6 +75,7 @@ import {DatePipe} from "@angular/common";
     MatDatepickerModule,
     MatNativeDateModule,
     FlexModule,
+    MatDialogModule,
     NgxMaskModule.forRoot(),
 
 

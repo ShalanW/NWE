@@ -1,22 +1,24 @@
-<div fxLayout="column" fxLayoutAlign="space-between stretch">
+<div fxLayout="column">
 
   <div fxFlex="row" fxLayoutAlign="center center">
 
-    <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
+    <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="">
 
       <div fxLayout="row" fxLayoutAlign=" center">
-        <mat-form-field fxFlex>
+
+        <mat-form-field fxFlex="95">
           <mat-label>Select Customer</mat-label>
           <input
-            (input)="runOtherStuff(secondPanel)"
-            (keyup.escape)="onReset(secondPanel)"
+            (input)="runOtherStuff()"
+            (keyup.escape)="onReset()"
             [(ngModel)]="filteredString"
             [matAutocomplete]="auto"
             matInput
             placeholder="Choose One"
             type="text">
+          <!--          firstPanel.close();-->
           <mat-autocomplete #auto="matAutocomplete"
-                            (optionSelected)="selectedCustomer = $event.option.value; runStuff(); firstPanel.close(); runHelper()"
+                            (optionSelected)="selectedCustomer = $event.option.value; runStuff();  runHelper()"
                             [displayWith]="displayFn"
                             autoActiveFirstOption>
             <mat-option *ngFor="let customer of $customers | async | filterCustomer:filteredString"
@@ -28,282 +30,79 @@
 
         </mat-form-field>
 
-        <mat-icon (click)="onReset(secondPanel); auto.showPanel = false; ">clear</mat-icon>
+        <mat-icon (click)="onReset() ">clear</mat-icon>
 
-        <div #deleteButton>
-          <mat-icon (click)="confirmButtons.hidden = false; deleteButton.hidden = true">delete</mat-icon>
-        </div>
 
-        <div #confirmButtons [hidden]="true">
-          <mat-icon (click)="confirmDelete.hidden = false; confirmButtons.hidden = true">check</mat-icon>
-          <mat-icon (click)="confirmButtons.hidden = true; deleteButton.hidden = false">close</mat-icon>
+        <button #menuTrigger [matMenuTriggerFor]="menu" mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
 
-        </div>
-        <div #confirmDelete [hidden]="true">
-          <mat-icon
-            (click)="onDeleteCustomer(selectedCustomer, secondPanel); deleteButton.hidden = false; confirmDelete.hidden = true">
-            🚨
-          </mat-icon>
-        </div>
+          <button (click)="openNewCustomerDialog()"
+                  *ngIf="selectedCustomer.customerName === ''" mat-menu-item>
+            New Customer
+          </button>
+
+          <button (click)="openNewAccountDialog()" *ngIf="selectedCustomer.customerName != ''" mat-menu-item>Add New
+            Account
+          </button>
+
+          <button (click)="onDeleteCustomer(selectedCustomer)" *ngIf="selectedCustomer.customerName != ''"
+                  mat-menu-item>🚨 Delete Customer
+          </button>
+
+        </mat-menu>
+
 
       </div>
 
+      <mat-expansion-panel *ngIf="selectedCustomer.customerName != ''">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Customer Info
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
 
-      <!--      <mat-form-field appearance="fill" fxFill>-->
-      <!--        <mat-label>Choose a Customer</mat-label>-->
-      <!--        <mat-select [(ngModel)]="selectedCustomer">-->
-      <!--          <mat-option *ngFor="let customer of $customers | async "-->
-      <!--                      [value]="customer">-->
-      <!--            {{customer.customerName}}-->
-      <!--          </mat-option>-->
-      <!--        </mat-select>-->
-      <!--      </mat-form-field>-->
+          <mat-form-field fxFlex="20">
 
-      <mat-accordion>
+            <mat-label>Customer Start Date</mat-label>
 
-        <mat-expansion-panel #firstPanel [disabled]="!!filteredString">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              New Customer
-            </mat-panel-title>
-            <mat-panel-description>
+            <input [(ngModel)]="newCustomerStartDate" matInput type="date">
 
+          </mat-form-field>
 
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-
-          <form [formGroup]="customerForm" class="login-form">
-            <mat-form-field class="customer" fxFill>
-              <mat-label>Customer</mat-label>
-              <input autocomplete="off" formControlName="customerName" matInput
-                     placeholder=" 🚨 Copy DIRECTLY from Feenix 🚨 " type="text">
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Hauler Start</mat-label>
-              <input [matDatepicker]="picker1" formControlName="haulerApiDate" matInput>
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle [for]="picker1" matSuffix></mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Customer Start</mat-label>
-              <input [matDatepicker]="picker2" formControlName="customerApiDate" matInput>
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle [for]="picker2" matSuffix></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field class="customer">
-              <mat-label>API Rate</mat-label>
-              <input autocomplete="off" formControlName="customerApiRate" matInput type="text">
-            </mat-form-field>
-
-          </form>
+          <mat-form-field fxFlex="20">
 
 
-          <button (click)="onAddNewCustomer(); firstPanel.close()" color="primary" mat-raised-button>Add New Customer
+            <mat-label>Hauler Start Date</mat-label>
+
+            <input [(ngModel)]="newHaulerStartDate" matInput type="date">
+
+
+          </mat-form-field>
+
+
+          <mat-form-field fxFlex="20">
+            <mat-label>API Rate</mat-label>
+            <input [(ngModel)]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
+          </mat-form-field>
+          <button (click)="onUpdateCustomer(selectedCustomer, newCustomerStartDate)"
+                  fxFlex="20"
+                  mat-stroked-button>Update
           </button>
+        </div>
+      </mat-expansion-panel>
 
-
-        </mat-expansion-panel>
-
-
-        <mat-expansion-panel #secondPanel [disabled]="selectedCustomer.customerName === ''">
-
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              New On-Call Account
-            </mat-panel-title>
-            <mat-panel-description>
-              For: {{selectedCustomer.customerName}}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-
-          <mat-card-title>Customer Info</mat-card-title>
-
-          <div class="customer-info">
-
-
-            <!--            <mat-form-field>-->
-            <!--              <mat-label>Customer Start Date</mat-label>-->
-            <!--              <input #customerStartDate-->
-            <!--                     [matDatepicker]="picker"-->
-            <!--                     [value]="selectedCustomer.customerApiDate"-->
-            <!--                     matInput-->
-            <!--              >-->
-            <!--              <mat-hint>MM/DD/YYYY</mat-hint>-->
-            <!--              <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>-->
-            <!--              <mat-datepicker #picker></mat-datepicker>-->
-            <!--            </mat-form-field>-->
-
-            <!--            <input [value]="selectedCustomer.customerApiDate" type="date">-->
-            <mat-form-field>
-              <mat-label>Customer Start Date</mat-label>
-
-              <input [(ngModel)]="nextNewCustomerStartDate" matInput type="date">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-
-
-            </mat-form-field>
-
-            <mat-form-field>
-
-              <mat-label>Hauler Start Date</mat-label>
-              <input [(ngModel)]="selectedCustomer.haulerApiDate" [matDatepicker]="picker4"
-                     matInput>
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle [for]="picker4" matSuffix></mat-datepicker-toggle>
-              <mat-datepicker #picker4></mat-datepicker>
-            </mat-form-field>
-
-
-            <mat-form-field class="customer">
-              <mat-label>API Rate</mat-label>
-              <input [(ngModel)]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
-            </mat-form-field>
-            <button
-              (click)="onUpdateCustomer(selectedCustomer, nextNewCustomerStartDate)"
-              color="primary" mat-raised-button>Add/Update
-            </button>
-          </div>
-
-
-          <mat-card-title>Service Info</mat-card-title>
-
-          <!--          *ngIf="!selectedCustomer.customerApiDate || !selectedCustomer.haulerApiDate || !selectedCustomer.customerApiRate"-->
-
-
-          <form [formGroup]="addressForm" class="login-form">
-
-
-            <mat-form-field fxFill>
-              <mat-label>Street Address</mat-label>
-              <input autocomplete="off" formControlName="streetAddress" matInput>
-            </mat-form-field>
-
-
-            <div fxLayout="row">
-              <mat-form-field fxFlex="50">
-                <mat-label>City</mat-label>
-                <input autocomplete="off" formControlName="city" matInput>
-              </mat-form-field>
-
-              <mat-form-field fxFlex="20">
-                <mat-label>State</mat-label>
-                <input autocomplete="off" formControlName="state" matInput>
-              </mat-form-field>
-
-              <mat-form-field fxFlex="30">
-                <mat-label>Zip</mat-label>
-                <input autocomplete="off" formControlName="zip" matInput>
-              </mat-form-field>
-            </div>
-
-
-          </form>
-          <form [formGroup]="accountForm" class="login-form" fxLayout="column">
-            <div fxLayout="row">
-
-              <mat-form-field class="account-type" fxFlex="20">
-                <mat-label>Type</mat-label>
-                <input autocomplete="off" formControlName="type" matInput type="text">
-              </mat-form-field>
-
-              <mat-form-field class="account-number" fxFlex="40">
-                <mat-label>Account #</mat-label>
-                <input autocomplete="off" formControlName="accountNumber" matInput type="text">
-              </mat-form-field>
-
-              <mat-form-field class="site-number" fxFlex="40">
-                <mat-label>Site # or Sub Account #</mat-label>
-                <input autocomplete="off" formControlName="siteNumber" matInput type="text">
-              </mat-form-field>
-            </div>
-          </form>
-          <form [formGroup]="containerForm" class="login-form" fxLayout="column">
-
-            <mat-card-title>Container</mat-card-title>
-
-            <mat-form-field>
-              <mat-label>Count</mat-label>
-              <input autocomplete="off" formControlName="count" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Size</mat-label>
-              <input autocomplete="off" formControlName="size" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Unit</mat-label>
-              <input autocomplete="off" formControlName="unit" matInput placeholder="Gal, etc.">
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Type</mat-label>
-              <input autocomplete="off" formControlName="type" matInput placeholder="Tub, Box, etc.">
-            </mat-form-field>
-
-
-            <mat-form-field>
-              <mat-label>Price Per Container</mat-label>
-              <input autocomplete="off" formControlName="price" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Minimum Per Service</mat-label>
-              <input autocomplete="off" formControlName="minimumPerService" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Frequency in Weeks</mat-label>
-              <input autocomplete="off" formControlName="frequencyByWeeks" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Monthly Cost</mat-label>
-              <input autocomplete="off" formControlName="monthlyCost" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Extra Boxes Cost Hauler</mat-label>
-              <input autocomplete="off" formControlName="extraBoxCostHauler" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Extra Boxes Cost Customer (Start)</mat-label>
-              <input autocomplete="off" formControlName="extraBoxCostCustomerOriginal" matInput>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Extra Boxes Cost Customer (Current)</mat-label>
-              <input autocomplete="off" formControlName="extraBoxCostCustomer" matInput>
-            </mat-form-field>
-
-          </form>
-
-
-          <button (click)="onAddNewAccount(); secondPanel.close()" [disabled]="!selectedCustomer.customerName"
-                  color="primary"
-                  mat-raised-button>Add Account
-          </button>
-
-        </mat-expansion-panel>
-
-      </mat-accordion>
 
     </mat-card>
 
   </div>
 
-</div>
+  <div *ngIf="selectedCustomer.customerName !=''" fxLayout="row" fxLayoutAlign="center center">
 
-
-<div fxLayout="column" fxLayoutAlign="space-between stretch">
-
-  <div fxFlex="row" fxLayoutAlign="center center">
     <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
 
 
@@ -538,6 +337,9 @@
       </mat-card-content>
 
     </mat-card>
+
   </div>
+
+
 </div>
 
