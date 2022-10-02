@@ -32,6 +32,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {FilterCustomerPipe} from './pipes/filterCustomer.pipe';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatNativeDateModule} from "@angular/material/core";
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -74,7 +75,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 
   ],
   providers: [
-    {provide: FIREBASE_OPTIONS, useValue: environment.firebase}
+    {provide: FIREBASE_OPTIONS, useValue: environment.firebase}, DatePipe
 
   ],
   bootstrap: [AppComponent]

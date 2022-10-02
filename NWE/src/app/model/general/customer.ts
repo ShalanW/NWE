@@ -5,6 +5,6 @@ export interface Customer {
   haulerApiDate?: Date
   customerApiRate?: string
   customerApiDate?: Date
-  accounts?: { [key: string]: OnCallAccount }
+  accounts?: OnCallAccount[]
   // accounts?: OnCallAccount[]
 }

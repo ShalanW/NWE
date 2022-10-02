@@ -16,12 +16,11 @@ export class OnCallAccountService {
 
 
   addOnCallAccount(account: OnCallAccount, selectedCustomerName: string, selectedCustomer: Customer) {
-
-
     this.collectionRef.doc(selectedCustomer.customerName).set({
         accounts: firebase.firestore.FieldValue.arrayUnion(account)
       },
       {merge: true})
+
 
     // this.collectionRef.doc(selectedCustomerName).set({
     //   accounts: {

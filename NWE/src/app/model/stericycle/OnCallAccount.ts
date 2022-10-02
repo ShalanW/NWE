@@ -8,6 +8,6 @@ export interface OnCallAccount {
   accountNumber: string;
   siteNumber: string;
   container: Container;
-  notes: string[]
+  notes: []
 
 }

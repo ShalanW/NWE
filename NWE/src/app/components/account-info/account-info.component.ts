@@ -7,7 +7,7 @@ import {Container} from "../../model/stericycle/container";
 import {Customer} from "../../model/general/customer";
 import {CustomerService} from "../../services/customer.service";
 import {Observable} from "rxjs";
-import {MatAutocomplete} from "@angular/material/autocomplete";
+import {DatePipe} from "@angular/common";
 
 
 @Component({
@@ -21,7 +21,8 @@ export class AccountInfoComponent implements OnInit {
 
   today = new Date()
 
-  newCustomerStartDate: string = ''
+  newCustomerStartDate: Date = new Date('00/00/0000');
+  nextNewCustomerStartDate: string = ''
 
   filteredString: string = '';
 
@@ -33,9 +34,9 @@ export class AccountInfoComponent implements OnInit {
     haulerApiDate: undefined,
     customerApiDate: undefined,
     customerApiRate: '',
-    accounts: {'': {} as OnCallAccount}
+    accounts: []
   }
-  ;
+
 
   //----------New Customer / On-Call Account Input----------//
 
@@ -91,7 +92,7 @@ export class AccountInfoComponent implements OnInit {
   showConfirmButtons: boolean = false;
 
 
-  constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService) {
+  constructor(private fb: FormBuilder, private ocaService: OnCallAccountService, private cs: CustomerService, public datePipe: DatePipe) {
     this.$customers = this.cs.loadCustomers();
 
 
@@ -104,16 +105,22 @@ export class AccountInfoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  runStuff() {
-    this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName, this.selectedCustomer)
-    this.$selectedCustomer.subscribe(value => {
-      console.log(value)
-    })
-    console.log(this.selectedCustomer.customerName)
+  runOtherStuff(panel: any) {
+
+    if (this.filteredString === '') {
+      this.onReset(panel)
+    }
 
   }
 
-  onAddNewAccount(auto: MatAutocomplete) {
+  runStuff() {
+    this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName, this.selectedCustomer)
+    const thing = this.datePipe.transform(this.selectedCustomer?.customerApiDate, 'yyyy-MM-dd') || ''
+    this.nextNewCustomerStartDate = thing
+  }
+
+
+  onAddNewAccount() {
     const account = <OnCallAccount>{
       ...this.accountForm.value,
       address: this.addressForm.value as ServiceAddress,
@@ -126,11 +133,12 @@ export class AccountInfoComponent implements OnInit {
     this.accountForm.reset()
     this.addressForm.reset()
 
-    this.resetSelectedCustomer()
-    this.resetFilteredString()
-
-
   }
+
+  onConfirmDeleteAccount(account: OnCallAccount, selectedCustomer: Customer) {
+    this.ocaService.removeOnCallAccount(account, selectedCustomer.customerName)
+  }
+
 
   onAddNewCustomer() {
 
@@ -152,7 +160,7 @@ export class AccountInfoComponent implements OnInit {
       haulerApiDate: undefined,
       customerApiDate: undefined,
       customerApiRate: '',
-      accounts: {'': {} as OnCallAccount}
+      accounts: []
     }
   }
 
@@ -173,9 +181,6 @@ export class AccountInfoComponent implements OnInit {
     element.nativeElement.visible = true
   }
 
-  onConfirmDeleteAccount(account: OnCallAccount, name: string) {
-    this.ocaService.removeOnCallAccount(account, name)
-  }
 
   // compareDates(date: any) {
   //
@@ -186,9 +191,8 @@ export class AccountInfoComponent implements OnInit {
 
   // this was cool - use it again
 
-  onUpdateCustomer(selectedCustomer: Customer, date: string) {
-    const newDate = new Date(date)
-    this.cs.updateCustomer(selectedCustomer, newDate)
+  onUpdateCustomer(selectedCustomer: Customer, date: string | '') {
+    this.cs.updateCustomer(selectedCustomer, date)
     this.customerForm.reset()
   }
 
@@ -215,21 +219,25 @@ export class AccountInfoComponent implements OnInit {
     return (+(+firstApi * (+apiRate / 100)) + +firstApi)
   }
 
-
-  // onOptionSelected(event: Customer) {
-  //   this.currentCustomer = event
-  //
-  // }
-
-  onTest(auto: MatAutocomplete) {
-
-    this.resetFilteredString()
-    this.resetSelectedCustomer()
-
+  onTest() {
 
   }
 
+  onReset(panel: any) {
+    this.resetFilteredString();
+    this.resetSelectedCustomer();
+    this.runStuff();
+    panel.close()
+  }
 
+  runHelper() {
+    this.cs.updateCustomerHelper(this.selectedCustomer)
+  }
+
+  onDeleteCustomer(selectecCustomer: Customer, panel: any) {
+    this.cs.deleteCustomer(selectecCustomer)
+    this.onReset(panel)
+  }
 }
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)

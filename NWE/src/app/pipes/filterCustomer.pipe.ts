@@ -1,6 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {Customer} from "../model/general/customer";
-import {filter} from "rxjs";
 
 @Pipe({
   name: 'filterCustomer'
@@ -23,11 +22,12 @@ export class FilterCustomerPipe implements PipeTransform {
 
       if (customer.accounts) {
 
-        const accounts = new Array(customer.accounts)
+        for (let account of customer.accounts) {
 
-        //   for (let account of accounts) {
-        //     if (account[customer.accounts].accountNumber === '555-123')
-        //   }
+          if (account.accountNumber.includes(filterString)) {
+            customers.push(customer)
+          }
+        }
       }
 
     })
