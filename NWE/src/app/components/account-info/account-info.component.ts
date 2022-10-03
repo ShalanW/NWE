@@ -10,6 +10,7 @@ import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {OnCallAccountDialogComponent} from "./on-call-account-dialog/on-call-account-dialog.component";
+import {Timestamp} from "firebase/firestore";
 
 
 @Component({
@@ -184,12 +185,6 @@ export class AccountInfoComponent implements OnInit {
     return this.extraBoxesHauler * +extraBoxCostHauler
   }
 
-  onDeleteAccount(element: ElementRef) {
-    element.nativeElement.disabled = false
-    element.nativeElement.visible = true
-  }
-
-
   // compareDates(date: any) {
   //
   //   if (date && date <= this.today) {
@@ -204,16 +199,22 @@ export class AccountInfoComponent implements OnInit {
     this.runStuff()
   }
 
-  addOneYear(selectedCustomer: Customer) {
-    const oldYear: any = selectedCustomer.customerApiDate ? selectedCustomer.haulerApiDate?.getFullYear() : undefined
-    const newYear = oldYear ? oldYear + 1 : undefined
-    return selectedCustomer.customerApiDate?.setFullYear(newYear)
+  addOneYear(date: any): any {
+
+    const oldDate = new Date(date)
+    const oldYear = oldDate.getFullYear()
+    const newDate = oldDate.setFullYear(oldYear + 1)
+
+    return new Date(newDate)
   }
 
-  addTwoYears(selectedCustomer: Customer) {
-    const oldYear: any = selectedCustomer.customerApiDate ? selectedCustomer.haulerApiDate?.getFullYear() : undefined
-    const newYear = oldYear ? oldYear + 2 : undefined
-    return selectedCustomer.customerApiDate?.setFullYear(newYear)
+  addTwoYears(date: any): any {
+
+    const oldDate = new Date(date)
+    const oldYear = oldDate.getFullYear()
+    const newDate = oldDate.setFullYear(oldYear + 2)
+
+    return new Date(newDate)
   }
 
   addOneApi(cost: any, apiRate: any): number {
@@ -227,9 +228,6 @@ export class AccountInfoComponent implements OnInit {
     return (+(+firstApi * (+apiRate / 100)) + +firstApi)
   }
 
-  onTest() {
-
-  }
 
   onReset() {
     this.resetFilteredString();

@@ -6,7 +6,7 @@ import {Customer} from "../model/general/customer";
 })
 export class FilterCustomerPipe implements PipeTransform {
 
-  transform(value: any, filterString: string) {
+  transform(value: any, filterString: string): any {
     if (!value || filterString === '') {
       return value;
     }
@@ -15,8 +15,12 @@ export class FilterCustomerPipe implements PipeTransform {
     value.map((customer: Customer) => {
 
       const lowerCustomer = customer.customerName.toLowerCase()
+      const lowerFilter = filterString.toLowerCase()
 
-      if (lowerCustomer.includes(filterString)) {
+      console.log(lowerCustomer)
+      console.log(filterString.toLowerCase())
+
+      if (lowerCustomer.includes(lowerFilter)) {
         customers.push(customer)
       }
 
@@ -24,7 +28,7 @@ export class FilterCustomerPipe implements PipeTransform {
 
         for (let account of customer.accounts) {
 
-          if (account.accountNumber?.includes(filterString)) {
+          if (account.accountNumber?.includes(lowerFilter)) {
             customers.push(customer)
           }
         }

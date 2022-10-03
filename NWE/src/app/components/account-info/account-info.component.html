@@ -33,7 +33,7 @@
         <mat-icon (click)="onReset() ">clear</mat-icon>
 
 
-        <button #menuTrigger [matMenuTriggerFor]="menu" mat-icon-button>
+        <button [matMenuTriggerFor]="menu" mat-icon-button>
           <mat-icon>menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
@@ -107,7 +107,7 @@
                   {{accounts.address.streetAddress ?? ''}}
 
                 </div>
-                <button #menuTrigger [matMenuTriggerFor]="menu" fxFlex mat-icon-button>
+                <button [matMenuTriggerFor]="menu" fxFlex mat-icon-button>
                   <mat-icon>menu</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
@@ -139,6 +139,9 @@
                   {{accounts.siteNumber}}
                 </div>
               </div>
+
+              <div class="divider" fxFill fxLayout="row">55</div>
+
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                 <div class="field-label" fxFlex="30">
@@ -256,11 +259,11 @@
                 </div>
                 <div class="field-data" fxFlex="40" fxLayout="column">
                   <div>
-                    {{addOneYear(customer) | date:'MM/dd/yy'}}
+                    {{addOneYear(customer.customerApiDate) | date:'MM/dd/yy'}}
                     - {{addOneApi(accounts.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
                   </div>
                   <div>
-                    {{addTwoYears(customer) | date:'MM/dd/yy'}}
+                    {{addTwoYears(customer.customerApiDate) | date:'MM/dd/yy'}}
                     - {{addTwoApis(accounts.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
                   </div>
 

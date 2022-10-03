@@ -37,6 +37,8 @@ import {
   OnCallAccountDialogComponent
 } from './components/account-info/on-call-account-dialog/on-call-account-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {LowercaseDirective} from './directives/lowercase.directive';
+import {MatDividerModule} from "@angular/material/divider";
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     HaulerContactComponent,
     FilterCustomerPipe,
     OnCallAccountDialogComponent,
+    LowercaseDirective,
   ],
 
   imports: [
@@ -76,6 +79,7 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatNativeDateModule,
     FlexModule,
     MatDialogModule,
+    MatDividerModule,
     NgxMaskModule.forRoot(),
 
 
