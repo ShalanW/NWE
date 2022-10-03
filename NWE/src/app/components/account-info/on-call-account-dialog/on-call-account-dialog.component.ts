@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {OnCallAccountDialogData} from "../../../model/stericycle/on-call-account-dialog-data";
-import {ServiceAddress} from "../../../model/general/service-address";
+import {OnCallAccount} from "../../../model/stericycle/OnCallAccount";
 
 @Component({
   selector: 'app-on-call-account-dialog',
@@ -11,55 +11,60 @@ import {ServiceAddress} from "../../../model/general/service-address";
 })
 export class OnCallAccountDialogComponent implements OnInit {
 
+// NEW CUSTOMER
   customerForm = this.fb.group({
     customerName: [''],
     haulerApiDate: [new Date()],
     customerApiDate: [new Date()],
     customerApiRate: ['']
   })
+
+// EDIT ACCOUNT
+  editAccount: OnCallAccount | undefined
   accountForm = this.fb.group({
 
-    type: [''],
-
-    address: [{} as ServiceAddress],
-
-    accountNumber: [''],
-    siteNumber: [''],
-    container: [{}],
+    type: [this.data.account?.type],
+    accountNumber: [this.data.account?.accountNumber],
+    siteNumber: [this.data.account?.siteNumber],
 
   })
   addressForm = this.fb.group({
-    streetAddress: [''],
-    city: [''],
-    state: [''],
-    zip: [''],
+
+    streetAddress: [this.data.account?.address.streetAddress],
+    city: [this.data.account?.address.city],
+    state: [this.data.account?.address.state],
+    zip: [this.data.account?.address.zip],
+
   })
   containerForm = this.fb.group({
 
-    type: [''],
+    type: [this.data.account?.container.type],
 
-    count: [''],
-    size: [''],
-    unit: [''],
+    count: [this.data.account?.container.count],
+    size: [this.data.account?.container.size],
+    unit: [this.data.account?.container.unit],
 
-    price: [''],
-    minimumPerService: [''],
-    frequencyByWeeks: [''],
+    price: [this.data.account?.container.price],
+    minimumPerService: [this.data.account?.container.minimumPerService],
+    frequencyByWeeks: [this.data.account?.container.frequencyByWeeks],
 
-    monthlyCost: [''],
+    monthlyCost: [this.data.account?.container.monthlyCost],
 
-    extraBoxCostHauler: [''],
-    extraBoxCostCustomerOriginal: [''],
-    extraBoxCostCustomer: [''],
+    extraBoxCostHauler: [this.data.account?.container.extraBoxCostHauler],
+    extraBoxCostCustomerOriginal: [this.data.account?.container.extraBoxCostCustomerOriginal],
+    extraBoxCostCustomer: [this.data.account?.container.extraBoxCostCustomer],
 
   })
 
-  dataObj: {} = {}
+  editAccountDataObj: {} = {}
+
+  addAccountDataObj: {} = {}
 
   constructor(private fb: FormBuilder,
               public dialogRef: MatDialogRef<OnCallAccountDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: OnCallAccountDialogData,
   ) {
+    this.editAccount = data.account
   }
 
   ngOnInit(): void {
@@ -72,13 +77,24 @@ export class OnCallAccountDialogComponent implements OnInit {
 
   onAddAccount() {
 
-    this.dataObj = {
+    this.addAccountDataObj = {
       accountForm: this.accountForm,
       addressForm: this.addressForm,
       containerForm: this.containerForm
     }
 
-    this.dialogRef.close(this.dataObj)
+    this.dialogRef.close(this.addAccountDataObj)
 
+  }
+
+  onEditAccount() {
+
+    this.editAccountDataObj = {
+      accountForm: this.accountForm,
+      addressForm: this.addressForm,
+      containerForm: this.containerForm
+    }
+
+    this.dialogRef.close(this.editAccountDataObj)
   }
 }

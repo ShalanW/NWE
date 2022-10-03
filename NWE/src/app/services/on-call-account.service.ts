@@ -38,4 +38,18 @@ export class OnCallAccountService {
       {merge: true})
   }
 
+  editOnCallAccount(newAccount: OnCallAccount, customer: Customer, oldAccount: OnCallAccount) {
+
+    console.log(newAccount)
+
+    this.collectionRef.doc(customer.customerName).set({
+        accounts: firebase.firestore.FieldValue?.arrayRemove(oldAccount)
+      },
+      {merge: true})
+
+    this.collectionRef.doc(customer.customerName).set({
+        accounts: firebase.firestore.FieldValue?.arrayUnion(newAccount)
+      },
+      {merge: true})
+  }
 }

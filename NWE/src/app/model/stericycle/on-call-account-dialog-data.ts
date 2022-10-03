@@ -5,4 +5,5 @@ export interface OnCallAccountDialogData {
   customer?: Customer
   account?: OnCallAccount
   dialogType: string
+  index?: number
 }

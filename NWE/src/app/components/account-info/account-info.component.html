@@ -89,7 +89,7 @@
             <mat-label>API Rate</mat-label>
             <input [(ngModel)]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
           </mat-form-field>
-          <button (click)="onUpdateCustomer(selectedCustomer, newCustomerStartDate)"
+          <button (click)="onUpdateCustomer(selectedCustomer, newCustomerStartDate,newHaulerStartDate)"
                   fxFlex="20"
                   mat-stroked-button>Update
           </button>
@@ -110,19 +110,35 @@
 
         <mat-tab-group>
 
-          <mat-tab *ngFor="let accounts of customer.accounts"
-                   label="{{customer.customerName}}{{' - '}}{{accounts.type}}">
+          <mat-tab *ngFor="let accounts of customer.accounts; let i = index"
+                   label="{{customer.customerName}}{{' - '}}{{accounts.type}} ">
+
 
             <div class="service-box" fxLayout="column">
               <div fxLayout="column">
 
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="display-row" fxFlex="row" fxLayoutAlign="start center">
                   <div class="field-label" fxFlex="30">
                     {{'Service Address: '}}
                   </div>
-                  <div class="field-data">
+                  <div class="field-data" fxFlex="65">
                     {{accounts.address.streetAddress ?? ''}}
+
                   </div>
+                  <button #menuTrigger [matMenuTriggerFor]="menu" fxFlex mat-icon-button>
+                    <mat-icon>menu</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button (click)="openEditAccountDialog(accounts)" mat-menu-item> Edit On-Call Account</button>
+
+                    <button
+                      (click)="onConfirmDeleteAccount(accounts, customer)"
+                      mat-menu-item
+                    >🚨 Delete On-Call Account
+                    </button>
+
+
+                  </mat-menu>
                 </div>
 
                 <div class="display-row" fxFlex="row" fxLayoutAlign="start">
@@ -290,32 +306,32 @@
                     <div *ngFor="let note of accounts.notes">
                       <div>{{note}}</div>
                     </div>
-                    <div #deleteButton>
-                      <button
-                        (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"
+                    <!--                    <div #deleteButton>-->
+                    <!--                      <button-->
+                    <!--                        (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"-->
 
-                        class="delete-button"
-                        color="primary"
-                        mat-raised-button>
-                        Delete
-                        On-Call Account
-                      </button>
-                    </div>
-                    <div #confirmButtons [hidden]="true">
-                      <button #denyButton
-                              (click)="confirmDeleteButton.disabled = true; denyButton.disabled = true; confirmButtons.hidden = true; deleteButton.hidden = false"
-                              [disabled]="true"
-                              class="deny-button"
-                              color="primary" mat-raised-button>
-                        Abort
-                      </button>
-                      <button #confirmDeleteButton
-                              (click)="onConfirmDeleteAccount(accounts, customer)"
-                              [disabled]="true"
-                              class="confirm-button"
-                              color="primary" mat-raised-button> Confirm
-                      </button>
-                    </div>
+                    <!--                        class="delete-button"-->
+                    <!--                        color="primary"-->
+                    <!--                        mat-raised-button>-->
+                    <!--                        Delete-->
+                    <!--                        On-Call Account-->
+                    <!--                      </button>-->
+                    <!--                    </div>-->
+                    <!--                    <div #confirmButtons [hidden]="true">-->
+                    <!--                      <button #denyButton-->
+                    <!--                              (click)="confirmDeleteButton.disabled = true; denyButton.disabled = true; confirmButtons.hidden = true; deleteButton.hidden = false"-->
+                    <!--                              [disabled]="true"-->
+                    <!--                              class="deny-button"-->
+                    <!--                              color="primary" mat-raised-button>-->
+                    <!--                        Abort-->
+                    <!--                      </button>-->
+                    <!--                      <button #confirmDeleteButton-->
+                    <!--                              (click)="onConfirmDeleteAccount(accounts, customer)"-->
+                    <!--                              [disabled]="true"-->
+                    <!--                              class="confirm-button"-->
+                    <!--                              color="primary" mat-raised-button> Confirm-->
+                    <!--                      </button>-->
+                    <!--                    </div>-->
 
 
                   </div>

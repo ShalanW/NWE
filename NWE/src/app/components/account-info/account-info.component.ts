@@ -88,6 +88,19 @@ export class AccountInfoComponent implements OnInit {
     })
   }
 
+  openEditAccountDialog(oldAccount: OnCallAccount) {
+    const dialogRef = this.dialog.open(OnCallAccountDialogComponent, {
+      data: {dialogType: "Edit Account", account: oldAccount}
+    })
+
+    dialogRef.afterClosed().subscribe(newAccount => {
+      console.log(newAccount)
+      if (newAccount) {
+        this.onEditAccount(newAccount, this.selectedCustomer, oldAccount)
+      }
+    })
+  }
+
   displayFn(customer: Customer): string {
     return customer && customer.customerName ? customer.customerName : ''
   };
@@ -103,6 +116,7 @@ export class AccountInfoComponent implements OnInit {
   runStuff() {
     this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName, this.selectedCustomer)
     this.newCustomerStartDate = this.datePipe.transform(this.selectedCustomer?.customerApiDate, 'yyyy-MM-dd') || ''
+    this.newHaulerStartDate = this.datePipe.transform(this.selectedCustomer?.haulerApiDate, 'yyyy-MM-dd') || ''
   }
 
   onAddNewAccount(data: any) {
@@ -173,8 +187,8 @@ export class AccountInfoComponent implements OnInit {
 
   // this was cool - use it again
 
-  onUpdateCustomer(selectedCustomer: Customer, date: string | '') {
-    this.cs.updateCustomer(selectedCustomer, date)
+  onUpdateCustomer(selectedCustomer: Customer, customerStartDate: string | '', haulerStartDate: string | '') {
+    this.cs.updateCustomer(selectedCustomer, customerStartDate, haulerStartDate)
   }
 
   addOneYear(selectedCustomer: Customer) {
@@ -217,6 +231,18 @@ export class AccountInfoComponent implements OnInit {
   onDeleteCustomer(selectedCustomer: Customer) {
     this.cs.deleteCustomer(selectedCustomer)
     this.onReset()
+  }
+
+
+  onEditAccount(data: any, customer: Customer, oldAccount: OnCallAccount) {
+
+    const newAccount = <OnCallAccount>{
+      ...data?.accountForm?.value,
+      address: data?.addressForm?.value as ServiceAddress,
+      container: data?.containerForm?.value as Container,
+      notes: []
+    }
+    this.ocaService.editOnCallAccount(newAccount, customer, oldAccount)
   }
 }
 

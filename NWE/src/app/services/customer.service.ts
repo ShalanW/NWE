@@ -90,25 +90,23 @@ export class CustomerService {
 
   }
 
-
   addCustomer(newCustomer: Partial<Customer>) {
     this.collectionRef.doc(newCustomer.customerName).set(newCustomer, {merge: true})
   }
 
-  updateCustomer(selectedCustomer: any, date: string | '') {
+  updateCustomer(selectedCustomer: any, customerStartDate: string | '', haulerStartDate: string | '') {
 
-    console.log(date)
+    const cYear = +customerStartDate.slice(0, 4)
+    const cMonth = +customerStartDate.slice(5, 7)
+    const cDay = +customerStartDate.slice(8, 10)
+    const customerDate = Timestamp.fromDate(new Date(cYear, cMonth - 1, cDay))
 
-    const year = +date.slice(0, 4)
-    const month = +date.slice(5, 7)
-    const day = +date.slice(8, 10)
+    const hYear = +haulerStartDate.slice(0, 4)
+    const hMonth = +haulerStartDate.slice(5, 7)
+    const hDay = +haulerStartDate.slice(8, 10)
+    const haulerDate = Timestamp.fromDate(new Date(hYear, hMonth - 1, hDay))
 
-    const haulerDate = Timestamp.fromDate(selectedCustomer.haulerApiDate)
-    const customerDate = Timestamp.fromDate(new Date(year, month - 1, day))
     const customerApiRate = selectedCustomer.customerApiRate
-
-    console.log(customerDate)
-
 
     this.collectionRef.doc(selectedCustomer.customerName).update({
       customerApiDate: customerDate,
@@ -118,7 +116,6 @@ export class CustomerService {
   }
 
   updateCustomerHelper(selectedCustomer: Customer) {
-
 
     this.collectionRef.doc(selectedCustomer.customerName).update({
       customerName: selectedCustomer.customerName
