@@ -1,4 +1,5 @@
 <h1 *ngIf="data.dialogType === 'New Customer'" mat-dialog-title>Add New Customer</h1>
+<h1 *ngIf="data.dialogType === 'Edit Customer'" mat-dialog-title>{{data.customer?.customerName}}</h1>
 
 <h1 *ngIf="data.dialogType === 'New Account'" mat-dialog-title>Add New Account</h1>
 <h3 *ngIf="data.dialogType === 'New Account'" mat-dialog-title>
@@ -44,6 +45,41 @@
     </div>
 
   </form>
+
+</mat-dialog-content>
+
+<mat-dialog-content *ngIf="data.dialogType === 'Edit Customer'" class="new-customer-menu">
+
+
+  <div fxLayout="column">
+
+
+    <mat-form-field>
+
+      <mat-label>Customer Start Date</mat-label>
+
+      <input [(ngModel)]="newCustomerStartDate" matInput type="date">
+
+    </mat-form-field>
+
+    <mat-form-field>
+
+
+      <mat-label>Hauler Start Date</mat-label>
+
+      <input [(ngModel)]="newHaulerStartDate" matInput type="date">
+
+
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-label>API Rate</mat-label>
+      <input [(ngModel)]="newCustomerApiRate" autocomplete="off" matInput type="text">
+    </mat-form-field>
+
+  </div>
+
 
 </mat-dialog-content>
 
@@ -286,6 +322,10 @@
 
   <button (click)="onEditAccount()" *ngIf="data.dialogType === 'Edit Account'"
           color="primary" mat-button mat-flat-button>Update Account
+  </button>
+
+  <button (click)="onUpdateCustomer()" *ngIf="data.dialogType === 'Edit Customer'"
+          color="primary" mat-button mat-flat-button>Update Customer
   </button>
 
   <button (click)="onClose()" color="primary" mat-button>Just Kidding</button>

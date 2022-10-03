@@ -41,7 +41,7 @@ export class CustomerService {
 
   }
 
-  // loadSelectedCustomer(manualString: string): Observable<Customer[]> {
+  // loadSelected_Customer(manualString: string): Observable<Customer[]> {
   //   return this.db.collection(
   //     'Customers',
   //     ref => ref.where('customerName', '==', manualString)
@@ -65,7 +65,7 @@ export class CustomerService {
   //
   // }
 
-  loadSelectedCustomer(customerName: string, selectedCustomer: Customer): Observable<Customer[]> {
+  loadSelectedCustomer(selectedCustomer: Customer): Observable<Customer[]> {
     return this.db.collection(
       'Customers',
       ref => ref.where('customerName', '==', selectedCustomer.customerName)
@@ -94,24 +94,24 @@ export class CustomerService {
     this.collectionRef.doc(newCustomer.customerName).set(newCustomer, {merge: true})
   }
 
-  updateCustomer(selectedCustomer: any, customerStartDate: string | '', haulerStartDate: string | '') {
+  updateCustomer(selectedCustomer: any, customerStartDate: string | '', haulerStartDate: string | '', newCustomerApiRate: string | '') {
 
-    const cYear = +customerStartDate.slice(0, 4)
-    const cMonth = +customerStartDate.slice(5, 7)
-    const cDay = +customerStartDate.slice(8, 10)
+
+    const cYear = +customerStartDate?.slice(0, 4)
+    const cMonth = +customerStartDate?.slice(5, 7)
+    const cDay = +customerStartDate?.slice(8, 10)
     const customerDate = Timestamp.fromDate(new Date(cYear, cMonth - 1, cDay))
 
-    const hYear = +haulerStartDate.slice(0, 4)
-    const hMonth = +haulerStartDate.slice(5, 7)
-    const hDay = +haulerStartDate.slice(8, 10)
+    const hYear = +haulerStartDate?.slice(0, 4)
+    const hMonth = +haulerStartDate?.slice(5, 7)
+    const hDay = +haulerStartDate?.slice(8, 10)
     const haulerDate = Timestamp.fromDate(new Date(hYear, hMonth - 1, hDay))
 
-    const customerApiRate = selectedCustomer.customerApiRate
 
     this.collectionRef.doc(selectedCustomer.customerName).update({
       customerApiDate: customerDate,
       haulerApiDate: haulerDate,
-      customerApiRate: customerApiRate
+      customerApiRate: newCustomerApiRate
     })
   }
 

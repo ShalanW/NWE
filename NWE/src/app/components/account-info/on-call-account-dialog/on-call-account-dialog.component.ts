@@ -3,6 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {OnCallAccountDialogData} from "../../../model/stericycle/on-call-account-dialog-data";
 import {OnCallAccount} from "../../../model/stericycle/OnCallAccount";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-on-call-account-dialog',
@@ -18,6 +19,16 @@ export class OnCallAccountDialogComponent implements OnInit {
     customerApiDate: [new Date()],
     customerApiRate: ['']
   })
+
+// EDIT CUSTOMER
+  newCustomerStartDate: any
+  newHaulerStartDate: any
+  newCustomerApiRate: any
+  editCustomerDataObj: {} = {}
+
+
+// NEW ACCOUNT
+  addAccountDataObj: {} = {}
 
 // EDIT ACCOUNT
   editAccount: OnCallAccount | undefined
@@ -55,21 +66,33 @@ export class OnCallAccountDialogComponent implements OnInit {
     extraBoxCostCustomer: [this.data.account?.container.extraBoxCostCustomer],
 
   })
-
   editAccountDataObj: {} = {}
 
-  addAccountDataObj: {} = {}
 
   constructor(private fb: FormBuilder,
               public dialogRef: MatDialogRef<OnCallAccountDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: OnCallAccountDialogData,
+              public datePipe: DatePipe
   ) {
     this.editAccount = data.account
+
+    this.newCustomerStartDate = this.datePipe.transform(data.customer?.customerApiDate, 'yyyy-MM-dd') || ''
+    this.newHaulerStartDate = this.datePipe.transform(data.customer?.haulerApiDate, 'yyyy-MM-dd') || ''
+    this.newCustomerApiRate = data.customer?.customerApiRate
   }
 
   ngOnInit(): void {
   }
 
+  onUpdateCustomer() {
+    this.editCustomerDataObj = {
+      customerApiRate: this.newCustomerApiRate,
+      customerApiDate: this.newCustomerStartDate,
+      haulerApiDate: this.newHaulerStartDate
+    }
+
+    this.dialogRef.close(this.editCustomerDataObj)
+  }
 
   onClose() {
     this.dialogRef.close()

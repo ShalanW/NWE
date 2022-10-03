@@ -24,7 +24,7 @@ export class FilterCustomerPipe implements PipeTransform {
 
         for (let account of customer.accounts) {
 
-          if (account.accountNumber.includes(filterString)) {
+          if (account.accountNumber?.includes(filterString)) {
             customers.push(customer)
           }
         }

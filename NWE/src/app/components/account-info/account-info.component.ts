@@ -19,9 +19,6 @@ import {OnCallAccountDialogComponent} from "./on-call-account-dialog/on-call-acc
 })
 export class AccountInfoComponent implements OnInit {
 
-  newCustomerStartDate: string = ''
-
-  newHaulerStartDate: string = ''
 
   filteredString: string = '';
 
@@ -75,6 +72,23 @@ export class AccountInfoComponent implements OnInit {
     })
   }
 
+  openEditCustomerDialog() {
+    const dialogRef = this.dialog.open(OnCallAccountDialogComponent, {
+      data: {dialogType: 'Edit Customer', customer: this.selectedCustomer}
+    })
+
+    dialogRef.afterClosed().subscribe(customerData => {
+
+      if (customerData) {
+
+        this.onUpdateCustomer(this.selectedCustomer, customerData.customerApiDate, customerData.haulerApiDate, customerData.customerApiRate)
+      }
+      this.onReset()
+      this.runOtherStuff()
+
+    })
+  }
+
   openNewAccountDialog() {
     const dialogRef = this.dialog.open(OnCallAccountDialogComponent, {
       data: {dialogType: "New Account", customer: this.selectedCustomer}
@@ -94,7 +108,6 @@ export class AccountInfoComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(newAccount => {
-      console.log(newAccount)
       if (newAccount) {
         this.onEditAccount(newAccount, this.selectedCustomer, oldAccount)
       }
@@ -114,9 +127,8 @@ export class AccountInfoComponent implements OnInit {
   }
 
   runStuff() {
-    this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer.customerName, this.selectedCustomer)
-    this.newCustomerStartDate = this.datePipe.transform(this.selectedCustomer?.customerApiDate, 'yyyy-MM-dd') || ''
-    this.newHaulerStartDate = this.datePipe.transform(this.selectedCustomer?.haulerApiDate, 'yyyy-MM-dd') || ''
+    this.$selectedCustomer = this.cs.loadSelectedCustomer(this.selectedCustomer)
+
   }
 
   onAddNewAccount(data: any) {
@@ -187,8 +199,9 @@ export class AccountInfoComponent implements OnInit {
 
   // this was cool - use it again
 
-  onUpdateCustomer(selectedCustomer: Customer, customerStartDate: string | '', haulerStartDate: string | '') {
-    this.cs.updateCustomer(selectedCustomer, customerStartDate, haulerStartDate)
+  onUpdateCustomer(selectedCustomer: Customer, customerStartDate: string | '', haulerStartDate: string | '', customerApiRate: string | '') {
+    this.cs.updateCustomer(selectedCustomer, customerStartDate, haulerStartDate, customerApiRate)
+    this.runStuff()
   }
 
   addOneYear(selectedCustomer: Customer) {
@@ -232,7 +245,6 @@ export class AccountInfoComponent implements OnInit {
     this.cs.deleteCustomer(selectedCustomer)
     this.onReset()
   }
-
 
   onEditAccount(data: any, customer: Customer, oldAccount: OnCallAccount) {
 

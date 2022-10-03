@@ -43,6 +43,11 @@
             New Customer
           </button>
 
+          <button (click)="openEditCustomerDialog()"
+                  *ngIf="selectedCustomer.customerName != ''" mat-menu-item>
+            Edit Customer
+          </button>
+
           <button (click)="openNewAccountDialog()" *ngIf="selectedCustomer.customerName != ''" mat-menu-item>Add New
             Account
           </button>
@@ -53,309 +58,285 @@
 
         </mat-menu>
 
-
       </div>
 
-      <mat-expansion-panel *ngIf="selectedCustomer.customerName != ''">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Customer Info
-          </mat-panel-title>
-          <mat-panel-description>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div fxLayout="row" fxLayoutAlign="space-between center">
 
-          <mat-form-field fxFlex="20">
+      <ng-container *ngIf="$selectedCustomer | async as customers">
 
-            <mat-label>Customer Start Date</mat-label>
+        <div *ngFor="let customer of customers">
 
-            <input [(ngModel)]="newCustomerStartDate" matInput type="date">
+          <div *ngIf="!customer.accounts" fxLayout="row" fxLayoutAlign="space-evenly center">
 
-          </mat-form-field>
+            <div>Customer Start: {{customer?.customerApiDate | date:'MM/dd/yy' }}</div>
+            <div>Customer API Rate: {{customer?.customerApiRate + '%'}}</div>
+            <div>Hauler Start: {{customer?.haulerApiDate | date:'MM/dd/yy'}}</div>
 
-          <mat-form-field fxFlex="20">
-
-
-            <mat-label>Hauler Start Date</mat-label>
-
-            <input [(ngModel)]="newHaulerStartDate" matInput type="date">
-
-
-          </mat-form-field>
-
-
-          <mat-form-field fxFlex="20">
-            <mat-label>API Rate</mat-label>
-            <input [(ngModel)]="selectedCustomer.customerApiRate" autocomplete="off" matInput type="text">
-          </mat-form-field>
-          <button (click)="onUpdateCustomer(selectedCustomer, newCustomerStartDate,newHaulerStartDate)"
-                  fxFlex="20"
-                  mat-stroked-button>Update
-          </button>
-        </div>
-      </mat-expansion-panel>
-
-
-    </mat-card>
-
-  </div>
-
-  <div *ngIf="selectedCustomer.customerName !=''" fxLayout="row" fxLayoutAlign="center center">
-
-    <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
-
-
-      <mat-card-content *ngFor="let customer of $selectedCustomer | async">
-
-        <mat-tab-group>
-
-          <mat-tab *ngFor="let accounts of customer.accounts; let i = index"
-                   label="{{customer.customerName}}{{' - '}}{{accounts.type}} ">
-
-
-            <div class="service-box" fxLayout="column">
-              <div fxLayout="column">
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start center">
-                  <div class="field-label" fxFlex="30">
-                    {{'Service Address: '}}
-                  </div>
-                  <div class="field-data" fxFlex="65">
-                    {{accounts.address.streetAddress ?? ''}}
-
-                  </div>
-                  <button #menuTrigger [matMenuTriggerFor]="menu" fxFlex mat-icon-button>
-                    <mat-icon>menu</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button (click)="openEditAccountDialog(accounts)" mat-menu-item> Edit On-Call Account</button>
-
-                    <button
-                      (click)="onConfirmDeleteAccount(accounts, customer)"
-                      mat-menu-item
-                    >🚨 Delete On-Call Account
-                    </button>
-
-
-                  </mat-menu>
-                </div>
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Account #: '}}
-                  </div>
-                  <div class="field-data">
-                    {{accounts.accountNumber}}
-                  </div>
-                </div>
-                <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Site #: '}}
-                  </div>
-                  <div class="field-data">
-                    {{accounts.siteNumber}}
-                  </div>
-                </div>
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Container: '}}
-                  </div>
-                  <div class="field-data">
-                    {{'(' + accounts.container.count + ')'}}&nbsp;{{accounts.container.size}}&nbsp;{{accounts.container.unit}}&nbsp;{{accounts.container.type}}
-                  </div>
-                </div>
-                <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Min. Containers Per Service: '}}
-                  </div>
-                  <div class="field-data">
-                    {{accounts.container.minimumPerService}}
-                  </div>
-                </div>
-                <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Frequency: '}}
-                  </div>
-                  <div class="field-data">
-                    {{'Every ' + accounts.container.frequencyByWeeks + ' Weeks'}}
-                  </div>
-                </div>
-                <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Price per Box: '}}
-                  </div>
-                  <div class="field-data">
-                    {{accounts.container.price | currency}}
-
-                  </div>
-                </div>
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Expected Bill Amount: '}}
-                  </div>
-                  <div class="field-data">
-                    {{accounts.container.monthlyCost | currency}}
-                  </div>
-                </div>
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
-                  <div class="field-label" fxFlex="30">
-                    {{'Extra Box Amount (Cust): '}}
-                  </div>
-                  <div class="field-data" fxFlex="7">
-                    {{accounts.container.extraBoxCostCustomer | currency}}
-                  </div>
-
-
-                  <input #extraBoxesCustomerInput (focus)="extraBoxesCustomerInput.select()"
-                         [(ngModel)]="extraBoxesCustomer"
-                         fxFlex="5"
-                         matInput
-                         placeholder="0"
-                         type="number">
-
-                  <div>&nbsp;</div>
-                  <div>&nbsp;</div>
-
-                  <div class="field-data" fxFlex="10">
-                    {{calcExtraCustomer(accounts.container.extraBoxCostCustomer) | currency}}
-                  </div>
-                  <!--                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
-                  <!--                      Pricing*-->
-                  <!--                    </div>-->
-                  <!--                    this was cool - use it somewhere else-->
-
-                </div>
-                <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Extra Box Amount (Hauler): '}}
-                  </div>
-                  <div class="field-data" fxFlex="7">
-                    {{accounts.container.extraBoxCostHauler | currency}}
-
-                  </div>
-
-                  <input #extraBoxesHaulerInput (focus)="extraBoxesHaulerInput.select()"
-                         [(ngModel)]="extraBoxesHauler"
-                         fxFlex="5"
-                         matInput
-                         placeholder="0"
-                         type="number">
-
-                  <div>&nbsp;</div>
-                  <div>&nbsp;</div>
-
-                  <div class="field-data" fxFlex="10">
-                    {{calcExtraHauler(accounts.container.extraBoxCostHauler) | currency}}
-                  </div>
-
-                  <!--                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
-                  <!--                      Pricing*-->
-                  <!--                    </div>-->
-
-                </div>
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
-                  <div class="field-label" fxFlex="30">
-                    {{'Customer Start: '}}
-                  </div>
-                  <div class="field-data" fxFlex="40">
-                    {{selectedCustomer.customerApiDate | date:'MM/dd/yy'}}
-                    - {{accounts.container.extraBoxCostCustomerOriginal | currency}}
-                  </div>
-
-                </div>
-                <div class="display-row" fxLayout="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Customer APIs: ' + '@' + selectedCustomer.customerApiRate + '%'}}
-                  </div>
-                  <div class="field-data" fxFlex="40" fxLayout="column">
-                    <div>
-                      {{addOneYear(selectedCustomer) | date:'MM/dd/yy'}}
-                      - {{addOneApi(accounts.container.extraBoxCostCustomerOriginal, selectedCustomer.customerApiRate) | currency}}
-                    </div>
-                    <div>
-                      {{addTwoYears(selectedCustomer) | date:'MM/dd/yy'}}
-                      - {{addTwoApis(accounts.container.extraBoxCostCustomerOriginal, selectedCustomer.customerApiRate) | currency}}
-                    </div>
-
-                  </div>
-
-
-                </div>
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Hauler Start: '}}
-                  </div>
-                  <div class="field-data" fxFlex="40">
-                    {{selectedCustomer.haulerApiDate  | date:'MMMM dd, yyyy'}}
-                  </div>
-
-                </div>
-
-
-                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="30">
-                    {{'Notes: '}}
-                  </div>
-                  <div fxFlex="column">
-                    <div *ngFor="let note of accounts.notes">
-                      <div>{{note}}</div>
-                    </div>
-                    <!--                    <div #deleteButton>-->
-                    <!--                      <button-->
-                    <!--                        (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"-->
-
-                    <!--                        class="delete-button"-->
-                    <!--                        color="primary"-->
-                    <!--                        mat-raised-button>-->
-                    <!--                        Delete-->
-                    <!--                        On-Call Account-->
-                    <!--                      </button>-->
-                    <!--                    </div>-->
-                    <!--                    <div #confirmButtons [hidden]="true">-->
-                    <!--                      <button #denyButton-->
-                    <!--                              (click)="confirmDeleteButton.disabled = true; denyButton.disabled = true; confirmButtons.hidden = true; deleteButton.hidden = false"-->
-                    <!--                              [disabled]="true"-->
-                    <!--                              class="deny-button"-->
-                    <!--                              color="primary" mat-raised-button>-->
-                    <!--                        Abort-->
-                    <!--                      </button>-->
-                    <!--                      <button #confirmDeleteButton-->
-                    <!--                              (click)="onConfirmDeleteAccount(accounts, customer)"-->
-                    <!--                              [disabled]="true"-->
-                    <!--                              class="confirm-button"-->
-                    <!--                              color="primary" mat-raised-button> Confirm-->
-                    <!--                      </button>-->
-                    <!--                    </div>-->
-
-
-                  </div>
-                </div>
-
-
-              </div>
-            </div>
-
-          </mat-tab>
-
-
-        </mat-tab-group>
-
-
-        <div>
+          </div>
 
         </div>
-      </mat-card-content>
+
+      </ng-container>
 
     </mat-card>
-
   </div>
 
 
 </div>
+
+<div *ngIf="selectedCustomer.customerName !=''" fxLayout="row" fxLayoutAlign="center center">
+
+  <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
+
+
+    <mat-card-content *ngFor="let customer of $selectedCustomer | async">
+
+      <mat-tab-group>
+
+        <mat-tab *ngFor="let accounts of customer.accounts"
+                 label="{{customer.customerName}}{{' - '}}{{accounts.type}} ">
+
+
+          <div class="service-box" fxLayout="column">
+            <div fxLayout="column">
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start center">
+                <div class="field-label" fxFlex="30">
+                  {{'Service Address: '}}
+                </div>
+                <div class="field-data" fxFlex="65">
+                  {{accounts.address.streetAddress ?? ''}}
+
+                </div>
+                <button #menuTrigger [matMenuTriggerFor]="menu" fxFlex mat-icon-button>
+                  <mat-icon>menu</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button (click)="openEditAccountDialog(accounts)" mat-menu-item> Edit On-Call Account</button>
+
+                  <button
+                    (click)="onConfirmDeleteAccount(accounts, customer)"
+                    mat-menu-item
+                  >🚨 Delete On-Call Account
+                  </button>
+
+
+                </mat-menu>
+              </div>
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Account #: '}}
+                </div>
+                <div class="field-data">
+                  {{accounts.accountNumber}}
+                </div>
+              </div>
+              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Site #: '}}
+                </div>
+                <div class="field-data">
+                  {{accounts.siteNumber}}
+                </div>
+              </div>
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Container: '}}
+                </div>
+                <div class="field-data">
+                  {{'(' + accounts.container.count + ')'}}&nbsp;{{accounts.container.size}}&nbsp;{{accounts.container.unit}}&nbsp;{{accounts.container.type}}
+                </div>
+              </div>
+              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Min. Containers Per Service: '}}
+                </div>
+                <div class="field-data">
+                  {{accounts.container.minimumPerService}}
+                </div>
+              </div>
+              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Frequency: '}}
+                </div>
+                <div class="field-data">
+                  {{'Every ' + accounts.container.frequencyByWeeks + ' Weeks'}}
+                </div>
+              </div>
+              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Price per Box: '}}
+                </div>
+                <div class="field-data">
+                  {{accounts.container.price | currency}}
+
+                </div>
+              </div>
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Expected Bill Amount: '}}
+                </div>
+                <div class="field-data">
+                  {{accounts.container.monthlyCost | currency}}
+                </div>
+              </div>
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
+                <div class="field-label" fxFlex="30">
+                  {{'Extra Box Amount (Cust): '}}
+                </div>
+                <div class="field-data" fxFlex="7">
+                  {{accounts.container.extraBoxCostCustomer | currency}}
+                </div>
+
+
+                <input #extraBoxesCustomerInput (focus)="extraBoxesCustomerInput.select()"
+                       [(ngModel)]="extraBoxesCustomer"
+                       fxFlex="5"
+                       matInput
+                       placeholder="0"
+                       type="number">
+
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+
+                <div class="field-data" fxFlex="10">
+                  {{calcExtraCustomer(accounts.container.extraBoxCostCustomer) | currency}}
+                </div>
+                <!--                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
+                <!--                      Pricing*-->
+                <!--                    </div>-->
+                <!--                    this was cool - use it somewhere else-->
+
+              </div>
+              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Extra Box Amount (Hauler): '}}
+                </div>
+                <div class="field-data" fxFlex="7">
+                  {{accounts.container.extraBoxCostHauler | currency}}
+
+                </div>
+
+                <input #extraBoxesHaulerInput (focus)="extraBoxesHaulerInput.select()"
+                       [(ngModel)]="extraBoxesHauler"
+                       fxFlex="5"
+                       matInput
+                       placeholder="0"
+                       type="number">
+
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+
+                <div class="field-data" fxFlex="10">
+                  {{calcExtraHauler(accounts.container.extraBoxCostHauler) | currency}}
+                </div>
+
+                <!--                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
+                <!--                      Pricing*-->
+                <!--                    </div>-->
+
+              </div>
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
+                <div class="field-label" fxFlex="30">
+                  {{'Customer Start: '}}
+                </div>
+                <div class="field-data" fxFlex="40">
+                  {{customer.customerApiDate | date:'MM/dd/yy'}}
+                  - {{accounts.container.extraBoxCostCustomerOriginal | currency}}
+                </div>
+
+              </div>
+              <div class="display-row" fxLayout="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Customer APIs: ' + '@' + customer.customerApiRate + '%'}}
+                </div>
+                <div class="field-data" fxFlex="40" fxLayout="column">
+                  <div>
+                    {{addOneYear(customer) | date:'MM/dd/yy'}}
+                    - {{addOneApi(accounts.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
+                  </div>
+                  <div>
+                    {{addTwoYears(customer) | date:'MM/dd/yy'}}
+                    - {{addTwoApis(accounts.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
+                  </div>
+
+                </div>
+
+
+              </div>
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Hauler Start: '}}
+                </div>
+                <div class="field-data" fxFlex="40">
+                  {{customer.haulerApiDate  | date:'MM/dd/yy'}}
+                </div>
+
+              </div>
+
+
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                <div class="field-label" fxFlex="30">
+                  {{'Notes: '}}
+                </div>
+                <div fxFlex="column">
+                  <div *ngFor="let note of accounts.notes">
+                    <div>{{note}}</div>
+                  </div>
+                  <!--                    <div #deleteButton>-->
+                  <!--                      <button-->
+                  <!--                        (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"-->
+
+                  <!--                        class="delete-button"-->
+                  <!--                        color="primary"-->
+                  <!--                        mat-raised-button>-->
+                  <!--                        Delete-->
+                  <!--                        On-Call Account-->
+                  <!--                      </button>-->
+                  <!--                    </div>-->
+                  <!--                    <div #confirmButtons [hidden]="true">-->
+                  <!--                      <button #denyButton-->
+                  <!--                              (click)="confirmDeleteButton.disabled = true; denyButton.disabled = true; confirmButtons.hidden = true; deleteButton.hidden = false"-->
+                  <!--                              [disabled]="true"-->
+                  <!--                              class="deny-button"-->
+                  <!--                              color="primary" mat-raised-button>-->
+                  <!--                        Abort-->
+                  <!--                      </button>-->
+                  <!--                      <button #confirmDeleteButton-->
+                  <!--                              (click)="onConfirmDeleteAccount(accounts, customer)"-->
+                  <!--                              [disabled]="true"-->
+                  <!--                              class="confirm-button"-->
+                  <!--                              color="primary" mat-raised-button> Confirm-->
+                  <!--                      </button>-->
+                  <!--                    </div>-->
+
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+        </mat-tab>
+
+
+      </mat-tab-group>
+
+
+      <div>
+
+      </div>
+    </mat-card-content>
+
+  </mat-card>
+
+</div>
+
+
 
