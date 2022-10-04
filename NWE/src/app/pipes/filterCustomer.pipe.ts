@@ -26,10 +26,16 @@ export class FilterCustomerPipe implements PipeTransform {
 
         for (let account of customer.accounts) {
 
+          const lowerStreet = account.address.streetAddress?.toLowerCase()
+
+          if (lowerStreet?.includes(filterString)) {
+            customers.push(customer)
+          }
           if (account.accountNumber?.includes(lowerFilter)) {
             customers.push(customer)
           }
         }
+
       }
 
     })

@@ -2,7 +2,7 @@
 
   <div fxFlex="row" fxLayoutAlign="center center">
 
-    <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="">
+    <mat-card fxFlex.gt-sm="35" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="">
 
       <div fxLayout="row" fxLayoutAlign=" center">
 
@@ -78,15 +78,32 @@
 
       </ng-container>
 
+      <ng-container *ngIf="$selectedCustomer | async as customers">
+
+
+        <div *ngFor="let customer of customers">
+          <ng-container
+            *ngIf="!customer.customerApiDate || !customer.haulerApiDate || customer.customerApiRate =='' || !customer.customerApiRate">
+            <div>
+              ***update customer***
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+
     </mat-card>
   </div>
 
 
 </div>
 
-<div *ngIf="selectedCustomer.customerName !=''" fxLayout="row" fxLayoutAlign="center center">
+<div
+  *ngIf="selectedCustomer.customerName !='' && selectedCustomer.customerApiDate && selectedCustomer.haulerApiDate && selectedCustomer.customerApiRate !=''"
+  fxLayout="row"
+  fxLayoutAlign="center center">
 
-  <mat-card fxFlex.gt-sm="60" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
+  <mat-card fxFlex.gt-sm="35" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch">
 
 
     <mat-card-content *ngFor="let customer of $selectedCustomer | async">
@@ -114,17 +131,17 @@
             <div fxLayout="column">
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start center">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Service Address: '}}
                 </div>
                 <div class="field-data" fxFlex="65">
-                  {{account.address.streetAddress ?? ''}}
+                  {{account.address.streetAddress + ', ' + account.address.city + ', ' + account.address.state + ' ' + account.address.zip}}
                 </div>
 
               </div>
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Account #: '}}
                 </div>
                 <div class="field-data">
@@ -132,7 +149,7 @@
                 </div>
               </div>
               <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Site #: '}}
                 </div>
                 <div class="field-data">
@@ -143,7 +160,7 @@
               <mat-divider></mat-divider>
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Container: '}}
                 </div>
                 <div class="field-data">
@@ -151,15 +168,15 @@
                 </div>
               </div>
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
-                  {{'Min. Containers Per Service: '}}
+                <div class="field-label" fxFlex="26">
+                  {{'Min. Containers/Svc: '}}
                 </div>
                 <div class="field-data">
                   {{account.container.minimumPerService}}
                 </div>
               </div>
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Frequency: '}}
                 </div>
                 <div class="field-data">
@@ -167,7 +184,7 @@
                 </div>
               </div>
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Price per Container: '}}
                 </div>
                 <div class="field-data">
@@ -177,7 +194,7 @@
               </div>
 
               <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Expected Bill Amount: '}}
                 </div>
                 <div class="field-data">
@@ -188,8 +205,8 @@
               <mat-divider></mat-divider>
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
-                <div class="field-label" fxFlex="30">
-                  {{'Extra Box Amount (Cust): '}}
+                <div class="field-label" fxFlex="26">
+                  {{'Extra Box Amt (Cust): '}}
                 </div>
                 <div class="field-data" fxFlex="7">
                   {{account.container.extraBoxCostCustomer | currency}}
@@ -209,15 +226,15 @@
                 <div class="field-data" fxFlex="10">
                   {{calcExtraCustomer(account.container.extraBoxCostCustomer) | currency}}
                 </div>
-                <!--                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
+                <!--                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="26">*Update-->
                 <!--                      Pricing*-->
                 <!--                    </div>-->
                 <!--                    this was cool - use it somewhere else-->
 
               </div>
               <div class="group-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
-                  {{'Extra Box Amount (Hauler): '}}
+                <div class="field-label" fxFlex="26">
+                  {{'Extra Box Amt (Hauler): '}}
                 </div>
                 <div class="field-data" fxFlex="7">
                   {{account.container.extraBoxCostHauler | currency}}
@@ -238,14 +255,14 @@
                   {{calcExtraHauler(account.container.extraBoxCostHauler) | currency}}
                 </div>
 
-                <!--                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
+                <!--                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="26">*Update-->
                 <!--                      Pricing*-->
                 <!--                    </div>-->
 
               </div>
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Customer Start: '}}
                 </div>
                 <div class="field-data" fxFlex="40">
@@ -255,7 +272,7 @@
 
               </div>
               <div class="display-row" fxLayout="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Customer APIs: ' + '@' + customer.customerApiRate + '%'}}
                 </div>
                 <div class="field-data" fxFlex="40" fxLayout="column">
@@ -274,7 +291,7 @@
               </div>
 
               <!--              <div class="display-row" fxFlex="row" fxLayoutAlign="start">-->
-              <!--                <div class="field-label" fxFlex="30">-->
+              <!--                <div class="field-label" fxFlex="26">-->
               <!--                  {{'Hauler Start: '}}-->
               <!--                </div>-->
               <!--                <div class="field-data" fxFlex="40">-->
@@ -285,7 +302,7 @@
 
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
+                <div class="field-label" fxFlex="26">
                   {{'Notes: '}}
                 </div>
                 <div fxFlex="column">
