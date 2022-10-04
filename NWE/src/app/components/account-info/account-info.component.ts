@@ -288,6 +288,9 @@ export class AccountInfoComponent implements OnInit {
   }
 
 
+  sendRepEmail(account: OnCallAccount, customer: Customer) {
+    return `mailto:Kelly.Cabaniss@STERICYCLE.com?subject=Account: ${account.accountNumber}`
+  }
 }
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)
