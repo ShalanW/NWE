@@ -6,12 +6,16 @@ mat-card {
   margin-top: .5em;
 }
 
-.service-box {
-  font-size: 16px;
+.top-margin {
+  margin-top: .75em;
 }
 
-.display-row {
-  margin-top: .75em;
+.service-box {
+  font-size: 14px;
+}
+
+.group-row {
+  margin-bottom: .75em;
 }
 
 .confirm-button {
@@ -35,7 +39,7 @@ mat-card {
   animation: rainbow 2s ease infinite;
 }
 
-.divider {
-  border-top: #FAF9F6 solid 2px;
-
+mat-divider {
+  border-top: #d0612a solid 2px;
+  margin-bottom: .75em;
 }

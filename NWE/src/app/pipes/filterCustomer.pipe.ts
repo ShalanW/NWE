@@ -17,8 +17,6 @@ export class FilterCustomerPipe implements PipeTransform {
       const lowerCustomer = customer.customerName.toLowerCase()
       const lowerFilter = filterString.toLowerCase()
 
-      console.log(lowerCustomer)
-      console.log(filterString.toLowerCase())
 
       if (lowerCustomer.includes(lowerFilter)) {
         customers.push(customer)

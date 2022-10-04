@@ -39,6 +39,7 @@ import {
 import {MatDialogModule} from "@angular/material/dialog";
 import {LowercaseDirective} from './directives/lowercase.directive';
 import {MatDividerModule} from "@angular/material/divider";
+import { GlobalConfirmationDialogComponent } from './components/global-confirmation-dialog/global-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {MatDividerModule} from "@angular/material/divider";
     FilterCustomerPipe,
     OnCallAccountDialogComponent,
     LowercaseDirective,
+    GlobalConfirmationDialogComponent,
   ],
 
   imports: [

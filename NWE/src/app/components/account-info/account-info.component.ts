@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {ServiceAddress} from "../../model/general/service-address";
 import {OnCallAccountService} from "../../services/on-call-account.service";
@@ -10,7 +10,7 @@ import {Observable} from "rxjs";
 import {DatePipe} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {OnCallAccountDialogComponent} from "./on-call-account-dialog/on-call-account-dialog.component";
-import {Timestamp} from "firebase/firestore";
+import {GlobalConfirmationDialogComponent} from "../global-confirmation-dialog/global-confirmation-dialog.component";
 
 
 @Component({
@@ -113,6 +113,38 @@ export class AccountInfoComponent implements OnInit {
         this.onEditAccount(newAccount, this.selectedCustomer, oldAccount)
       }
     })
+  }
+
+  OpenDeleteAccountDialog(account: OnCallAccount, customer: Customer) {
+    const dialogRef = this.dialog.open(GlobalConfirmationDialogComponent, {
+      data: {
+        dialogType: "Delete Account",
+        dialogData: {account, customer}
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(response => {
+      if (response == 527496981) {
+        this.onConfirmDeleteAccount(account, customer)
+      }
+    })
+
+  }
+
+  openDeleteCustomerDialog(customerName: string, selectedCustomer: Customer) {
+    const dialogRef = this.dialog.open(GlobalConfirmationDialogComponent, {
+      data: {
+        dialogType: "Delete Customer",
+        dialogData: {customerName}
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(response => {
+      if (response == 527496981) {
+        this.onDeleteCustomer(selectedCustomer)
+      }
+    })
+
   }
 
   displayFn(customer: Customer): string {
@@ -254,6 +286,8 @@ export class AccountInfoComponent implements OnInit {
     }
     this.ocaService.editOnCallAccount(newAccount, customer, oldAccount)
   }
+
+
 }
 
 // Angular ngIf Directive and the Elvis Operator (Angular University)

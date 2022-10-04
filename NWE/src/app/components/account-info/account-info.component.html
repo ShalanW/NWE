@@ -52,7 +52,8 @@
             Account
           </button>
 
-          <button (click)="onDeleteCustomer(selectedCustomer)" *ngIf="selectedCustomer.customerName != ''"
+          <button (click)="openDeleteCustomerDialog(selectedCustomer.customerName, selectedCustomer)"
+                  *ngIf="selectedCustomer.customerName != ''"
                   mat-menu-item>🚨 Delete Customer
           </button>
 
@@ -92,9 +93,22 @@
 
       <mat-tab-group>
 
-        <mat-tab *ngFor="let accounts of customer.accounts"
-                 label="{{customer.customerName}}{{' - '}}{{accounts.type}} ">
+        <mat-tab *ngFor="let account of customer.accounts"
+                 label="{{account.type | uppercase}} ">
 
+          <mat-divider class="top-margin"></mat-divider>
+
+          <div fxLayout="row" fxLayoutGap=".75em">
+            <button (click)="openEditAccountDialog(account)" color="primary" mat-stroked-button>
+              {{'Edit ' + account.type + ' Account' | titlecase}}
+            </button>
+
+            <button (click)="OpenDeleteAccountDialog(account, customer)" color="primary" mat-stroked-button>
+              {{'Delete ' + account.type + ' Account' | titlecase}}
+            </button>
+          </div>
+
+          <mat-divider class="top-margin"></mat-divider>
 
           <div class="service-box" fxLayout="column">
             <div fxLayout="column">
@@ -104,23 +118,9 @@
                   {{'Service Address: '}}
                 </div>
                 <div class="field-data" fxFlex="65">
-                  {{accounts.address.streetAddress ?? ''}}
-
+                  {{account.address.streetAddress ?? ''}}
                 </div>
-                <button [matMenuTriggerFor]="menu" fxFlex mat-icon-button>
-                  <mat-icon>menu</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <button (click)="openEditAccountDialog(accounts)" mat-menu-item> Edit On-Call Account</button>
 
-                  <button
-                    (click)="onConfirmDeleteAccount(accounts, customer)"
-                    mat-menu-item
-                  >🚨 Delete On-Call Account
-                  </button>
-
-
-                </mat-menu>
               </div>
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
@@ -128,7 +128,7 @@
                   {{'Account #: '}}
                 </div>
                 <div class="field-data">
-                  {{accounts.accountNumber}}
+                  {{account.accountNumber}}
                 </div>
               </div>
               <div class="group-row" fxFlex="row" fxLayoutAlign="start">
@@ -136,62 +136,63 @@
                   {{'Site #: '}}
                 </div>
                 <div class="field-data">
-                  {{accounts.siteNumber}}
+                  {{account.siteNumber}}
                 </div>
               </div>
 
-              <div class="divider" fxFill fxLayout="row">55</div>
-
+              <mat-divider></mat-divider>
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                 <div class="field-label" fxFlex="30">
                   {{'Container: '}}
                 </div>
                 <div class="field-data">
-                  {{'(' + accounts.container.count + ')'}}&nbsp;{{accounts.container.size}}&nbsp;{{accounts.container.unit}}&nbsp;{{accounts.container.type}}
+                  {{'(' + account.container.count + ')'}}&nbsp;{{account.container.size}}&nbsp;{{account.container.unit}}&nbsp;{{account.container.type}}
                 </div>
               </div>
-              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                 <div class="field-label" fxFlex="30">
                   {{'Min. Containers Per Service: '}}
                 </div>
                 <div class="field-data">
-                  {{accounts.container.minimumPerService}}
+                  {{account.container.minimumPerService}}
                 </div>
               </div>
-              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                 <div class="field-label" fxFlex="30">
                   {{'Frequency: '}}
                 </div>
                 <div class="field-data">
-                  {{'Every ' + accounts.container.frequencyByWeeks + ' Weeks'}}
+                  {{'Every ' + account.container.frequencyByWeeks + ' Weeks'}}
                 </div>
               </div>
-              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
+              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                 <div class="field-label" fxFlex="30">
-                  {{'Price per Box: '}}
+                  {{'Price per Container: '}}
                 </div>
                 <div class="field-data">
-                  {{accounts.container.price | currency}}
+                  {{account.container.price | currency}}
 
                 </div>
               </div>
 
-              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+              <div class="group-row" fxFlex="row" fxLayoutAlign="start">
                 <div class="field-label" fxFlex="30">
                   {{'Expected Bill Amount: '}}
                 </div>
                 <div class="field-data">
-                  {{accounts.container.monthlyCost | currency}}
+                  {{account.container.monthlyCost | currency}}
                 </div>
               </div>
+
+              <mat-divider></mat-divider>
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start end">
                 <div class="field-label" fxFlex="30">
                   {{'Extra Box Amount (Cust): '}}
                 </div>
                 <div class="field-data" fxFlex="7">
-                  {{accounts.container.extraBoxCostCustomer | currency}}
+                  {{account.container.extraBoxCostCustomer | currency}}
                 </div>
 
 
@@ -206,7 +207,7 @@
                 <div>&nbsp;</div>
 
                 <div class="field-data" fxFlex="10">
-                  {{calcExtraCustomer(accounts.container.extraBoxCostCustomer) | currency}}
+                  {{calcExtraCustomer(account.container.extraBoxCostCustomer) | currency}}
                 </div>
                 <!--                    <div *ngIf="compareDates(selectedCustomer.customerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
                 <!--                      Pricing*-->
@@ -219,7 +220,7 @@
                   {{'Extra Box Amount (Hauler): '}}
                 </div>
                 <div class="field-data" fxFlex="7">
-                  {{accounts.container.extraBoxCostHauler | currency}}
+                  {{account.container.extraBoxCostHauler | currency}}
 
                 </div>
 
@@ -234,7 +235,7 @@
                 <div>&nbsp;</div>
 
                 <div class="field-data" fxFlex="10">
-                  {{calcExtraHauler(accounts.container.extraBoxCostHauler) | currency}}
+                  {{calcExtraHauler(account.container.extraBoxCostHauler) | currency}}
                 </div>
 
                 <!--                    <div *ngIf="compareDates(selectedCustomer.haulerApiDate)" class="rainbow-text" fxFlex="15">*Update-->
@@ -249,7 +250,7 @@
                 </div>
                 <div class="field-data" fxFlex="40">
                   {{customer.customerApiDate | date:'MM/dd/yy'}}
-                  - {{accounts.container.extraBoxCostCustomerOriginal | currency}}
+                  - {{account.container.extraBoxCostCustomerOriginal | currency}}
                 </div>
 
               </div>
@@ -260,11 +261,11 @@
                 <div class="field-data" fxFlex="40" fxLayout="column">
                   <div>
                     {{addOneYear(customer.customerApiDate) | date:'MM/dd/yy'}}
-                    - {{addOneApi(accounts.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
+                    - {{addOneApi(account.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
                   </div>
                   <div>
                     {{addTwoYears(customer.customerApiDate) | date:'MM/dd/yy'}}
-                    - {{addTwoApis(accounts.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
+                    - {{addTwoApis(account.container.extraBoxCostCustomerOriginal, customer.customerApiRate) | currency}}
                   </div>
 
                 </div>
@@ -272,15 +273,15 @@
 
               </div>
 
-              <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                <div class="field-label" fxFlex="30">
-                  {{'Hauler Start: '}}
-                </div>
-                <div class="field-data" fxFlex="40">
-                  {{customer.haulerApiDate  | date:'MM/dd/yy'}}
-                </div>
+              <!--              <div class="display-row" fxFlex="row" fxLayoutAlign="start">-->
+              <!--                <div class="field-label" fxFlex="30">-->
+              <!--                  {{'Hauler Start: '}}-->
+              <!--                </div>-->
+              <!--                <div class="field-data" fxFlex="40">-->
+              <!--                  {{customer.haulerApiDate  | date:'MM/dd/yy'}}-->
+              <!--                </div>-->
 
-              </div>
+              <!--              </div>-->
 
 
               <div class="display-row" fxFlex="row" fxLayoutAlign="start">
@@ -288,7 +289,7 @@
                   {{'Notes: '}}
                 </div>
                 <div fxFlex="column">
-                  <div *ngFor="let note of accounts.notes">
+                  <div *ngFor="let note of account.notes">
                     <div>{{note}}</div>
                   </div>
                   <!--                    <div #deleteButton>-->

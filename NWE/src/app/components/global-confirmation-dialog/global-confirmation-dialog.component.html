@@ -1,0 +1,34 @@
+<ng-container *ngIf="data.dialogType === 'Delete Account'">
+  <h1 mat-dialog-title>Confirm Action</h1>
+  <mat-divider></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <h3>Deleting Account: {{data.dialogData.account.type | uppercase}}</h3>
+    <h3>Customer: {{data.dialogData.customer.customerName}}</h3>
+    <mat-form-field fxFlex="50">
+      <mat-label>Enter Password</mat-label>
+      <input [(ngModel)]="deleteAccountPassword" matInput type="password">
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button cdkFocusInitial color="primary" mat-dialog-close mat-flat-button>Cancel</button>
+    <button (click)="onConfirmDeleteAccount()" color="warn" mat-stroked-button>Delete Account</button>
+  </mat-dialog-actions>
+</ng-container>
+
+<ng-container *ngIf="data.dialogType === 'Delete Customer'">
+  <h1 mat-dialog-title>Confirm Action</h1>
+  <mat-divider></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <h3>Deleting Customer: {{data.dialogData.customerName | uppercase}}</h3>
+    <mat-form-field fxFlex="50">
+      <mat-label>Enter Password</mat-label>
+      <input [(ngModel)]="deleteAccountPassword" matInput type="password">
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button cdkFocusInitial color="primary" mat-dialog-close mat-flat-button>Cancel</button>
+    <button (click)="onConfirmDeleteAccount()" color="warn" mat-stroked-button>Delete Account</button>
+  </mat-dialog-actions>
+</ng-container>
