@@ -82,7 +82,7 @@ export class AccountInfoComponent implements OnInit {
 
       if (customerData) {
 
-        this.onUpdateCustomer(this.selectedCustomer, customerData.customerApiDate, customerData.haulerApiDate, customerData.customerApiRate)
+        this.onUpdateCustomer(this.selectedCustomer, customerData.customerApiDate, customerData.haulerApiDate, customerData.customerApiRate, customerData.address)
       }
       this.onReset()
       this.runOtherStuff()
@@ -226,8 +226,8 @@ export class AccountInfoComponent implements OnInit {
 
   // this was cool - use it again
 
-  onUpdateCustomer(selectedCustomer: Customer, customerStartDate: string | '', haulerStartDate: string | '', customerApiRate: string | '') {
-    this.cs.updateCustomer(selectedCustomer, customerStartDate, haulerStartDate, customerApiRate)
+  onUpdateCustomer(selectedCustomer: Customer, customerStartDate: string | '', haulerStartDate: string | '', customerApiRate: string | '', address: ServiceAddress) {
+    this.cs.updateCustomer(selectedCustomer, customerStartDate, haulerStartDate, customerApiRate, address)
     this.runStuff()
   }
 
@@ -290,6 +290,11 @@ export class AccountInfoComponent implements OnInit {
 
   sendRepEmail(account: OnCallAccount, customer: Customer) {
     return `mailto:Kelly.Cabaniss@STERICYCLE.com?subject=Account: ${account.accountNumber}`
+  }
+
+
+  needToUpdateCustomer(customer: Customer) {
+    return !customer.customerApiDate || !customer.haulerApiDate || customer.customerApiRate == '' || !customer.customerApiRate || !customer.address?.streetAddress || customer.address.streetAddress == '' || !customer.address?.city || customer.address.city == '' || !customer.address?.state || customer.address.state == '' || !customer.address?.zip || customer.address.zip == ''
   }
 }
 

@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {OnCallAccountDialogData} from "../../../model/stericycle/on-call-account-dialog-data";
 import {OnCallAccount} from "../../../model/stericycle/OnCallAccount";
 import {DatePipe} from "@angular/common";
+import {ServiceAddress} from "../../../model/general/service-address";
 
 @Component({
   selector: 'app-on-call-account-dialog',
@@ -47,6 +48,14 @@ export class OnCallAccountDialogComponent implements OnInit {
     zip: [this.data.account?.address.zip],
 
   })
+  editAddressForm = this.fb.group({
+
+    streetAddress: [this.data?.customer?.address?.streetAddress],
+    city: [this.data?.customer?.address?.city],
+    state: [this.data?.customer?.address?.state],
+    zip: [this.data?.customer?.address?.zip],
+
+  })
   containerForm = this.fb.group({
 
     type: [this.data.account?.container.type],
@@ -88,7 +97,8 @@ export class OnCallAccountDialogComponent implements OnInit {
     this.editCustomerDataObj = {
       customerApiRate: this.newCustomerApiRate,
       customerApiDate: this.newCustomerStartDate,
-      haulerApiDate: this.newHaulerStartDate
+      haulerApiDate: this.newHaulerStartDate,
+      address: this.addressForm.value
     }
 
     this.dialogRef.close(this.editCustomerDataObj)
@@ -119,5 +129,17 @@ export class OnCallAccountDialogComponent implements OnInit {
     }
 
     this.dialogRef.close(this.editAccountDataObj)
+  }
+
+  onCopyAddressFromCustomer(address: any) {
+    this.addressForm = this.fb.group({
+
+      streetAddress: [address.streetAddress],
+      city: [address.city],
+      state: [address.state],
+      zip: [address.zip],
+
+    })
+
   }
 }

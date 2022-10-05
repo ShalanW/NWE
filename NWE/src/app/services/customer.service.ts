@@ -4,6 +4,7 @@ import {Customer} from "../model/general/customer";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Timestamp} from "firebase/firestore";
 import {DatePipe} from "@angular/common";
+import {ServiceAddress} from "../model/general/service-address";
 
 
 @Injectable({
@@ -94,7 +95,7 @@ export class CustomerService {
     this.collectionRef.doc(newCustomer.customerName).set(newCustomer, {merge: true})
   }
 
-  updateCustomer(selectedCustomer: any, customerStartDate: string | '', haulerStartDate: string | '', newCustomerApiRate: string | '') {
+  updateCustomer(selectedCustomer: any, customerStartDate: string | '', haulerStartDate: string | '', newCustomerApiRate: string | '', address: ServiceAddress) {
 
 
     const cYear = +customerStartDate?.slice(0, 4)
@@ -111,7 +112,8 @@ export class CustomerService {
     this.collectionRef.doc(selectedCustomer.customerName).update({
       customerApiDate: customerDate,
       haulerApiDate: haulerDate,
-      customerApiRate: newCustomerApiRate
+      customerApiRate: newCustomerApiRate,
+      address: address
     })
   }
 

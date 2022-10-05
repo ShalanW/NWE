@@ -1,9 +1,11 @@
 <h1 *ngIf="data.dialogType === 'New Customer'" mat-dialog-title>Add New Customer</h1>
 <h1 *ngIf="data.dialogType === 'Edit Customer'" mat-dialog-title>{{data.customer?.customerName}}</h1>
 
+
 <h1 *ngIf="data.dialogType === 'New Account'" mat-dialog-title>Add New Account</h1>
 <h3 *ngIf="data.dialogType === 'New Account'" mat-dialog-title>
   {{data.customer?.customerName ?? 'Oops... Something Went Wrong'}} </h3>
+
 
 <mat-dialog-content *ngIf="data.dialogType === 'New Customer'" class="new-customer-menu">
 
@@ -48,30 +50,19 @@
 
 </mat-dialog-content>
 
-<mat-dialog-content *ngIf="data.dialogType === 'Edit Customer'" class="new-customer-menu">
-
+<mat-dialog-content *ngIf="data.dialogType === 'Edit Customer'" class="edit-customer-menu">
 
   <div fxLayout="column">
 
-
     <mat-form-field>
-
       <mat-label>Customer Start Date</mat-label>
-
       <input [(ngModel)]="newCustomerStartDate" matInput type="date">
-
     </mat-form-field>
 
     <mat-form-field>
-
-
       <mat-label>Hauler Start Date</mat-label>
-
       <input [(ngModel)]="newHaulerStartDate" matInput type="date">
-
-
     </mat-form-field>
-
 
     <mat-form-field>
       <mat-label>API Rate</mat-label>
@@ -80,10 +71,38 @@
 
   </div>
 
+  <form [formGroup]="editAddressForm" class="login-form">
+
+
+    <mat-form-field fxFill>
+      <mat-label>Street Address</mat-label>
+      <input autocomplete="off" formControlName="streetAddress" matInput>
+    </mat-form-field>
+
+    <div fxLayout="row">
+      <mat-form-field fxFlex="50">
+        <mat-label>City</mat-label>
+        <input autocomplete="off" formControlName="city" matInput>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="20">
+        <mat-label>State</mat-label>
+        <input autocomplete="off" formControlName="state" matInput>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="30">
+        <mat-label>Zip</mat-label>
+        <input autocomplete="off" formControlName="zip" matInput>
+      </mat-form-field>
+    </div>
+
+
+  </form>
+
 
 </mat-dialog-content>
 
-<mat-dialog-content *ngIf="data.dialogType === 'New Account'">
+<mat-dialog-content *ngIf="data.dialogType === 'New Account'" class="new-account-menu">
 
   <form [formGroup]="addressForm" class="login-form">
 
@@ -113,6 +132,9 @@
 
 
   </form>
+  <button (click)="onCopyAddressFromCustomer(data.customer?.address)" color="primary" fxFill mat-stroked-button>Copy
+    Address From Customer
+  </button>
   <form [formGroup]="accountForm" class="login-form" fxLayout="column">
     <div fxLayout="row">
 
@@ -196,7 +218,7 @@
 
 </mat-dialog-content>
 
-<mat-dialog-content *ngIf="data.dialogType === 'Edit Account'">
+<mat-dialog-content *ngIf="data.dialogType === 'Edit Account'" class="edit-account-menu">
   <h1>Edit Account</h1>
   <form [formGroup]="addressForm" class="login-form">
 
@@ -309,8 +331,7 @@
 
 </mat-dialog-content>
 
-
-<div [align]="'end'" mat-dialog-actions>
+<div [align]="'end'" class="action-menu" mat-dialog-actions>
 
   <button *ngIf="data.dialogType === 'New Customer'" [matDialogClose]="customerForm" color="primary" mat-button
           mat-flat-button>Add Customer

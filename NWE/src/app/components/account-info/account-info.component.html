@@ -16,7 +16,7 @@
             matInput
             placeholder="Choose One"
             type="text">
-          <!--          firstPanel.close();-->
+
           <mat-autocomplete #auto="matAutocomplete"
                             (optionSelected)="selectedCustomer = $event.option.value; runStuff();  runHelper()"
                             [displayWith]="displayFn"
@@ -48,7 +48,7 @@
             Edit Customer
           </button>
 
-          <button (click)="openNewAccountDialog()" *ngIf="selectedCustomer.customerName != ''" mat-menu-item>Add New
+          <button (click)="openNewAccountDialog()" *ngIf="!needToUpdateCustomer(selectedCustomer)" mat-menu-item>Add New
             Account
           </button>
 
@@ -66,11 +66,15 @@
 
         <div *ngFor="let customer of customers">
 
-          <div *ngIf="!customer.accounts" fxLayout="row" fxLayoutAlign="space-evenly center">
+          <div fxLayout="column" fxLayoutGap=".75em">
 
             <div>Customer Start: {{customer?.customerApiDate | date:'MM/dd/yy' }}</div>
             <div>Customer API Rate: {{customer?.customerApiRate + '%'}}</div>
             <div>Hauler Start: {{customer?.haulerApiDate | date:'MM/dd/yy'}}</div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div>
+                Address: {{customer?.address?.streetAddress + ', ' + customer?.address?.city + ', ' + customer?.address?.state + ' ' + customer?.address?.zip}}</div>
+            </div>
 
           </div>
 
@@ -83,10 +87,10 @@
 
         <div *ngFor="let customer of customers">
           <ng-container
-            *ngIf="!customer.customerApiDate || !customer.haulerApiDate || customer.customerApiRate =='' || !customer.customerApiRate">
-            <div>
-              ***update customer***
-            </div>
+            *ngIf="needToUpdateCustomer(customer)">
+            <h2 class="rainbow-text">
+              ***Update Customer***
+            </h2>
           </ng-container>
         </div>
       </ng-container>

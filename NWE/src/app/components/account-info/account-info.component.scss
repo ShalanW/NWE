@@ -32,11 +32,11 @@ mat-card {
 }
 
 .rainbow-text {
-  background-image: repeating-linear-gradient(65deg, indigo, blue, green, violet, yellow, orange, red);
+  background-image: repeating-linear-gradient(45deg, indigo, blue, green, violet, yellow, orange, red);
   text-align: center;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: rainbow 2s ease infinite;
+  animation: rainbow 1s ease infinite;
 }
 
 mat-divider {
