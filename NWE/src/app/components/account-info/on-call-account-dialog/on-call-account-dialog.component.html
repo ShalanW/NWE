@@ -54,14 +54,37 @@
 
   <div fxLayout="column">
 
+    <form [formGroup]="editAddressForm" class="login-form">
+
+
+      <mat-form-field fxFill>
+        <mat-label>Street Address</mat-label>
+        <input autocomplete="off" formControlName="streetAddress" matInput>
+      </mat-form-field>
+
+      <div fxLayout="row">
+        <mat-form-field fxFlex="50">
+          <mat-label>City</mat-label>
+          <input autocomplete="off" formControlName="city" matInput>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20">
+          <mat-label>State</mat-label>
+          <input autocomplete="off" formControlName="state" matInput>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30">
+          <mat-label>Zip</mat-label>
+          <input autocomplete="off" formControlName="zip" matInput>
+        </mat-form-field>
+      </div>
+
+
+    </form>
+
     <mat-form-field>
       <mat-label>Customer Start Date</mat-label>
       <input [(ngModel)]="newCustomerStartDate" matInput type="date">
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Hauler Start Date</mat-label>
-      <input [(ngModel)]="newHaulerStartDate" matInput type="date">
     </mat-form-field>
 
     <mat-form-field>
@@ -69,35 +92,13 @@
       <input [(ngModel)]="newCustomerApiRate" autocomplete="off" matInput type="text">
     </mat-form-field>
 
-  </div>
-
-  <form [formGroup]="editAddressForm" class="login-form">
-
-
-    <mat-form-field fxFill>
-      <mat-label>Street Address</mat-label>
-      <input autocomplete="off" formControlName="streetAddress" matInput>
+    <mat-form-field>
+      <mat-label>Hauler Start Date</mat-label>
+      <input [(ngModel)]="newHaulerStartDate" matInput type="date">
     </mat-form-field>
 
-    <div fxLayout="row">
-      <mat-form-field fxFlex="50">
-        <mat-label>City</mat-label>
-        <input autocomplete="off" formControlName="city" matInput>
-      </mat-form-field>
 
-      <mat-form-field fxFlex="20">
-        <mat-label>State</mat-label>
-        <input autocomplete="off" formControlName="state" matInput>
-      </mat-form-field>
-
-      <mat-form-field fxFlex="30">
-        <mat-label>Zip</mat-label>
-        <input autocomplete="off" formControlName="zip" matInput>
-      </mat-form-field>
-    </div>
-
-
-  </form>
+  </div>
 
 
 </mat-dialog-content>

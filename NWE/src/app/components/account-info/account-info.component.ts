@@ -20,6 +20,9 @@ import {GlobalConfirmationDialogComponent} from "../global-confirmation-dialog/g
 })
 export class AccountInfoComponent implements OnInit {
 
+  noteInput: string = '';
+  hideNoteDeleteIcon: boolean = true;
+
 
   filteredString: string = '';
 
@@ -276,15 +279,15 @@ export class AccountInfoComponent implements OnInit {
     this.onReset()
   }
 
-  onEditAccount(data: any, customer: Customer, oldAccount: OnCallAccount) {
+  onEditAccount(newAccount: any, customer: Customer, oldAccount: OnCallAccount) {
 
-    const newAccount = <OnCallAccount>{
-      ...data?.accountForm?.value,
-      address: data?.addressForm?.value as ServiceAddress,
-      container: data?.containerForm?.value as Container,
+    const editAccount = <OnCallAccount>{
+      ...newAccount?.accountForm?.value,
+      address: newAccount?.addressForm?.value as ServiceAddress,
+      container: newAccount?.containerForm?.value as Container,
       notes: []
     }
-    this.ocaService.editOnCallAccount(newAccount, customer, oldAccount)
+    this.ocaService.editOnCallAccount(editAccount, customer, oldAccount)
   }
 
 
@@ -295,6 +298,22 @@ export class AccountInfoComponent implements OnInit {
 
   needToUpdateCustomer(customer: Customer) {
     return !customer.customerApiDate || !customer.haulerApiDate || customer.customerApiRate == '' || !customer.customerApiRate || !customer.address?.streetAddress || customer.address.streetAddress == '' || !customer.address?.city || customer.address.city == '' || !customer.address?.state || customer.address.state == '' || !customer.address?.zip || customer.address.zip == ''
+  }
+
+  onAddNote(account: OnCallAccount, customer: Customer) {
+
+    this.noteArray.push(this.noteInput)
+    this.noteInput = ''
+
+    this.ocaService.editOnCallAccountAddNote(account, customer, this.noteArray)
+    this.noteArray = []
+
+  }
+
+  OnDeleteNote(account: OnCallAccount, customer: Customer) {
+    this.noteArray = account.notes
+
+
   }
 }
 

@@ -6,7 +6,7 @@
 
       <div fxLayout="row" fxLayoutAlign=" center">
 
-        <mat-form-field fxFlex="95">
+        <mat-form-field fxFlex>
           <mat-label>Select Customer</mat-label>
           <input
             (input)="runOtherStuff()"
@@ -28,14 +28,20 @@
           </mat-autocomplete>
 
 
+          <div matSuffix>
+            <button (click)="onReset()" m mat-icon-button>
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+
         </mat-form-field>
 
-        <mat-icon (click)="onReset() ">clear</mat-icon>
 
-
-        <button [matMenuTriggerFor]="menu" mat-icon-button>
+        <button [matMenuTriggerFor]="menu" class="menu-button" mat-icon-button matSuffix>
           <mat-icon>menu</mat-icon>
         </button>
+
+
         <mat-menu #menu="matMenu">
 
           <button (click)="openNewCustomerDialog()"
@@ -303,59 +309,40 @@
 
                 </div>
 
-                <!--              <div class="display-row" fxFlex="row" fxLayoutAlign="start">-->
-                <!--                <div class="field-label" fxFlex="26">-->
-                <!--                  {{'Hauler Start: '}}-->
-                <!--                </div>-->
-                <!--                <div class="field-data" fxFlex="40">-->
-                <!--                  {{customer.haulerApiDate  | date:'MM/dd/yy'}}-->
-                <!--                </div>-->
-
-                <!--              </div>-->
-
-
                 <div class="display-row" fxFlex="row" fxLayoutAlign="start">
                   <div class="field-label" fxFlex="26">
                     {{'Notes: '}}
                   </div>
-                  <div fxFlex="column">
-                    <div *ngFor="let note of account.notes">
-                      <div>{{note}}</div>
+                  <div fxLayout="column">
+                    <div *ngFor="let note of account.notes; let i = index" fxLayout="row">
+                      <div (dblclick)="hideNoteDeleteIcon = !hideNoteDeleteIcon">{{note}}</div>
+                      <mat-icon #deleteIcon *ngIf="!hideNoteDeleteIcon">delete</mat-icon>
                     </div>
-                    <!--                    <div #deleteButton>-->
-                    <!--                      <button-->
-                    <!--                        (click)="confirmDeleteButton.disabled = false; denyButton.disabled = false; confirmButtons.hidden = false; deleteButton.hidden = true"-->
-
-                    <!--                        class="delete-button"-->
-                    <!--                        color="primary"-->
-                    <!--                        mat-raised-button>-->
-                    <!--                        Delete-->
-                    <!--                        On-Call Account-->
-                    <!--                      </button>-->
-                    <!--                    </div>-->
-                    <!--                    <div #confirmButtons [hidden]="true">-->
-                    <!--                      <button #denyButton-->
-                    <!--                              (click)="confirmDeleteButton.disabled = true; denyButton.disabled = true; confirmButtons.hidden = true; deleteButton.hidden = false"-->
-                    <!--                              [disabled]="true"-->
-                    <!--                              class="deny-button"-->
-                    <!--                              color="primary" mat-raised-button>-->
-                    <!--                        Abort-->
-                    <!--                      </button>-->
-                    <!--                      <button #confirmDeleteButton-->
-                    <!--                              (click)="onConfirmDeleteAccount(accounts, customer)"-->
-                    <!--                              [disabled]="true"-->
-                    <!--                              class="confirm-button"-->
-                    <!--                              color="primary" mat-raised-button> Confirm-->
-                    <!--                      </button>-->
-                    <!--                    </div>-->
-
 
                   </div>
                 </div>
 
+                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+                  <div class="field-label" fxFlex="26">
+                    {{'Add Note: '}}
+                  </div>
+                  <div fxFlex="row" fxLayoutAlign="start center">
+                    <mat-form-field fxFlex>
+                      <mat-label>Add a Note</mat-label>
+                      <input (keyup.enter)="addNoteInput._elementRef.nativeElement.click()"
+                             [(ngModel)]="noteInput"
+                             matInput>
+                      <mat-icon #addNoteInput (click)="onAddNote(account, customer)" matSuffix>add</mat-icon>
 
+                    </mat-form-field>
+                  </div>
+
+                </div>
               </div>
+
+
             </div>
+
 
           </mat-tab>
 

@@ -3,6 +3,9 @@ import {OnCallAccount} from "../model/stericycle/OnCallAccount";
 import firebase from "firebase/compat/app";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Customer} from "../model/general/customer";
+import {
+  OnCallAccountDialogComponent
+} from "../components/account-info/on-call-account-dialog/on-call-account-dialog.component";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +35,7 @@ export class OnCallAccountService {
   }
 
   removeOnCallAccount(account: OnCallAccount, selectedCustomer: string) {
+    console.log(account)
     this.collectionRef.doc(selectedCustomer).set({
         accounts: firebase.firestore.FieldValue.arrayRemove(account)
       },
@@ -40,7 +44,6 @@ export class OnCallAccountService {
 
   editOnCallAccount(newAccount: OnCallAccount, customer: Customer, oldAccount: OnCallAccount) {
 
-    console.log(newAccount)
 
     this.collectionRef.doc(customer.customerName).set({
         accounts: firebase.firestore.FieldValue?.arrayRemove(oldAccount)
@@ -51,5 +54,22 @@ export class OnCallAccountService {
         accounts: firebase.firestore.FieldValue?.arrayUnion(newAccount)
       },
       {merge: true})
+  }
+
+  editOnCallAccountAddNote(account: OnCallAccount, customer: Customer, notes: string[]) {
+
+    console.log({account: account, name: customer, notes: notes})
+
+    const oldAccount = account
+
+    for (let note of oldAccount.notes) {
+      notes.push(note)
+    }
+
+    this.removeOnCallAccount(oldAccount, customer.customerName)
+
+    const newAccount = {...account, notes: notes}
+
+    this.addOnCallAccount(newAccount, customer.customerName, customer)
   }
 }

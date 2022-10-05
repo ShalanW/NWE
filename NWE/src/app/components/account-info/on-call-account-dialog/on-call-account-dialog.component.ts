@@ -98,7 +98,7 @@ export class OnCallAccountDialogComponent implements OnInit {
       customerApiRate: this.newCustomerApiRate,
       customerApiDate: this.newCustomerStartDate,
       haulerApiDate: this.newHaulerStartDate,
-      address: this.addressForm.value
+      address: this.editAddressForm.value
     }
 
     this.dialogRef.close(this.editCustomerDataObj)
