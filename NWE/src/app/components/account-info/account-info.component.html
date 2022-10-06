@@ -314,9 +314,12 @@
                     {{'Notes: '}}
                   </div>
                   <div fxLayout="column">
-                    <div *ngFor="let note of account.notes; let i = index" fxLayout="row">
-                      <div (dblclick)="hideNoteDeleteIcon = !hideNoteDeleteIcon">{{note}}</div>
-                      <mat-icon #deleteIcon *ngIf="!hideNoteDeleteIcon">delete</mat-icon>
+                    <div *ngFor="let note of account.notes; let i = index" fxLayout="row" fxLayoutAlign="start center">
+                      <button #deleteIcon (click)="onDeleteNote(account,customer, i)" *ngIf="!hideNoteDeleteIcon"
+                              mat-stroked-button>❌
+                      </button>
+
+                      <p (dblclick)="hideNoteDeleteIcon = !hideNoteDeleteIcon" class="delete-note-button">{{note}}</p>
                     </div>
 
                   </div>

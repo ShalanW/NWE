@@ -56,3 +56,12 @@ a {
 .menu-button {
   margin-bottom: .75em
 }
+
+.delete-note-button {
+  text-decoration: underline dotted .5px;
+  margin: 0;
+}
+
+p:hover {
+  cursor: pointer;
+}

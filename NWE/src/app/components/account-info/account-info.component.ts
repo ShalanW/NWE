@@ -310,9 +310,11 @@ export class AccountInfoComponent implements OnInit {
 
   }
 
-  OnDeleteNote(account: OnCallAccount, customer: Customer) {
-    this.noteArray = account.notes
 
+  onDeleteNote(account: OnCallAccount, customer: Customer, index: number) {
+
+    this.noteArray = []
+    this.ocaService.editOnCallAccountDeleteNote(account, customer, this.noteArray, index)
 
   }
 }

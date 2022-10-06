@@ -3,9 +3,6 @@ import {OnCallAccount} from "../model/stericycle/OnCallAccount";
 import firebase from "firebase/compat/app";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Customer} from "../model/general/customer";
-import {
-  OnCallAccountDialogComponent
-} from "../components/account-info/on-call-account-dialog/on-call-account-dialog.component";
 
 @Injectable({
   providedIn: 'root'
@@ -72,4 +69,24 @@ export class OnCallAccountService {
 
     this.addOnCallAccount(newAccount, customer.customerName, customer)
   }
+
+  editOnCallAccountDeleteNote(account: OnCallAccount, customer: Customer, notes: string[], index: number) {
+
+    const oldAccount = account
+
+    for (let note of oldAccount.notes) {
+      notes.push(note)
+    }
+
+    notes.splice(index, 1)
+
+    this.removeOnCallAccount(oldAccount, customer.customerName)
+
+    const newAccount = {...account, notes: notes}
+
+    this.addOnCallAccount(newAccount, customer.customerName, customer)
+  }
 }
+
+
+
