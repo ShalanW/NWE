@@ -32,3 +32,16 @@
     <button (click)="onConfirmDeleteAccount()" color="warn" mat-stroked-button>Delete Account</button>
   </mat-dialog-actions>
 </ng-container>
+
+<ng-container *ngIf="data.dialogType === 'Delete Note'">
+  <h1 mat-dialog-title>Confirm Action</h1>
+  <mat-divider></mat-divider>
+  <mat-dialog-content fxLayout="column">
+    <h3>Deleting Note: {{'"' + data.dialogData.note + '"'| uppercase}}</h3>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button cdkFocusInitial color="primary" mat-dialog-close mat-flat-button>Cancel</button>
+    <button (click)="onConfirmDeleteNote()" color="warn" mat-stroked-button>Delete Note</button>
+  </mat-dialog-actions>
+</ng-container>

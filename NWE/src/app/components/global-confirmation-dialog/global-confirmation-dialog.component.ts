@@ -13,7 +13,7 @@ export class GlobalConfirmationDialogComponent implements OnInit {
   deleteAccountPassword: string = '';
 
   constructor(public dialogRef: MatDialogRef<GlobalConfirmationDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: { dialogType: string, dialogData: { account: OnCallAccount, customer: Customer, customerName: string } }) {
+              @Inject(MAT_DIALOG_DATA) public data: { dialogType: string, dialogData: { account: OnCallAccount, customer: Customer, customerName: string, note: string } }) {
   }
 
   ngOnInit(): void {
@@ -23,4 +23,7 @@ export class GlobalConfirmationDialogComponent implements OnInit {
     this.dialogRef.close(this.deleteAccountPassword)
   }
 
+  onConfirmDeleteNote() {
+    this.dialogRef.close(true)
+  }
 }

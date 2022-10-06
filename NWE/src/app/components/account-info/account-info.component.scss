@@ -44,9 +44,6 @@ mat-divider {
   margin-bottom: .75em;
 }
 
-.container-box {
-  height: 80vh;
-}
 
 a {
   text-decoration: none;
@@ -57,11 +54,8 @@ a {
   margin-bottom: .75em
 }
 
-.delete-note-button {
-  text-decoration: underline dotted .5px;
-  margin: 0;
-}
 
-p:hover {
+p {
+  margin: 0;
   cursor: pointer;
 }

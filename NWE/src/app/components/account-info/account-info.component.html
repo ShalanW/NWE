@@ -313,22 +313,22 @@
                   <div class="field-label" fxFlex="26">
                     {{'Notes: '}}
                   </div>
+                </div>
+                <div class="display-row" fxFlex="row" fxLayoutAlign="start">
+
                   <div fxLayout="column">
                     <div *ngFor="let note of account.notes; let i = index" fxLayout="row" fxLayoutAlign="start center">
-                      <button #deleteIcon (click)="onDeleteNote(account,customer, i)" *ngIf="!hideNoteDeleteIcon"
-                              mat-stroked-button>❌
-                      </button>
 
-                      <p (dblclick)="hideNoteDeleteIcon = !hideNoteDeleteIcon" class="delete-note-button">{{note}}</p>
+
+                      <p (dblclick)="openDeleteNoteDialog(account,customer, i, note)"
+                         class="delete-note-button">{{'⁃ ' + note}}</p>
                     </div>
 
                   </div>
                 </div>
 
                 <div class="display-row" fxFlex="row" fxLayoutAlign="start">
-                  <div class="field-label" fxFlex="26">
-                    {{'Add Note: '}}
-                  </div>
+
                   <div fxFlex="row" fxLayoutAlign="start center">
                     <mat-form-field fxFlex>
                       <mat-label>Add a Note</mat-label>

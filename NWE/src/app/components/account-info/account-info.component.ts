@@ -150,6 +150,22 @@ export class AccountInfoComponent implements OnInit {
 
   }
 
+  openDeleteNoteDialog(account: OnCallAccount, customer: Customer, i: number, note: string) {
+    const dialogRef = this.dialog.open(GlobalConfirmationDialogComponent, {
+      data: {
+        dialogType: "Delete Note",
+        dialogData: {note}
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(response => {
+      if (response == true) {
+        this.onDeleteNote(account, customer, i)
+      }
+    })
+
+  }
+
   displayFn(customer: Customer): string {
     return customer && customer.customerName ? customer.customerName : ''
   };
@@ -263,7 +279,6 @@ export class AccountInfoComponent implements OnInit {
     return (+(+firstApi * (+apiRate / 100)) + +firstApi)
   }
 
-
   onReset() {
     this.resetFilteredString();
     this.resetSelectedCustomer();
@@ -290,11 +305,9 @@ export class AccountInfoComponent implements OnInit {
     this.ocaService.editOnCallAccount(editAccount, customer, oldAccount)
   }
 
-
   sendRepEmail(account: OnCallAccount, customer: Customer) {
     return `mailto:Kelly.Cabaniss@STERICYCLE.com?subject=Account: ${account.accountNumber}`
   }
-
 
   needToUpdateCustomer(customer: Customer) {
     return !customer.customerApiDate || !customer.haulerApiDate || customer.customerApiRate == '' || !customer.customerApiRate || !customer.address?.streetAddress || customer.address.streetAddress == '' || !customer.address?.city || customer.address.city == '' || !customer.address?.state || customer.address.state == '' || !customer.address?.zip || customer.address.zip == ''
@@ -309,7 +322,6 @@ export class AccountInfoComponent implements OnInit {
     this.noteArray = []
 
   }
-
 
   onDeleteNote(account: OnCallAccount, customer: Customer, index: number) {
 
