@@ -49,13 +49,13 @@
             New Customer
           </button>
 
+          <button (click)="openNewAccountDialog()" *ngIf="!needToUpdateCustomer(selectedCustomer)" mat-menu-item>Add New
+            Account
+          </button>
+
           <button (click)="openEditCustomerDialog()"
                   *ngIf="selectedCustomer.customerName != ''" mat-menu-item>
             Edit Customer
-          </button>
-
-          <button (click)="openNewAccountDialog()" *ngIf="!needToUpdateCustomer(selectedCustomer)" mat-menu-item>Add New
-            Account
           </button>
 
           <button (click)="openDeleteCustomerDialog(selectedCustomer.customerName, selectedCustomer)"
