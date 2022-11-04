@@ -1,6 +1,6 @@
 <div class="home-container" fxLayout="row">
 
-  <mat-card fxFlex="43%" fxLayout="column">
+  <mat-card fxFlex="65%" fxLayout="column">
 
     <mat-card-title>Base Services, Overages</mat-card-title>
 
@@ -560,7 +560,7 @@
 
   <div fxFlex="1%"></div>
 
-  <mat-card fxFlex="29.5%" fxLayout="column" fxLayoutAlign="start">
+  <mat-card fxFlex="34%" fxLayout="column" fxLayoutAlign="start">
 
     <div class="subtotal-row" fxLayout="column">
       <div fxLayout="row">
@@ -632,25 +632,19 @@
         <div>{{calcTotalBill() | currency}}</div>
       </div>
 
-    </div>
+
+      <div class="total-row2" fxLayout="row">
+        <div fxFlex="70%">{{'Hauler Ovg: '}}</div>
+        <div>{{calcHaulerOverages() | currency}}</div>
+      </div>
 
 
-  </mat-card>
-
-  <div fxFlex="1%"></div>
-
-  <mat-card fxFlex="29.5%" fxLayout="column" fxLayoutAlign="start">
-
-
-    <div class="total-row2" fxLayout="row">
-      <div fxFlex="70%">{{'Hauler Ovg: '}}</div>
-      <div>{{calcHaulerOverages() | currency}}</div>
-    </div>
+      <div class="total-row" fxLayout="row">
+        <div fxFlex="70%">{{'Customer Ovg: '}}</div>
+        <div>{{ calcCustomerOverages() | currency}}</div>
+      </div>
 
 
-    <div class="total-row" fxLayout="row">
-      <div fxFlex="70%">{{'Customer Ovg: '}}</div>
-      <div>{{ calcCustomerOverages() | currency}}</div>
     </div>
 
 
