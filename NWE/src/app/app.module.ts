@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -39,7 +39,9 @@ import {
 import {MatDialogModule} from "@angular/material/dialog";
 import {LowercaseDirective} from './directives/lowercase.directive';
 import {MatDividerModule} from "@angular/material/divider";
-import { GlobalConfirmationDialogComponent } from './components/global-confirmation-dialog/global-confirmation-dialog.component';
+import {
+  GlobalConfirmationDialogComponent
+} from './components/global-confirmation-dialog/global-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import { GlobalConfirmationDialogComponent } from './components/global-confirmat
     LowercaseDirective,
     GlobalConfirmationDialogComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
   imports: [
     BrowserModule,
